@@ -1,10 +1,11 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import NavbarPublic from './components/Navbar';
+import NavbarPrivate from './components/NavbarPrivate';
 
 function App() {
   return (
     <div>
-      <NavbarPublic></NavbarPublic>
+      {/* <NavbarPublic></NavbarPublic> */}
+      <NavbarPrivate></NavbarPrivate>
     </div>
   );
 }
