@@ -1,0 +1,30 @@
+.item{
+    min-width:"80px";
+    width:200px;
+    text-align:"center";
+    display:flex;
+    align-items:flex-start;
+    margin-right:10px;
+    /* margin:0px; */
+}
+
+.vertical{
+    flex-direction: column;
+}
+
+.horizontal{
+    flex-direction:row;
+    align-items: center;
+    height:100px;
+}
+
+.positive{
+    color:#00C853;
+    font-weight: 600;
+}
+
+.negative {
+    color:#FFC400;
+    /* color:"yellow" */
+    font-weight: 600;
+}
