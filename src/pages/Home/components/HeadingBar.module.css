@@ -1,0 +1,48 @@
+.container{
+    display:flex
+}
+
+.textButton{
+    margin-Left:5px
+}
+
+.searchBar{
+    position:relative;
+    max-width:500px;
+    display:inline;
+    margin-left:10px;
+}
+
+.icon{
+    display:inline;
+    position: absolute;
+    right: 5px;
+    top: 10px;
+    z-Index: 9999
+}
+
+@media(max-width:517px){
+    .container{
+        display:block
+    }
+
+    .searchBar{
+        width: 100%;
+        position:relative;
+        margin-top:10px;
+        margin-left:0;
+    }
+
+    .icon{
+        top: 20px;
+    }
+
+    
+
+
+    /* .searchBar{
+        margin-top: 20px;
+        margin-left:0px;
+        display: none;
+    } */
+}
