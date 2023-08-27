@@ -14,8 +14,8 @@ function Home() {
         <h1>Habits</h1>
         <HeadingBar></HeadingBar>
         <div style={{margin:"30px 0"}}>
-          {/* {habits.map(item=><HabitCardV2 habit={item}></HabitCard>)} */}
-          <HabitCardV2></HabitCardV2>
+          {habits.map(item=><HabitCardV2 habit={item}></HabitCardV2>)}
+          {/* <HabitCardV2></HabitCardV2> */}
         </div>
     </Container>
   )

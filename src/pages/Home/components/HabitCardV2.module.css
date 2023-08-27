@@ -1,3 +1,17 @@
+.card{
+  margin-top:20px;
+}
+
+.positive {
+  font-weight:600;
+  color:#00C853
+}
+
+.negative {
+  font-weight:600;
+  color:#FFC400
+}
+
 @media (min-width: 1068px) {
     .small{
       display: none;
