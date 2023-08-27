@@ -29,15 +29,15 @@ function HabitCardV2({habit}:Props) {
                     <div style={{display:"flex",justifyContent:"space-between",marginTop:"20px"}}>
                         <div style={{display:"flex",flexFlow:"column"}}>
                             <label style={{fontWeight:"600"}}>Streak</label>
-                            <span>10</span>
+                            <span>{habit.streak.toString()}</span>
                         </div>
                         <div style={{display:"flex",flexFlow:"column"}}>
                             <label style={{fontWeight:"600"}}>Goal</label>
-                            <span>10</span>
+                            <span>{habit.goal.toString()}</span>
                         </div>
                         <div style={{display:"flex",flexFlow:"column"}}>
                             <label style={{fontWeight:"600"}}>Estimation Date</label>
-                            <span>10 Oktober 2023</span>
+                            <span>{habit.estimationDate}</span>
                         </div>
                     </div>
                 </div>
