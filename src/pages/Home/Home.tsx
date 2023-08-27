@@ -6,7 +6,8 @@ function Home() {
 
   const habits = [
     {"name":"Jalan Pagi","type":"positive","goal":20,"streak":10,"estimationDate":"10 Oktober 2023"},
-    {"name":"Berhenti Merokok","type":"negative","goal":40,"streak":15,"estimationDate":"10 November 2023"}
+    {"name":"Berhenti Merokok","type":"negative","goal":40,"streak":15,"estimationDate":"10 November 2023"},
+    {"name":"Minum jamu tiap pagi buta enam jam sekali berjam-jam lamanya hingga siang sudah datang menjelang dan kita bingung hari pergi ke mana","type":"negative","goal":40,"streak":15,"estimationDate":"10 November 2023"}
   ]
 
   return (

@@ -12,13 +12,13 @@
   color:#FFC400
 }
 
-@media (min-width: 1068px) {
+@media (min-width: 1312px) {
     .small{
       display: none;
     }
   }
 
-@media(max-width:1068px){
+@media(max-width:1311px){
     .big{
         display: none;
     }

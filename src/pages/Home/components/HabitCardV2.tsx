@@ -20,12 +20,10 @@ function HabitCardV2({habit}:Props) {
     <div>
         <Card className={`${style.small} ${style.card}`}>
             <Card.Body style={{display:"flex",justifyContent:"space-evenly",alignItems:"center"}}>
+                {habit.type === "positive" ? <input style={{width:"30px",height:"30px",marginRight:"10px"}} className={`form-check-input`} type="checkbox"></input>:<button style={{color:"#D50000",border:"none",backgroundColor: "inherit",width:"30px",height:"30px"}}><FontAwesomeIcon  icon={faRefresh}/></button>}
                 <div style={{width:"70%"}}>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",height:"30px"}}>
-                        <div style={{display:"flex",justifyContent:"flex-start",alignItems:"center"}}>
-                            <span style={{marginRight:"15px"}}>{habit.name}</span>
-                            {habit.type === "positive" ? <input style={{width:"30px",height:"30px",marginRight:"10px"}} className={`form-check-input`} type="checkbox"></input>:<button style={{color:"#D50000",border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon icon={faRefresh}/><span style={{marginLeft:"5px"}}>RESET</span></button>}
-                        </div>
+                        <span style={{marginRight:"15px",width:"300px",whiteSpace: "nowrap",overflow: "hidden",textOverflow: "ellipsis"}}>{habit.name}</span>
                         {habit.type == "positive"? <span className={style.positive}>Positive Habit</span>:<span className={style.negative}>Negative Habit</span>} 
                     </div>
                     <div style={{display:"flex",justifyContent:"space-between",marginTop:"20px"}}>
@@ -54,21 +52,21 @@ function HabitCardV2({habit}:Props) {
                 <div style={{display:"flex",alignItems:"center",width:"70%",justifyContent:"space-between"}}>
                     <div style={{width:"80%",display:"flex"}}>
                         <div style={{display:"flex",justifyContent:"flex-start",alignItems:"center"}}>
-                            <span style={{marginRight:"20px",minWidth:"100px"}}>Jalan Kaki</span>
-                            {habit.type === "positive" ? <input style={{width:"30px",height:"30px",marginRight:"10px"}} className={`form-check-input`} type="checkbox"></input>:<button style={{color:"#D50000",border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon icon={faRefresh}/><span style={{marginLeft:"5px"}}>RESET</span></button>}
+                            <span style={{marginRight:"20px",width:"150px",whiteSpace: "nowrap",overflow: "hidden",textOverflow: "ellipsis"}}>{habit.name}</span>
+                            {habit.type === "positive" ? <input style={{width:"20px",height:"20px",marginRight:"10px"}} className={`form-check-input`} type="checkbox"></input>:<button style={{color:"#D50000",border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon style={{"width":"20px",height:"20px"}} icon={faRefresh}/></button>}
                         </div>
                         <div style={{display:"flex",marginLeft:"60px",width:"60%",minWidth:"400px"}}>
                             <div style={{display:"flex", marginRight:"60px",flexFlow:"column"}}>
                                 <label style={{fontWeight:"600"}}>Streak</label>
-                                <span>10</span>
+                                <span>{habit.streak.toString()}</span>
                             </div>
                             <div style={{display:"flex",flexFlow:"column",marginRight:"60px",}}>
                                 <label style={{fontWeight:"600"}}>Goal</label>
-                                <span>10</span>
+                                <span>{habit.goal.toString()}</span>
                             </div>
                             <div style={{display:"flex",flexFlow:"column",marginRight:"60px",}}>
                                 <label style={{fontWeight:"600"}}>Estimation Date</label>
-                                <span>10 Oktober 2023</span>
+                                <span>{habit.estimationDate}</span>
                             </div>
                         </div>
                     </div>
