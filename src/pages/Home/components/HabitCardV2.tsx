@@ -55,7 +55,6 @@ function HabitCardV2({habit}:Props) {
                     <div style={{width:"80%",display:"flex"}}>
                         <div style={{display:"flex",justifyContent:"flex-start",alignItems:"center"}}>
                             <span style={{marginRight:"20px",minWidth:"100px"}}>Jalan Kaki</span>
-                            {/* <input style={{width:"30px",height:"30px"}} className={`form-check-input`} type="checkbox"></input> */}
                             {habit.type === "positive" ? <input style={{width:"30px",height:"30px",marginRight:"10px"}} className={`form-check-input`} type="checkbox"></input>:<button style={{color:"#D50000",border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon icon={faRefresh}/><span style={{marginLeft:"5px"}}>RESET</span></button>}
                         </div>
                         <div style={{display:"flex",marginLeft:"60px",width:"60%",minWidth:"400px"}}>
