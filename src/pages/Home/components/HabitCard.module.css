@@ -1,5 +1,5 @@
 .item{
-    min-width:"80px";
+    min-width:80px;
     width:200px;
     text-align:"center";
     display:flex;
@@ -28,3 +28,15 @@
     /* color:"yellow" */
     font-weight: 600;
 }
+
+.info {
+    display:flex;
+    justify-content:space-between;
+    width:75%;
+}
+
+@media (max-width: 1024px) {
+    .info{
+      display: none;
+    }
+  }
