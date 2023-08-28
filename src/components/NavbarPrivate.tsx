@@ -1,6 +1,8 @@
+import { useContext } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { AuthContext } from '../contexts/AuthContext';
 import { auth } from '../FirebaseConfig';
 
 function NavbarPrivate() {
@@ -10,6 +12,8 @@ function NavbarPrivate() {
     return auth.signOut()
   }
 
+  const { currentUser } = useContext(AuthContext)
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary" bg="dark" data-bs-theme="dark">
       <Container className='container-fluid' >
@@ -18,6 +22,7 @@ function NavbarPrivate() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
             <Nav.Link href="#home" onClick={logout}>Logout</Nav.Link>
+            <span style={{pointerEvents:"none"}} className='nav-link'>{currentUser?.email}</span>
           </Nav>
         </Navbar.Collapse>
       </Container>
