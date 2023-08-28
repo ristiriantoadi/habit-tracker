@@ -1,8 +1,8 @@
 import { faEdit, faRefresh, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Card } from 'react-bootstrap'
+import { Habit } from '../Model'
 import style from "./HabitCardV2.module.css"
-import { Habit } from './model'
 
 interface Props{
     habit:Habit

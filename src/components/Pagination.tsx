@@ -3,32 +3,34 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 interface Props{
     length:number
-    size?:number
+    size:number
 
 }
 
-export const pageSize=2
+export const getSubsetData = (currentPage:number,pageSize:number,data:any[])=>{
+  const offset = (currentPage-1)*pageSize
+  return data.slice(offset,offset+pageSize)
+}
 
 function PaginationComponent({length,size}:Props) {
 
-    const items=[]
     const [searchParams] = useSearchParams();
     const navigate = useNavigate()
-    if (size === undefined){
-      size = pageSize 
+    const getNumberItems = ()=>{
+      const items=[]
+      for (let number = 1; number <= Math.ceil(length/size); number++) {      
+        items.push(<Pagination.Item onClick={()=>{
+          navigate(`?page=${number}`)}
+        } key={number} active={number.toString() === (searchParams.get('page') || "1")}>
+            {number}
+        </Pagination.Item>)
+      }
+      return items
     }
 
-
-    for (let number = 1; number <= Math.ceil(length/size); number++) {      
-      items.push(<Pagination.Item onClick={()=>{
-        navigate(`/habits?page=${number}`)}   
-      } key={number} active={number.toString() === (searchParams.get('page') || "1")}>
-          {number}
-      </Pagination.Item>)
-    }
     
     return (
-        <Pagination size="lg">{items}</Pagination>
+        <Pagination size="lg">{getNumberItems()}</Pagination>
     )
 }
 
