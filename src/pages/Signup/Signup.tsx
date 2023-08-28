@@ -1,7 +1,10 @@
+
 import { createUserWithEmailAndPassword } from "firebase/auth"
 import { useState } from "react"
-import { Button, Card, Container, Form } from "react-bootstrap"
+import { Card, Container, Form } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
+import "../../App.css"
+import ButtonSubmit from "../../components/ButtonSubmit"
 import { auth } from "../../FirebaseConfig"
 
 function Signup() {
@@ -11,13 +14,16 @@ function Signup() {
   const [confirmPassword,setConfirmPassword] = useState("")
   const [errorConfirmPassword,setErrorConfirmPassword]=useState(false)
   const navigate = useNavigate()
+  const [loading,setLoading] = useState(false)
 
-  const checkPasswordConfirmation = ()=>{
-    console.log("password",password)
-    console.log("confirmPassword",confirmPassword)
+  const isPasswordMatch = ()=>{
     if (password !== confirmPassword){
       setErrorConfirmPassword(true)
-    }else setErrorConfirmPassword(false)
+      return false
+    }else {
+      setErrorConfirmPassword(false)
+      return true
+    }
   }
 
   const handleChangeConfirmPassword = (e:any)=>{
@@ -26,7 +32,10 @@ function Signup() {
 
   const handleSubmit = (e:any)=>{
     e.preventDefault()
-    checkPasswordConfirmation()
+    if (isPasswordMatch() === false){
+      return
+    }
+    setLoading(true)
     createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       navigate("/habits")
@@ -58,7 +67,7 @@ function Signup() {
               <Form.Control value={confirmPassword} onChange={handleChangeConfirmPassword} required type="password" />
             </Form.Group>
             <div style={{display:"flex",alignItems:"center"}}>
-              <Button type="submit">Sign Up</Button>
+              <ButtonSubmit loading={loading} text="Sign Up"></ButtonSubmit>
               <Link style={{"marginLeft":"10px"}} to="/login">Login</Link>
             </div>
           </Form>        
