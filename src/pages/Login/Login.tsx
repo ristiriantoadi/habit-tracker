@@ -1,7 +1,8 @@
 import { signInWithEmailAndPassword } from "firebase/auth"
 import { useState } from "react"
-import { Button, Card, Container, Form } from "react-bootstrap"
+import { Card, Container, Form } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
+import ButtonSubmit from "../../components/ButtonSubmit"
 import { auth } from "../../FirebaseConfig"
 
 function Login() {
@@ -9,12 +10,14 @@ function Login() {
   const [email,setEmail] = useState("")
   const [password,setPassword] = useState("")
   const navigate = useNavigate()
+  const [loading,setLoading] = useState(false)
 
   const handleSubmit = (e:any)=>{
     e.preventDefault()
+    setLoading(true)
     signInWithEmailAndPassword(auth,email,password)
     .then(()=>{
-      console.log("login success")
+      setLoading(false)
       navigate("/")
     })
     .catch((e)=>{console.log("login fail",e)})
@@ -35,7 +38,7 @@ function Login() {
               <Form.Control required value={password} type="password" onChange={(e)=>setPassword(e.target.value)} />
             </Form.Group>
             <div style={{display:"flex",alignItems:"center"}}>
-              <Button type="submit">Login</Button>
+              <ButtonSubmit loading={loading}>Login</ButtonSubmit>
               <Link style={{"marginLeft":"10px"}} to="/signup">Sign Up</Link>
             </div>
           </Form>        

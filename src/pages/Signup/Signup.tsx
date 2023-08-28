@@ -67,7 +67,7 @@ function Signup() {
               <Form.Control value={confirmPassword} onChange={handleChangeConfirmPassword} required type="password" />
             </Form.Group>
             <div style={{display:"flex",alignItems:"center"}}>
-              <ButtonSubmit loading={loading} text="Sign Up"></ButtonSubmit>
+            <ButtonSubmit loading={loading}>Sign Up</ButtonSubmit>
               <Link style={{"marginLeft":"10px"}} to="/login">Login</Link>
             </div>
           </Form>        
