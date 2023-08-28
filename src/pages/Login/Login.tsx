@@ -28,11 +28,11 @@ function Login() {
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" placeholder="name@example.com" value={email} onChange={(e)=>setEmail(e.target.value)} />
+              <Form.Control required type="email" placeholder="name@example.com" value={email} onChange={(e)=>setEmail(e.target.value)} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Password</Form.Label>
-              <Form.Control value={password} type="password" onChange={(e)=>setPassword(e.target.value)} />
+              <Form.Control required value={password} type="password" onChange={(e)=>setPassword(e.target.value)} />
             </Form.Group>
             <div style={{display:"flex",alignItems:"center"}}>
               <Button type="submit">Login</Button>
