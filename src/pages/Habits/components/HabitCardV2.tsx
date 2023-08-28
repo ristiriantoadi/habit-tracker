@@ -2,14 +2,7 @@ import { faEdit, faRefresh, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Card } from 'react-bootstrap'
 import style from "./HabitCardV2.module.css"
-
-interface Habit{
-    name:String
-    type:String
-    goal:Number
-    streak:Number
-    estimationDate:String
-}
+import { Habit } from './model'
 
 interface Props{
     habit:Habit

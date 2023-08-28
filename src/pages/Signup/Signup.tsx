@@ -62,7 +62,7 @@ function Signup() {
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <div style={{display:"flex",justifyContent:"space-between"}}>
-                <Form.Label>Confirm Password</Form.Label>{errorConfirmPassword && <span style={{marginLeft:"5px",color:"#FF0000",fontWeight:"600",fontSize:"14px",padding:"5px 5px"}}>*Password doesn't match</span>}
+                <Form.Label>Confirm Password</Form.Label>{errorConfirmPassword && <span style={{color:"#FF0000",fontWeight:"600",fontSize:"14px",padding:"5px 5px"}}>*Password doesn't match</span>}
               </div>
               <Form.Control value={confirmPassword} onChange={handleChangeConfirmPassword} required type="password" />
             </Form.Group>
