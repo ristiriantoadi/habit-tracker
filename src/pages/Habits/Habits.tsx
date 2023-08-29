@@ -20,7 +20,7 @@ function Habits() {
   const pageSize=1
 
   useEffect(()=>{
-    setHabitsPage(getSubsetData(parseInt(currentPage),pageSize,habits))
+    setHabitsPage(getSubsetData(parseInt(currentPage),habits))
   })
   
   return (
@@ -30,7 +30,7 @@ function Habits() {
         <div style={{margin:"30px 0"}}>
           {habitsPage.map(item=><HabitCardV2 habit={item}></HabitCardV2>)}
         </div>
-        <PaginationComponent size={pageSize} length={habits.length}></PaginationComponent>
+        <PaginationComponent length={habits.length}></PaginationComponent>
     </Container>
   )
 }
