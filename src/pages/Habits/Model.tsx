@@ -1,7 +1,7 @@
 export interface Habit{
     name:String
-    type:String
+    habitType:String
     goal:Number
-    streak:Number
-    estimationDate:String
+    streak?:Number
+    estimationDate?:String
 }

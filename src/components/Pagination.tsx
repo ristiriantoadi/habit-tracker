@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 const DEFAULT_PAGE_SIZE = 1
 
 interface Props{
+    currentPage:string,
     length:number
     pageSize?:number
 
@@ -14,7 +15,7 @@ export const getSubsetData = (currentPage:number,data:any[],pageSize:number=DEFA
   return data.slice(offset,offset+pageSize)
 }
 
-function PaginationComponent({length,pageSize=DEFAULT_PAGE_SIZE}:Props) {
+function PaginationComponent({currentPage,length,pageSize=DEFAULT_PAGE_SIZE}:Props) {
 
     const [searchParams] = useSearchParams();
     const navigate = useNavigate()
@@ -23,7 +24,7 @@ function PaginationComponent({length,pageSize=DEFAULT_PAGE_SIZE}:Props) {
       for (let number = 1; number <= Math.ceil(length/pageSize); number++) {      
         items.push(<Pagination.Item onClick={()=>{
           navigate(`?page=${number}`)}
-        } key={number} active={number.toString() === (searchParams.get('page') || "1")}>
+        } key={number} active={number.toString() === currentPage}>
             {number}
         </Pagination.Item>)
       }

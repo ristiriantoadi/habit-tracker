@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Form } from "react-bootstrap";
 import ButtonSubmit from "../../components/ButtonSubmit";
 import { db } from "../../FirebaseConfig";
-import { Habit } from "../../models/Habit";
+import { HabitInput } from "../../models/Habit";
 import { getFutureDateFromToday } from "../../util/util_date";
 
 interface Props{
@@ -20,7 +20,7 @@ function CreateEdit({title}:Props) {
     
     const handleSubmit = async (e:any)=>{
         e.preventDefault()
-        const data:Habit = {
+        const data:HabitInput = {
             "name":name,"goal":goal,"habitType":habitType,doneHistories:[],resetHistories:[],createTime:serverTimestamp()
         }
         setLoading(true)
