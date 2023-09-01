@@ -10,7 +10,7 @@ interface Props{
 function ButtonSubmit({loading,children}:Props) {
   return (
     <div>
-        {loading === false? <Button type="submit">{children}</Button>:<Button type="submit"><div className="loader"></div></Button>}
+        <Button type="submit">{loading == false? children:<div className="loader"></div>}</Button>
     </div>
   )
 }
