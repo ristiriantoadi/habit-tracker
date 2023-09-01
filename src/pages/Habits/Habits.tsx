@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Container } from "react-bootstrap";
 import { useSearchParams } from "react-router-dom";
 import PaginationComponent, { getSubsetData } from "../../components/Pagination";
 import HabitCardV2 from "./components/HabitCardV2";
@@ -24,14 +23,14 @@ function Habits() {
   })
   
   return (
-    <Container style={{maxWidth:"90%",paddingTop:"20px"}}>
+    <div>
         <h1>Habits</h1>
         <HeadingBar></HeadingBar>
         <div style={{margin:"30px 0"}}>
           {habitsPage.map(item=><HabitCardV2 habit={item}></HabitCardV2>)}
         </div>
         <PaginationComponent length={habits.length}></PaginationComponent>
-    </Container>
+    </div>
   )
 }
 

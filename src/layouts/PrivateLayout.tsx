@@ -1,4 +1,5 @@
 import { useContext } from "react"
+import { Container } from "react-bootstrap"
 import { Navigate, Outlet } from "react-router-dom"
 import NavbarPrivate from "../components/NavbarPrivate"
 import { AuthContext } from "../contexts/AuthContext"
@@ -8,7 +9,9 @@ function PrivateLayout() {
   return (
     <div>
         <NavbarPrivate></NavbarPrivate>
-        {currentUser ? <Outlet/> : <Navigate to="/login"></Navigate>}
+        <Container style={{maxWidth:"90%",paddingTop:"20px"}}>
+          {currentUser ? <Outlet/> : <Navigate to="/login"></Navigate>}
+        </Container>
 
     </div>
   )
