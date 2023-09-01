@@ -1,7 +1,7 @@
 import { Pagination } from "react-bootstrap";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const DEFAULT_PAGE_SIZE = 1
+const DEFAULT_PAGE_SIZE = 10
 
 interface Props{
     currentPage:string,
@@ -17,7 +17,6 @@ export const getSubsetData = (currentPage:number,data:any[],pageSize:number=DEFA
 
 function PaginationComponent({currentPage,length,pageSize=DEFAULT_PAGE_SIZE}:Props) {
 
-    const [searchParams] = useSearchParams();
     const navigate = useNavigate()
     const getNumberItems = ()=>{
       const items=[]
