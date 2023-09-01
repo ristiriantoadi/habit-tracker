@@ -7,7 +7,6 @@ import { db } from "../../FirebaseConfig";
 import { HabitReceived } from "../../models/Habit";
 import HabitCardV2 from "./components/HabitCardV2";
 import HeadingBar from "./components/HeadingBar";
-import { Habit } from "./Model";
 // import { HabitInput } from "./Model";
 
 const habits = [
@@ -20,9 +19,9 @@ function Habits() {
 
   const [searchParams] = useSearchParams();
   const currentPage = searchParams.get('page') || "1"
-  const [habitsPage,setHabitsPage] = useState<Habit[]>([])
+  const [habitsPage,setHabitsPage] = useState<HabitReceived[]>([])
   const [loading,setLoading] = useState(false)
-  const [habits,setHabits] = useState<Habit[]>([])
+  const [habits,setHabits] = useState<HabitReceived[]>([])
   const pageSize=1
 
   const getHabits = async ()=>{
