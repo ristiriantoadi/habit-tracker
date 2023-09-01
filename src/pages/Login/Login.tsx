@@ -5,6 +5,20 @@ import { Link, useNavigate } from "react-router-dom"
 import ButtonSubmit from "../../components/ButtonSubmit"
 import { auth } from "../../FirebaseConfig"
 
+export const handleSubmit = async():Promise<any>=>{
+  // signInWithEmailAndPassword(auth,"test","something")
+  // .then((userCredential)=>{
+  //   return userCredential
+  // })
+  // .catch((e)=>{console.log("login fail",e)})
+  try{
+    const credential = await signInWithEmailAndPassword(auth,"test","something")
+    return credential
+  }catch(e:any){
+   return e.code
+  }
+}
+
 function Login() {
 
   const [email,setEmail] = useState("")
@@ -16,11 +30,15 @@ function Login() {
     e.preventDefault()
     setLoading(true)
     signInWithEmailAndPassword(auth,email,password)
-    .then(()=>{
+    .then((userCredential)=>{
+      console.log("userCredential",userCredential)
       setLoading(false)
       navigate("/")
     })
-    .catch((e)=>{console.log("login fail",e)})
+    .catch((e)=>{
+
+      console.log(e.code)
+    })
   }
 
   return (

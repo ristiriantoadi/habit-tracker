@@ -1,5 +1,6 @@
 import { User } from "firebase/auth"
 import React, { ReactNode, useEffect, useState } from "react"
+import CircularLoaderBig from "../components/CircularLoaderBig"
 import { auth } from "../FirebaseConfig"
 
 interface AuthContextType{
@@ -27,7 +28,7 @@ export const AuthProvider = ({ children }:Props) =>{
 
     return (
         <div>
-            {loading === true && <div>Loading...</div>}
+            {loading === true && <CircularLoaderBig></CircularLoaderBig>}
             <AuthContext.Provider value={{currentUser}}>
                 {!loading && children}
             </AuthContext.Provider>
