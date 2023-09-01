@@ -1,7 +1,10 @@
-import { useState } from "react"
-import { Form } from "react-bootstrap"
-import ButtonSubmit from "../../components/ButtonSubmit"
-import { getFutureDateFromToday } from "../../util/util_date"
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { useState } from "react";
+import { Form } from "react-bootstrap";
+import ButtonSubmit from "../../components/ButtonSubmit";
+import { db } from "../../FirebaseConfig";
+import { Habit } from "../../models/Habit";
+import { getFutureDateFromToday } from "../../util/util_date";
 
 interface Props{
     title:string
@@ -13,9 +16,16 @@ function CreateEdit({title}:Props) {
     const [loading,setLoading] = useState(false)
     const [name,setName] = useState("")
     const [goal,setGoal] = useState(1)
+    const [habitType,setHabitType] = useState("positive")
     
-    const handleSubmit = (e:any)=>{
+    const handleSubmit = async (e:any)=>{
         e.preventDefault()
+        const data:Habit = {
+            "name":name,"goal":goal,"habitType":habitType,doneHistories:[],resetHistories:[],createTime:serverTimestamp()
+        }
+        setLoading(true)
+        await addDoc(collection(db,"habits"),data)
+        setLoading(false)
     }
 
     const getEstimationDate = ()=>{
@@ -46,12 +56,23 @@ function CreateEdit({title}:Props) {
                 <Form.Label>Habit Type</Form.Label>
                 <div style={{marginLeft:"20px"}}>
                     <Form.Check
+                        checked={habitType === "positive"}
                         type="radio"
                         label="Positive"
+                        name="habit-type"
+                        value="positive"
+                        onChange={(e)=>{
+                            setHabitType(e.target.value)}
+                            
+                        }
                     />
                     <Form.Check
+                        checked={habitType === "negative"}
                         type="radio"
+                        name="habit-type"
                         label="Negative"
+                        value="negative"
+                        onChange={(e)=>setHabitType(e.target.value)}
                     />
                 </div>
             </Form.Group>
@@ -61,4 +82,4 @@ function CreateEdit({title}:Props) {
   )
 }
 
-export default CreateEdit
+export default CreateEdit;
