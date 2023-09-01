@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Form } from "react-bootstrap"
 import ButtonSubmit from "../../components/ButtonSubmit"
+import { getFutureDateFromToday } from "../../util/util_date"
 
 interface Props{
     title:string
@@ -16,6 +17,11 @@ function CreateEdit({title}:Props) {
     const handleSubmit = (e:any)=>{
         e.preventDefault()
     }
+
+    const getEstimationDate = ()=>{
+        const futureDate = getFutureDateFromToday(goal)
+        return futureDate.toDateString()
+    }
     
 
   return (
@@ -29,10 +35,10 @@ function CreateEdit({title}:Props) {
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                 <Form.Label>Goal</Form.Label>
                 <div style={{display:"flex",alignItems:"center"}}>
-                    <Form.Control style={{width:"30%"}} required type="number" value={goal} onChange={(e)=>setGoal(parseInt(e.target.value))} />
+                    <Form.Control data-testid="goal-input" style={{width:"30%"}} required type="number" min={1} value={goal} onChange={(e)=>setGoal(parseInt(e.target.value))} />
                     <div style={{marginLeft:"20px"}}>
                     <span style={{display:"block"}}>Estimated end date:</span>
-                    <span>October 10th 2023</span>
+                    <span data-testid="estimation-date">{getEstimationDate()}</span>
                     </div>
                 </div>
             </Form.Group>
@@ -49,7 +55,7 @@ function CreateEdit({title}:Props) {
                     />
                 </div>
             </Form.Group>
-              <ButtonSubmit loading={loading}>Create</ButtonSubmit>
+              <ButtonSubmit loading={loading}>Submit</ButtonSubmit>
           </Form>
     </div>
   )
