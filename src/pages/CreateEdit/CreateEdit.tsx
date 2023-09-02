@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Form } from "react-bootstrap";
 import ButtonSubmit from "../../components/ButtonSubmit";
 import { db } from "../../FirebaseConfig";
-import { HabitInput } from "../../models/Habit";
+import { HabitInput } from "../../models/HabitModel";
 import { getFutureDateFromToday } from "../../util/util_date";
 
 interface Props{

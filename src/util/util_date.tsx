@@ -23,3 +23,7 @@ export const subtractDate = (date:Date,days:number)=>{
 export const addDate = (date:Date,days:number)=>{
     return new Date(date.getTime()+(ONE_DAY_IN_MILLISECONDS)*(days))
 }
+
+export const convertDateObjectToYearMonthDate = (date:Date)=>{
+    return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
+}

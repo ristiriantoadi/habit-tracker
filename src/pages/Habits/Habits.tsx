@@ -1,33 +1,28 @@
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, Timestamp } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import CircularLoaderBig from "../../components/CircularLoaderBig";
 import PaginationComponent, { getSubsetData } from "../../components/Pagination";
 import { db } from "../../FirebaseConfig";
-import { HabitReceived } from "../../models/Habit";
+import { HabitDB, HabitProp } from "../../models/HabitModel";
+import { convertDateObjectToYearMonthDate } from "../../util/util_date";
 import HabitCardV2 from "./components/HabitCardV2";
 import HeadingBar from "./components/HeadingBar";
-// import { HabitInput } from "./Model";
-
-const habits = [
-  {"name":"Jalan Pagi","type":"positive","goal":20,"streak":10,"estimationDate":"10 Oktober 2023"},
-  {"name":"Berhenti Merokok","type":"negative","goal":40,"streak":15,"estimationDate":"10 November 2023"},
-  {"name":"Minum jamu tiap pagi buta enam jam sekali berjam-jam lamanya hingga siang sudah datang menjelang dan kita bingung hari pergi ke mana","type":"negative","goal":40,"streak":15,"estimationDate":"10 November 2023"}
-]
 
 function Habits() {
 
   const [searchParams] = useSearchParams();
   const currentPage = searchParams.get('page') || "1"
-  const [habitsPage,setHabitsPage] = useState<HabitReceived[]>([])
+  const [habitsPage,setHabitsPage] = useState<HabitDB[]>([])
   const [loading,setLoading] = useState(false)
-  const [habits,setHabits] = useState<HabitReceived[]>([])
+  const [habits,setHabits] = useState<HabitDB[]>([])
   const pageSize=1
+
 
   const getHabits = async ()=>{
     setLoading(true)
     const data = await getDocs(collection(db,"habits"))
-    const habits = data.docs.map(doc => ({ ...doc.data(), id: doc.id } as HabitReceived))
+    const habits = data.docs.map(doc => ({ ...doc.data(), id: doc.id } as HabitDB))
     setHabits(habits)
     setLoading(false)
     setHabitsPage(getSubsetData(parseInt(currentPage),habits))
@@ -40,6 +35,19 @@ function Habits() {
   useEffect(()=>{
     setHabitsPage(getSubsetData(parseInt(currentPage),habits))
   },[currentPage])
+
+  const convertHabitDBToProp = (item:HabitDB)=>{
+    const convertedItem:HabitProp = {
+        id:item.id,
+        createTime:new Date(convertDateObjectToYearMonthDate((item.createTime as Timestamp).toDate())),
+        name:item.name,
+        goal:item.goal,
+        habitType:item.habitType,
+        doneHistories:item.doneHistories,
+        resetHistories:item.resetHistories
+    }
+    return convertedItem
+  }
   
   return (
     <div>
@@ -47,7 +55,7 @@ function Habits() {
         <HeadingBar></HeadingBar>
         <div style={{margin:"30px 0"}}>
           {loading === true && <CircularLoaderBig/>}
-          {habitsPage.map(item=><HabitCardV2 habit={item}></HabitCardV2>)}
+          {habitsPage.map(item=><HabitCardV2 key={item.id} habitProp={convertHabitDBToProp(item)}></HabitCardV2>)}
         </div>
         <PaginationComponent currentPage={currentPage} length={habits.length}></PaginationComponent>
     </div>
