@@ -9,6 +9,13 @@ import { convertDateObjectToYearMonthDate } from "../../util/util_date";
 import HabitCard from "./components/HabitCard";
 import HeadingBar from "./components/HeadingBar";
 
+export const filterText = (habits:HabitDB[],text:string)=>{
+  const regex = new RegExp(text, "i")
+  const habitsFiltered = habits.filter((habit) => regex.test(habit.name));
+  return habitsFiltered
+
+}
+
 function Habits() {
 
   const [searchParams] = useSearchParams();
@@ -17,7 +24,6 @@ function Habits() {
   const [loading,setLoading] = useState(false)
   const [habits,setHabits] = useState<HabitDB[]>([])
   const [habitsFiltered,setHabitsFiltered] = useState<HabitDB[]>([])
-
 
   const getHabits = async ()=>{
     setLoading(true)
@@ -76,8 +82,9 @@ function Habits() {
   }
 
   const filterData = (text:string)=>{
-    const regex = new RegExp(text, "i")
-    const habitsFiltered = habits.filter((habit) => regex.test(habit.name));
+    // const regex = new RegExp(text, "i")
+    // const habitsFiltered = habits.filter((habit) => regex.test(habit.name));
+    const habitsFiltered=filterText(habits,text)
     setHabitsFiltered(habitsFiltered)
   }
   
