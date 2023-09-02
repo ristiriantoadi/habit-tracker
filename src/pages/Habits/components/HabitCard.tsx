@@ -98,7 +98,7 @@ function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
         if (getDaysBetweenTwoDates(habitProp.doneHistories[habitProp.doneHistories.length-1],currentDate) === 0){
             setChecked(true)
         }
-    },[])
+    })
 
     const getButtonReset = ()=>{
         if (habitDisplay.streak < habitDisplay.goal){

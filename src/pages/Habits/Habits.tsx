@@ -77,16 +77,12 @@ function Habits() {
       habitCopies[index].isDone=true
       await updateDoc(ref,{"doneHistories":habitCopies[index].doneHistories,"isDone":true})
     }else{
-      console.log("push done histories")
-      console.log("done histories",habitCopies[index].doneHistories)
       await updateDoc(ref,{"doneHistories":habitCopies[index].doneHistories})
     }
     setHabits(habitCopies)
   }
 
   const filterData = (text:string)=>{
-    // const regex = new RegExp(text, "i")
-    // const habitsFiltered = habits.filter((habit) => regex.test(habit.name));
     const habitsFiltered=filterText(habits,text)
     setHabitsFiltered(habitsFiltered)
   }
