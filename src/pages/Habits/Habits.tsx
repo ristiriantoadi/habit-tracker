@@ -59,8 +59,9 @@ function Habits() {
     return convertedItem
   }
 
-  const resetStreak = async (index:number)=>{
+  const resetStreak = async (id:string)=>{
     let habitCopies = [...habits]
+    let index = habitCopies.findIndex((e)=>e.id === id)
     habitCopies[index].resetHistories.push(Timestamp.fromDate(new Date()))
     const ref = doc(db, "habits", habitCopies[index].id);
     await updateDoc(ref,{"resetHistories":habitCopies[index].resetHistories})

@@ -80,7 +80,7 @@ function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
     const handleReset = async ()=>{
         if (habitDisplay.streak == 0) return
         setLoading(true)
-        await resetStreak(index)
+        await resetStreak(habitProp.id)
         setLoading(false)
     }
     const handleDone = async ()=>{
