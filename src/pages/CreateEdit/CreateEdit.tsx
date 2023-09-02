@@ -1,6 +1,7 @@
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useState } from "react";
 import { Form } from "react-bootstrap";
+import { useNavigate } from "react-router";
 import ButtonSubmit from "../../components/ButtonSubmit";
 import { db } from "../../FirebaseConfig";
 import { HabitInput } from "../../models/HabitModel";
@@ -17,7 +18,8 @@ function CreateEdit({title}:Props) {
     const [name,setName] = useState("")
     const [goal,setGoal] = useState(1)
     const [habitType,setHabitType] = useState("positive")
-    
+    const navigate = useNavigate()
+
     const handleSubmit = async (e:any)=>{
         e.preventDefault()
         const data:HabitInput = {
@@ -26,6 +28,7 @@ function CreateEdit({title}:Props) {
         setLoading(true)
         await addDoc(collection(db,"habits"),data)
         setLoading(false)
+        navigate("/habits")
     }
 
     const getEstimationDate = ()=>{
