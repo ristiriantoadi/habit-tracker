@@ -137,9 +137,10 @@ describe("HabitCard",()=>{
             render(<HabitCard resetStreak={jest.fn()} index={1} currentDate={new Date("2023-09-02")} habitProp={habitProp}/>)
             const streak = screen.getByTestId("streak")
             expect(streak.innerHTML).toEqual("4")
-            const resetButton = screen.queryByTestId("button-reset")
-            expect(resetButton).not.toBeInTheDocument()
-            screen.getByTestId("check-icon")
+            const resetButton = screen.queryAllByTestId("button-reset")
+            // expect(resetButton).not.toBeInTheDocument()
+            expect(resetButton.length).toEqual(0)
+            screen.getAllByTestId("check-icon")
             
         })
     })

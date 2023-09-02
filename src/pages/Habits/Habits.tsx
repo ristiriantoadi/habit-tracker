@@ -1,4 +1,4 @@
-import { collection, doc, FieldValue, getDocs, Timestamp, updateDoc } from "firebase/firestore";
+import { collection, doc, getDocs, Timestamp, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import CircularLoaderBig from "../../components/CircularLoaderBig";
@@ -35,10 +35,6 @@ function Habits() {
     setHabitsPage(getSubsetData(parseInt(currentPage),habits))
   },[currentPage])
 
-  const convertTimestampToDates = (histories:FieldValue[])=>{histories.map(h=>{
-      new Date(convertDateObjectToYearMonthDate((h as Timestamp).toDate()))
-    })
-  }
 
   const convertHabitDBToProp = (item:HabitDB)=>{
     const convertedItem:HabitProp = {
@@ -47,7 +43,7 @@ function Habits() {
         name:item.name,
         goal:item.goal,
         habitType:item.habitType,
-        doneHistories:item.doneHistories,
+        doneHistories:item.doneHistories.map(h=>new Date(convertDateObjectToYearMonthDate((h as Timestamp).toDate()))),
         resetHistories:item.resetHistories.map(h=>new Date(convertDateObjectToYearMonthDate((h as Timestamp).toDate())))
     }
     return convertedItem

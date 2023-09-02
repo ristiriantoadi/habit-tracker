@@ -91,10 +91,8 @@ function HabitCard({habitProp,currentDate,resetStreak,index}:Props) {
                     {habitDisplay.habitType === "positive" ?
                         <input style={{width:"30px",height:"30px",marginRight:"10px"}} 
                             className={`form-check-input`} type="checkbox"/>:
-                        <button data-itemid="reset-streak" onClick={handleReset} style={{color:"#D50000",border:"none",
-                            backgroundColor: "inherit"}}><FontAwesomeIcon style={{width:"30px",height:"30px"}}  
-                            icon={faRefresh}/>
-                        </button>}
+                        getButtonReset()
+                    }
                     <div style={{width:"70%"}}>
                         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",height:"30px"}}>
                             <span style={{marginRight:"15px",width:"300px",whiteSpace: "nowrap",overflow: "hidden",textOverflow: "ellipsis"}}>{habitDisplay.name}</span>

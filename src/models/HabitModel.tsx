@@ -1,4 +1,4 @@
-import { FieldValue } from "firebase/firestore"
+import { FieldValue, Timestamp } from "firebase/firestore"
 
 //model used in UI
 export interface HabitDisplay{
@@ -35,10 +35,10 @@ export interface HabitInput{
 // Model received from db
 export interface HabitDB{
     id:string
-    createTime:FieldValue
+    createTime:Timestamp
     name:string
     goal:number
     habitType:string
-    doneHistories:Date[]
-    resetHistories:FieldValue[]
+    doneHistories:Timestamp[]
+    resetHistories:Timestamp[]
 }
