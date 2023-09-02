@@ -2,18 +2,19 @@ import { faEdit, faRefresh, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Card } from 'react-bootstrap'
 import { HabitReceived } from '../../../models/Habit'
+import { areDatesConsecutive, getDaysBetweenTwoDates } from '../../../util/util_date'
 import style from "./HabitCardV2.module.css"
 
 interface Props{
     habit:HabitReceived
 }
 
-const getDaysBetweenTwoDates = (date1:Date,date2:Date)=>{
-    return (date1.getTime()-date2.getTime())/(1000 * 60 * 60 * 24)
-}
 
-const areDatesConsecutive = (date1:Date,date2:Date)=>{
-    return (Math.abs((getDaysBetweenTwoDates(date1,date2))) === 1)
+export const getCurrentStreakNegativeHabit = (resetHistories:Date[],startDate:Date,currentDate:Date)=>{
+    if (resetHistories.length == 0) return Math.abs(getDaysBetweenTwoDates(startDate,currentDate))
+
+    const lastReset = resetHistories[resetHistories.length-1]
+    return Math.abs(getDaysBetweenTwoDates(lastReset,currentDate))
 }
 
 export const getCurrentStreakPositiveHabit = (doneHistories:Date[],currentDate:Date)=>{

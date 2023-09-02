@@ -1,8 +1,8 @@
-import { getCurrentStreakPositiveHabit } from "./HabitCardV2"
+import { addDate } from "../../../util/util_date"
+import { getCurrentStreakNegativeHabit, getCurrentStreakPositiveHabit } from "./HabitCardV2"
 
 const generateConsecutiveDatesReversed = (startDate:Date,n:number)=>{
     let consecutiveDates:Date[]=[]
-    // console.log("startdate",startDate)
     for (let i = 0;i<n;i++){
         let currentDate=new Date(startDate)
         currentDate.setDate(startDate.getDate() - i)
@@ -75,12 +75,53 @@ describe("HabitCard",()=>{
             const consecutiveDatesTwo = generateConsecutiveDatesReversed(startDateTwo,m)
             
             const dates = [...consecutiveDatesTwo,...consecutiveDatesOne]
-            console.log("dates",dates)
             const result = getCurrentStreakPositiveHabit(dates,startDateOne)
             expect(result).toEqual(n)
             
+        }),
+    describe("getCurrentStreakNegativeHabit",()=>{
+        test("if resetHistories are empty, return the difference between startDate and currentDate-1 (inclusive)",()=>{
+            const startDate = new Date("2023-08-24")
+            const currentDate = new Date("2023-08-27")
+            const res = getCurrentStreakNegativeHabit([],startDate,currentDate)
+            expect(res).toEqual(3)
         })
-        // test("2 consecutive days ")
+        test("if resetHistories are empty, and startDate is the previous day",()=>{
+            const startDate = new Date("2023-08-24")
+            const currentDate = new Date("2023-08-25")
+            const res = getCurrentStreakNegativeHabit([],startDate,currentDate)
+            expect(res).toEqual(1)
+        }),
+        test("if resetHistories are empty, and startDate is today",()=>{
+            const startDate = new Date("2023-08-24")
+            const currentDate = new Date("2023-08-24")
+            const res = getCurrentStreakNegativeHabit([],startDate,currentDate)
+            expect(res).toEqual(0)
+        })
+        test("if resetHistories are not empty, and last reset value is today",()=>{
+            const resetHistories = [new Date("2023-08-01"),new Date("2023-08-10"),new Date("2023-08-20")]
+            const currentDate = new Date("2023-08-20")
+            const startDate = new Date("2023-07-23")
+            const res = getCurrentStreakNegativeHabit(resetHistories,startDate,currentDate)
+            expect(res).toEqual(0)
+        }),
+        test("if resetHistories are not empty, and last reset value is yesterday",()=>{
+            const resetHistories = [new Date("2023-08-01"),new Date("2023-08-10"),new Date("2023-08-20")]
+            const currentDate = new Date("2023-08-21")
+            const startDate = new Date("2023-07-23")
+            const res = getCurrentStreakNegativeHabit(resetHistories,startDate,currentDate)
+            expect(res).toEqual(1)
+        }),
+        test("if resetHistories are not empty, and last reset value is n days ago, return n",()=>{
+            const resetHistories = [new Date("2023-08-01"),new Date("2023-08-10"),new Date("2023-08-20")]
+            const n = 2
+            const currentDate = addDate(resetHistories[resetHistories.length-1],n)
+            const startDate = new Date("2023-07-23")
+            const res = getCurrentStreakNegativeHabit(resetHistories,startDate,currentDate)
+            expect(res).toEqual(n)
+        })
+    })
+    
     })
 })
 
