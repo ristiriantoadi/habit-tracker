@@ -135,13 +135,23 @@ describe("HabitCard",()=>{
                 resetHistories:[]
             }
             render(<HabitCard resetStreak={jest.fn()} index={1} currentDate={new Date("2023-09-02")} habitProp={habitProp}/>)
-            const streak = screen.getByTestId("streak")
-            expect(streak.innerHTML).toEqual("4")
-            const resetButton = screen.queryAllByTestId("button-reset")
-            // expect(resetButton).not.toBeInTheDocument()
-            expect(resetButton.length).toEqual(0)
+            expect(screen.getByTestId("streak").innerHTML).toEqual("4")
+            expect(screen.queryAllByTestId("button-reset").length).toEqual(0)
             screen.getAllByTestId("check-icon")
             
+        }),
+        test("if currentStreak > goal, streak = goal",()=>{
+            const habitProp:HabitProp = {
+                id:"weopoew",
+                createTime:new Date("2023-08-29"),
+                name:"Test Negative",
+                goal:4,
+                habitType:"negative",
+                doneHistories:[],
+                resetHistories:[]
+            }
+            render(<HabitCard resetStreak={jest.fn()} index={1} currentDate={new Date("2023-09-03")} habitProp={habitProp}/>)
+            expect(screen.getByTestId("streak").innerHTML).toEqual("4")                    
         })
     }),
     describe("Positive Habit",()=>{

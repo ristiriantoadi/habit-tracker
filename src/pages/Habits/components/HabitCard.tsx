@@ -39,7 +39,7 @@ export const getCurrentStreakPositiveHabit = (doneHistories:Date[],currentDate:D
 }
 
 export const convertHabitPropToHabitDisplay = (habit:HabitProp,currentDate:Date)=>{
-    const currentStreak = habit.habitType == "positive" ? 
+    let currentStreak = habit.habitType == "positive" ? 
         getCurrentStreakPositiveHabit(
             habit.doneHistories,
             new Date(convertDateObjectToYearMonthDate(currentDate))) : 
@@ -48,6 +48,10 @@ export const convertHabitPropToHabitDisplay = (habit:HabitProp,currentDate:Date)
             new Date(convertDateObjectToYearMonthDate(habit.createTime)),
             new Date(convertDateObjectToYearMonthDate(currentDate)))
     
+    if (currentStreak > habit.goal){
+        currentStreak = habit.goal
+    }
+
     const convertedHabit:HabitDisplay = {
         id:habit.id,
         name:habit.name,
