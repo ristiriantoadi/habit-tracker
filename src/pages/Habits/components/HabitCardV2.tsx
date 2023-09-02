@@ -2,13 +2,21 @@ import { faEdit, faRefresh, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Card } from 'react-bootstrap'
 import { HabitReceived } from '../../../models/Habit'
-import { areDatesConsecutive, getDaysBetweenTwoDates } from '../../../util/util_date'
+import { addDate, areDatesConsecutive, getDaysBetweenTwoDates } from '../../../util/util_date'
 import style from "./HabitCardV2.module.css"
 
 interface Props{
     habit:HabitReceived
 }
 
+interface Habit{
+    id:string
+    name:string
+    goal:number
+    habitType:string
+    estimatedDate:Date
+    streak:number
+}
 
 export const getCurrentStreakNegativeHabit = (resetHistories:Date[],startDate:Date,currentDate:Date)=>{
     if (resetHistories.length == 0) return Math.abs(getDaysBetweenTwoDates(startDate,currentDate))
@@ -35,9 +43,25 @@ export const getCurrentStreakPositiveHabit = (doneHistories:Date[],currentDate:D
 
 }
 
-function HabitCardV2({habit}:Props) {
+export const convertHabitReceivedToHabit = (habit:HabitReceived)=>{
+    // const streak = habit.habitType == "positive" ? getCurrentStreakPositiveHabit(habit.doneHistories,new Date())
+    const streak = getCurrentStreakPositiveHabit(habit.doneHistories,new Date())
+    const convertedHabit:Habit = {
+        id:habit.id,
+        name:habit.name,
+        goal:habit.goal,
+        habitType:habit.habitType,
+        streak:streak,
+        estimatedDate:addDate(new Date(),(habit.goal-streak))
+
+    }
+    return convertedHabit
+}
+
+function HabitCardV2({habit: habitReceived}:Props) {
+    const habit = convertHabitReceivedToHabit(habitReceived)
     return (
-        <div>
+        <div key={habit.id}>
             <Card className={`${style.small} ${style.card}`}>
                 <Card.Body style={{display:"flex",justifyContent:"space-evenly",alignItems:"center"}}>
                     {habit.habitType === "positive" ? <input style={{width:"30px",height:"30px",marginRight:"10px"}} className={`form-check-input`} type="checkbox"></input>:<button style={{color:"#D50000",border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon style={{width:"30px",height:"30px"}}  icon={faRefresh}/></button>}
@@ -57,7 +81,7 @@ function HabitCardV2({habit}:Props) {
                             </div>
                             <div style={{display:"flex",flexFlow:"column"}}>
                                 <label style={{fontWeight:"600"}}>Estimation Date</label>
-                                <span>{"-"}</span>
+                                <span>{habit.estimatedDate.toDateString()}</span>
                             </div>
                         </div>
                     </div>
@@ -82,7 +106,7 @@ function HabitCardV2({habit}:Props) {
                         </div>
                         <div style={{display:"flex", marginLeft:"20px",width:"150px",flexFlow:"column"}}>
                             <label style={{fontWeight:"600"}}>Estimation Date</label>
-                            <span>{"-"}</span>
+                            <span>{habit.estimatedDate.toDateString()}</span>
                         </div>
                         {habit.habitType === "positive"? <span className={style.positive} style={{marginLeft:"60px",width:"150px"}}>Positive Habit</span>:<span className={style.negative} style={{marginLeft:"60px",width:"150px"}}>Negative Habit</span>}
                     </div>
