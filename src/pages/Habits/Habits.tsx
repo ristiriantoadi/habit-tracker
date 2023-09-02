@@ -68,14 +68,17 @@ function Habits() {
     setHabits(habitCopies)
   }
 
-  const doHabit = async (index:number,currentStreak:number)=>{
+  const doHabit = async (id:string,currentStreak:number)=>{
     let habitCopies = [...habits]
+    let index = habitCopies.findIndex((e)=>e.id === id)
     habitCopies[index].doneHistories.push(Timestamp.fromDate(new Date()))
     const ref = doc(db, "habits", habitCopies[index].id)
     if (currentStreak+1 == habitCopies[index].goal){
       habitCopies[index].isDone=true
       await updateDoc(ref,{"doneHistories":habitCopies[index].doneHistories,"isDone":true})
     }else{
+      console.log("push done histories")
+      console.log("done histories",habitCopies[index].doneHistories)
       await updateDoc(ref,{"doneHistories":habitCopies[index].doneHistories})
     }
     setHabits(habitCopies)
@@ -94,7 +97,7 @@ function Habits() {
         <HeadingBar filterData={filterData}></HeadingBar>
         <div style={{margin:"30px 0"}}>
           {loading === true && <CircularLoaderBig/>}
-          {habitsPage.map((item,index)=><HabitCard doHabit={doHabit} index={index} resetStreak={resetStreak} currentDate={new Date()} key={item.id} habitProp={convertHabitDBToProp(item)}></HabitCard>)}
+          {habitsPage.map((item,index)=><HabitCard doHabit={doHabit} index={index} resetStreak={resetStreak} currentDate={new Date(convertDateObjectToYearMonthDate(new Date()))} key={item.id} habitProp={convertHabitDBToProp(item)}></HabitCard>)}
         </div>
         <PaginationComponent currentPage={currentPage} length={habitsFiltered.length}></PaginationComponent>
     </div>

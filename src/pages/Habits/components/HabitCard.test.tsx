@@ -134,7 +134,7 @@ describe("HabitCard",()=>{
                 doneHistories:[],
                 resetHistories:[]
             }
-            render(<HabitCard doHabit={jest.fn()} resetStreak={jest.fn()} index={1} currentDate={new Date("2023-09-02")} habitProp={habitProp}/>)
+            render(<HabitCard key={"1"} doHabit={jest.fn()} resetStreak={jest.fn()} index={1} currentDate={new Date("2023-09-02")} habitProp={habitProp}/>)
             expect(screen.getByTestId("streak").innerHTML).toEqual("4")
             expect(screen.queryAllByTestId("button-reset").length).toEqual(0)
             screen.getAllByTestId("check-icon")
@@ -150,7 +150,7 @@ describe("HabitCard",()=>{
                 doneHistories:[],
                 resetHistories:[]
             }
-            render(<HabitCard doHabit={jest.fn()} resetStreak={jest.fn()} index={1} currentDate={new Date("2023-09-03")} habitProp={habitProp}/>)
+            render(<HabitCard key={"1"} doHabit={jest.fn()} resetStreak={jest.fn()} index={1} currentDate={new Date("2023-09-03")} habitProp={habitProp}/>)
             expect(screen.getByTestId("streak").innerHTML).toEqual("4")                    
         })
     }),
@@ -165,7 +165,7 @@ describe("HabitCard",()=>{
                 doneHistories:[new Date("2023-09-01")],
                 resetHistories:[]
             }
-            render(<HabitCard doHabit={jest.fn()} resetStreak={jest.fn()} index={1} currentDate={new Date("2023-09-02")} habitProp={habitProp}/>)
+            render(<HabitCard key="1" doHabit={jest.fn()} resetStreak={jest.fn()} index={1} currentDate={new Date("2023-09-02")} habitProp={habitProp}/>)
             const streak = screen.getByTestId("streak")
             expect(streak.innerHTML).toEqual("1")
             const resetButton = screen.queryAllByTestId("checkbox")
