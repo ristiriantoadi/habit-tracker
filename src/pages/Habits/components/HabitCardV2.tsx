@@ -1,5 +1,6 @@
 import { faEdit, faRefresh, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Timestamp } from 'firebase/firestore'
 import { Card } from 'react-bootstrap'
 import { HabitReceived } from '../../../models/Habit'
 import { addDate, areDatesConsecutive, getDaysBetweenTwoDates } from '../../../util/util_date'
@@ -19,6 +20,8 @@ interface Habit{
 }
 
 export const getCurrentStreakNegativeHabit = (resetHistories:Date[],startDate:Date,currentDate:Date)=>{
+    console.log("startDate",startDate)
+    console.log("currentDate",currentDate)
     if (resetHistories.length == 0) return Math.abs(getDaysBetweenTwoDates(startDate,currentDate))
 
     const lastReset = resetHistories[resetHistories.length-1]
@@ -44,8 +47,9 @@ export const getCurrentStreakPositiveHabit = (doneHistories:Date[],currentDate:D
 }
 
 export const convertHabitReceivedToHabit = (habit:HabitReceived)=>{
-    // const streak = habit.habitType == "positive" ? getCurrentStreakPositiveHabit(habit.doneHistories,new Date())
-    const streak = getCurrentStreakPositiveHabit(habit.doneHistories,new Date())
+    const today = `${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}`
+    const startDate = `${(habit.createTime as Timestamp).toDate().getFullYear()}-${(habit.createTime as Timestamp).toDate().getMonth()}-${(habit.createTime as Timestamp).toDate().getDate()}`
+    const streak = habit.habitType == "positive" ? getCurrentStreakPositiveHabit(habit.doneHistories,new Date()) : getCurrentStreakNegativeHabit(habit.resetHistories,new Date(startDate),new Date(today))
     const convertedHabit:Habit = {
         id:habit.id,
         name:habit.name,
@@ -73,7 +77,7 @@ function HabitCardV2({habit: habitReceived}:Props) {
                         <div style={{display:"flex",justifyContent:"space-between",marginTop:"20px"}}>
                             <div style={{display:"flex",flexFlow:"column"}}>
                                 <label style={{fontWeight:"600"}}>Streak</label>
-                                <span>{"0"}</span>
+                                <span>{habit.streak.toString()}</span>
                             </div>
                             <div style={{display:"flex",flexFlow:"column"}}>
                                 <label style={{fontWeight:"600"}}>Goal</label>
@@ -98,7 +102,7 @@ function HabitCardV2({habit: habitReceived}:Props) {
                         <span style={{marginLeft:"20px",width:"150px",whiteSpace: "nowrap",overflow: "hidden",textOverflow: "ellipsis"}}>{habit.name}</span>
                         <div style={{display:"flex", marginLeft:"20px",width:"150px",flexFlow:"column"}}>
                             <label style={{fontWeight:"600"}}>Streak</label>
-                            <span>{"0"}</span>
+                            <span>{habit.streak.toString()}</span>
                         </div>
                         <div style={{display:"flex", marginLeft:"20px",width:"150px",flexFlow:"column"}}>
                             <label style={{fontWeight:"600"}}>Goal</label>

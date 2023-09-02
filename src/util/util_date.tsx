@@ -7,7 +7,9 @@ export const getFutureDateFromToday = (n:number)=>{
 }
 
 export const getDaysBetweenTwoDates = (date1:Date,date2:Date)=>{
-    return (date1.getTime()-date2.getTime())/(1000 * 60 * 60 * 24)
+    const diff = (date1.getTime()-date2.getTime())/(1000 * 60 * 60 * 24)
+    const diffInt = Math.floor(Math.abs((date1.getTime()-date2.getTime())/(1000 * 60 * 60 * 24)))
+    return diffInt
 }
 
 export const areDatesConsecutive = (date1:Date,date2:Date)=>{
