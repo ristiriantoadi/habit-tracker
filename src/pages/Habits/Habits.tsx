@@ -16,6 +16,7 @@ function Habits() {
   const [habitsPage,setHabitsPage] = useState<HabitDB[]>([])
   const [loading,setLoading] = useState(false)
   const [habits,setHabits] = useState<HabitDB[]>([])
+  const [habitsFiltered,setHabitsFiltered] = useState<HabitDB[]>([])
 
 
   const getHabits = async ()=>{
@@ -24,6 +25,7 @@ function Habits() {
     const habits = data.docs.map(doc => ({ ...doc.data(), id: doc.id } as HabitDB))
     console.log("habits",habits)
     setHabits(habits)
+    setHabitsFiltered(habits)
     setLoading(false)
     setHabitsPage(getSubsetData(parseInt(currentPage),habits))
   }
@@ -33,8 +35,8 @@ function Habits() {
   },[])
 
   useEffect(()=>{
-    setHabitsPage(getSubsetData(parseInt(currentPage),habits))
-  },[currentPage])
+    setHabitsPage(getSubsetData(parseInt(currentPage),habitsFiltered))
+  },[currentPage,habitsFiltered])
 
 
   const convertHabitDBToProp = (item:HabitDB)=>{
@@ -72,16 +74,22 @@ function Habits() {
     }
     setHabits(habitCopies)
   }
+
+  const filterData = (text:string)=>{
+    const regex = new RegExp(text, "i")
+    const habitsFiltered = habits.filter((habit) => regex.test(habit.name));
+    setHabitsFiltered(habitsFiltered)
+  }
   
   return (
     <div>
         <h1>Habits</h1>
-        <HeadingBar></HeadingBar>
+        <HeadingBar filterData={filterData}></HeadingBar>
         <div style={{margin:"30px 0"}}>
           {loading === true && <CircularLoaderBig/>}
           {habitsPage.map((item,index)=><HabitCard doHabit={doHabit} index={index} resetStreak={resetStreak} currentDate={new Date()} key={item.id} habitProp={convertHabitDBToProp(item)}></HabitCard>)}
         </div>
-        <PaginationComponent currentPage={currentPage} length={habits.length}></PaginationComponent>
+        <PaginationComponent currentPage={currentPage} length={habitsFiltered.length}></PaginationComponent>
     </div>
   )
 }

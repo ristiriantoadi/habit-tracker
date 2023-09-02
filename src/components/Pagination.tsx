@@ -1,7 +1,7 @@
 import { Pagination } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-const DEFAULT_PAGE_SIZE = 10
+const DEFAULT_PAGE_SIZE = 2
 
 interface Props{
     currentPage:string,
