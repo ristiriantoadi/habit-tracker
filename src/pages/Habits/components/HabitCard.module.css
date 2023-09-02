@@ -12,6 +12,17 @@
   color:#FFC400
 }
 
+.itemInfo{
+  display:flex;
+  margin-left:10px;
+  width:150px;
+  flex-flow:column
+}
+
+.itemInfoLabel{
+  font-weight: 600;
+}
+
 @media (min-width: 1312px) {
     .small{
       display: none;

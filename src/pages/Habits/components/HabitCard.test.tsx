@@ -1,5 +1,7 @@
+import { fireEvent, render, screen } from "@testing-library/react"
+import { HabitProp } from "../../../models/HabitModel"
 import { addDate } from "../../../util/util_date"
-import { getCurrentStreakNegativeHabit, getCurrentStreakPositiveHabit } from "./HabitCardV2"
+import HabitCard, { getCurrentStreakNegativeHabit, getCurrentStreakPositiveHabit } from "./HabitCard"
 
 const generateConsecutiveDatesReversed = (startDate:Date,n:number)=>{
     let consecutiveDates:Date[]=[]
@@ -119,6 +121,25 @@ describe("HabitCard",()=>{
             const startDate = new Date("2023-07-23")
             const res = getCurrentStreakNegativeHabit(resetHistories,startDate,currentDate)
             expect(res).toEqual(n)
+        })
+    }),
+    describe("Negative Habit Component",()=>{
+        test("if button reset is clicked, streak goes back to 0",()=>{
+            const habitProp:HabitProp = {
+                id:"weopoew",
+                createTime:new Date("2023-08-29"),
+                name:"Test Negative",
+                goal:100,
+                habitType:"negative",
+                doneHistories:[],
+                resetHistories:[]
+            }
+            render(<HabitCard currentDate={new Date("2023-09-02")} habitProp={habitProp}/>)
+            const streak = screen.getByTestId("streak")
+            expect(streak.innerHTML).toEqual("4")
+
+            fireEvent.click(screen.getByTestId("button-reset")) 
+            expect(streak.innerHTML).toEqual("0")
         })
     })
     

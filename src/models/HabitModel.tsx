@@ -7,6 +7,7 @@ export interface HabitDisplay{
     habitType:String
     goal:Number
     streak:Number
+    startDate:Date
     estimatedDate:Date
 }
 

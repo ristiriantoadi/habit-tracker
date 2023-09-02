@@ -6,7 +6,7 @@ import PaginationComponent, { getSubsetData } from "../../components/Pagination"
 import { db } from "../../FirebaseConfig";
 import { HabitDB, HabitProp } from "../../models/HabitModel";
 import { convertDateObjectToYearMonthDate } from "../../util/util_date";
-import HabitCardV2 from "./components/HabitCardV2";
+import HabitCard from "./components/HabitCard";
 import HeadingBar from "./components/HeadingBar";
 
 function Habits() {
@@ -55,7 +55,7 @@ function Habits() {
         <HeadingBar></HeadingBar>
         <div style={{margin:"30px 0"}}>
           {loading === true && <CircularLoaderBig/>}
-          {habitsPage.map(item=><HabitCardV2 key={item.id} habitProp={convertHabitDBToProp(item)}></HabitCardV2>)}
+          {habitsPage.map(item=><HabitCard currentDate={new Date()} key={item.id} habitProp={convertHabitDBToProp(item)}></HabitCard>)}
         </div>
         <PaginationComponent currentPage={currentPage} length={habits.length}></PaginationComponent>
     </div>
