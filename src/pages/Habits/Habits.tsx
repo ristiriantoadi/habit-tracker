@@ -57,6 +57,19 @@ function Habits() {
 
     setHabits(habitCopies)
   }
+
+  const doHabit = async (index:number,currentStreak:number)=>{
+    let habitCopies = [...habits]
+    habitCopies[index].doneHistories.push(Timestamp.fromDate(new Date()))
+    const ref = doc(db, "habits", habitCopies[index].id)
+    if (currentStreak+1 == habitCopies[index].goal){
+      habitCopies[index].isDone=true
+      await updateDoc(ref,{"doneHistories":habitCopies[index].doneHistories,"isDone":true})
+    }else{
+      await updateDoc(ref,{"doneHistories":habitCopies[index].doneHistories})
+    }
+    setHabits(habitCopies)
+  }
   
   return (
     <div>
@@ -64,7 +77,7 @@ function Habits() {
         <HeadingBar></HeadingBar>
         <div style={{margin:"30px 0"}}>
           {loading === true && <CircularLoaderBig/>}
-          {habitsPage.map((item,index)=><HabitCard index={index} resetStreak={resetStreak} currentDate={new Date()} key={item.id} habitProp={convertHabitDBToProp(item)}></HabitCard>)}
+          {habitsPage.map((item,index)=><HabitCard doHabit={doHabit} index={index} resetStreak={resetStreak} currentDate={new Date()} key={item.id} habitProp={convertHabitDBToProp(item)}></HabitCard>)}
         </div>
         <PaginationComponent currentPage={currentPage} length={habits.length}></PaginationComponent>
     </div>

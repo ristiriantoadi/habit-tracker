@@ -11,6 +11,7 @@ interface Props{
     currentDate:Date,
     resetStreak:Function
     index:number
+    doHabit:Function
 }
 
 export const getCurrentStreakNegativeHabit = (resetHistories:Date[],startDate:Date,currentDate:Date)=>{
@@ -65,13 +66,18 @@ export const convertHabitPropToHabitDisplay = (habit:HabitProp,currentDate:Date)
     return convertedHabit
 }
 
-function HabitCard({habitProp,currentDate,resetStreak,index}:Props) {
+function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
     const [loading,setLoading] = useState(false)
     const habitDisplay = convertHabitPropToHabitDisplay(habitProp,currentDate)
     const handleReset = async ()=>{
         if (habitDisplay.streak == 0) return
         setLoading(true)
         await resetStreak(index)
+        setLoading(false)
+    }
+    const handleDone = async ()=>{
+        setLoading(true)
+        await doHabit(index,habitDisplay.streak)
         setLoading(false)
     }
 
@@ -89,7 +95,7 @@ function HabitCard({habitProp,currentDate,resetStreak,index}:Props) {
     }
     const getCheckBox = ()=>{
         if (habitDisplay.streak < habitDisplay.goal){ 
-            return <input style={{width:"30px",height:"30px",marginRight:"10px"}} 
+            return <input onClick={handleDone} style={{width:"30px",height:"30px",marginRight:"10px"}} 
             className={`form-check-input`} type="checkbox" data-testid="checkbox"/>
         }else return checkIcon()
     }

@@ -30,6 +30,7 @@ export interface HabitInput{
     habitType:string
     doneHistories:Date[]
     resetHistories:Date[]
+    isDone?:boolean
 }
 
 // Model received from db
@@ -41,4 +42,5 @@ export interface HabitDB{
     habitType:string
     doneHistories:Timestamp[]
     resetHistories:Timestamp[]
+    isDone?:boolean
 }
