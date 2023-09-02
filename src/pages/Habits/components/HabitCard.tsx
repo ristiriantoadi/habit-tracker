@@ -1,6 +1,6 @@
 import { faCheck, faEdit, faRefresh, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Card } from 'react-bootstrap'
 import { HabitDisplay, HabitProp } from '../../../models/HabitModel'
 import { addDate, areDatesConsecutive, convertDateObjectToYearMonthDate, getDaysBetweenTwoDates } from '../../../util/util_date'
@@ -75,7 +75,6 @@ export const convertHabitPropToHabitDisplay = (habit:HabitProp,currentDate:Date)
 
 function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
     const [loading,setLoading] = useState(false)
-    const [checked,setChecked] = useState(false)
     const habitDisplay = convertHabitPropToHabitDisplay(habitProp,currentDate)
     const handleReset = async ()=>{
         if (habitDisplay.streak == 0) return
@@ -93,12 +92,6 @@ function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
     const checkIcon = ()=>{
         return <FontAwesomeIcon data-testid="check-icon" style={{"width":"30px",height:"30px",color:"green"}} icon={faCheck}></FontAwesomeIcon>
     }
-    useEffect(()=>{
-        if (habitProp.doneHistories.length == 0) return
-        if (getDaysBetweenTwoDates(habitProp.doneHistories[habitProp.doneHistories.length-1],currentDate) === 0){
-            setChecked(true)
-        }
-    })
 
     const getButtonReset = ()=>{
         if (habitDisplay.streak < habitDisplay.goal){
@@ -111,6 +104,13 @@ function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
     const getCheckBox = ()=>{
         if (habitDisplay.isDone){
             return checkIcon()
+        }
+
+        let checked=false
+        if (habitProp.doneHistories.length > 0){
+            if (getDaysBetweenTwoDates(habitProp.doneHistories[habitProp.doneHistories.length-1],currentDate) === 0){
+                checked=true
+            }
         }
         
         if (habitDisplay.streak < habitDisplay.goal){ 
