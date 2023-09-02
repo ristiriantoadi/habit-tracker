@@ -6,11 +6,6 @@ import ButtonSubmit from "../../components/ButtonSubmit"
 import { auth } from "../../FirebaseConfig"
 
 export const handleSubmit = async():Promise<any>=>{
-  // signInWithEmailAndPassword(auth,"test","something")
-  // .then((userCredential)=>{
-  //   return userCredential
-  // })
-  // .catch((e)=>{console.log("login fail",e)})
   try{
     const credential = await signInWithEmailAndPassword(auth,"test","something")
     return credential

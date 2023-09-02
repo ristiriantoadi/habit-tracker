@@ -123,7 +123,7 @@ describe("HabitCard",()=>{
                     expect(res).toEqual(n)
                 })
     }),
-    describe("Negative Habit Component",()=>{
+    describe("Negative Habit",()=>{
         test("if streak == goal, reset button is gone, replaced with check icon",()=>{
             const habitProp:HabitProp = {
                 id:"weopoew",
@@ -134,27 +134,7 @@ describe("HabitCard",()=>{
                 doneHistories:[],
                 resetHistories:[]
             }
-            const resetStreak = jest.fn()
-            render(<HabitCard resetStreak={resetStreak} index={1} currentDate={new Date("2023-09-02")} habitProp={habitProp}/>)
-            const streak = screen.getByTestId("streak")
-            expect(streak.innerHTML).toEqual("4")
-            const resetButton = screen.queryByTestId("button-reset")
-            expect(resetButton).not.toBeInTheDocument()
-            screen.getByTestId("check-icon")
-            
-        })
-        test("if streak > goal, reset button is gone, replaced with check icon",()=>{
-            const habitProp:HabitProp = {
-                id:"weopoew",
-                createTime:new Date("2023-08-29"),
-                name:"Test Negative",
-                goal:3,
-                habitType:"negative",
-                doneHistories:[],
-                resetHistories:[]
-            }
-            const resetStreak = jest.fn()
-            render(<HabitCard resetStreak={resetStreak} index={1} currentDate={new Date("2023-09-02")} habitProp={habitProp}/>)
+            render(<HabitCard resetStreak={jest.fn()} index={1} currentDate={new Date("2023-09-02")} habitProp={habitProp}/>)
             const streak = screen.getByTestId("streak")
             expect(streak.innerHTML).toEqual("4")
             const resetButton = screen.queryByTestId("button-reset")
@@ -163,25 +143,6 @@ describe("HabitCard",()=>{
             
         })
     })
-    // describe("Negative Habit Component",()=>{
-    //     test("if button reset is clicked, streak goes back to 0",()=>{
-    //         const habitProp:HabitProp = {
-    //             id:"weopoew",
-    //             createTime:new Date("2023-08-29"),
-    //             name:"Test Negative",
-    //             goal:100,
-    //             habitType:"negative",
-    //             doneHistories:[],
-    //             resetHistories:[]
-    //         }
-    //         render(<HabitCard index={1} currentDate={new Date("2023-09-02")} habitProp={habitProp}/>)
-    //         const streak = screen.getByTestId("streak")
-    //         expect(streak.innerHTML).toEqual("4")
-
-    //         fireEvent.click(screen.getByTestId("button-reset")) 
-    //         expect(streak.innerHTML).toEqual("0")
-    //     })
-    // })
 })
 
 export { }

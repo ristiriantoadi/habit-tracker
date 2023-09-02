@@ -40,5 +40,5 @@ export interface HabitDB{
     goal:number
     habitType:string
     doneHistories:Date[]
-    resetHistories:Date[]
+    resetHistories:FieldValue[]
 }

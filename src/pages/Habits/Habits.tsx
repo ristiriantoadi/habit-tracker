@@ -1,4 +1,4 @@
-import { collection, getDocs, Timestamp } from "firebase/firestore";
+import { collection, doc, FieldValue, getDocs, Timestamp, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import CircularLoaderBig from "../../components/CircularLoaderBig";
@@ -35,6 +35,11 @@ function Habits() {
     setHabitsPage(getSubsetData(parseInt(currentPage),habits))
   },[currentPage])
 
+  const convertTimestampToDates = (histories:FieldValue[])=>{histories.map(h=>{
+      new Date(convertDateObjectToYearMonthDate((h as Timestamp).toDate()))
+    })
+  }
+
   const convertHabitDBToProp = (item:HabitDB)=>{
     const convertedItem:HabitProp = {
         id:item.id,
@@ -43,14 +48,17 @@ function Habits() {
         goal:item.goal,
         habitType:item.habitType,
         doneHistories:item.doneHistories,
-        resetHistories:item.resetHistories
+        resetHistories:item.resetHistories.map(h=>new Date(convertDateObjectToYearMonthDate((h as Timestamp).toDate())))
     }
     return convertedItem
   }
 
-  const resetStreak = (index:number)=>{
+  const resetStreak = async (index:number)=>{
     let habitCopies = [...habits]
-    habitCopies[index].resetHistories.push(new Date(convertDateObjectToYearMonthDate(new Date())))
+    habitCopies[index].resetHistories.push(Timestamp.fromDate(new Date()))
+    const ref = doc(db, "habits", habitCopies[index].id);
+    await updateDoc(ref,{"resetHistories":habitCopies[index].resetHistories})
+
     setHabits(habitCopies)
   }
   

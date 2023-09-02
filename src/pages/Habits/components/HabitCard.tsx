@@ -64,7 +64,7 @@ function HabitCard({habitProp,currentDate,resetStreak,index}:Props) {
     const habitDisplay = convertHabitPropToHabitDisplay(habitProp,currentDate)
     const getButtonReset = ()=>{
         if (habitDisplay.streak < habitDisplay.goal){
-            return <button onClick={()=>resetStreak(index)} data-testid="button-reset" 
+            return <button onClick={async ()=>await resetStreak(index)} data-testid="button-reset" 
             style={{color:"#D50000",border:"none",backgroundColor: "inherit"}}>
                 <FontAwesomeIcon style={{"width":"30px",height:"30px"}} icon={faRefresh}/>
         </button>
