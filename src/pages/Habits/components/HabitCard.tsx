@@ -1,5 +1,6 @@
 import { faCheck, faEdit, faRefresh, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useState } from 'react'
 import { Card } from 'react-bootstrap'
 import { HabitDisplay, HabitProp } from '../../../models/HabitModel'
 import { addDate, areDatesConsecutive, convertDateObjectToYearMonthDate, getDaysBetweenTwoDates } from '../../../util/util_date'
@@ -61,10 +62,17 @@ export const convertHabitPropToHabitDisplay = (habit:HabitProp,currentDate:Date)
 }
 
 function HabitCard({habitProp,currentDate,resetStreak,index}:Props) {
+    const [loading,setLoading] = useState(false)
     const habitDisplay = convertHabitPropToHabitDisplay(habitProp,currentDate)
+    const handleReset = async ()=>{
+        if (habitDisplay.streak == 0) return
+        setLoading(true)
+        await resetStreak(index)
+        setLoading(false)
+    }
     const getButtonReset = ()=>{
         if (habitDisplay.streak < habitDisplay.goal){
-            return <button onClick={async ()=>await resetStreak(index)} data-testid="button-reset" 
+            return <button onClick={handleReset} data-testid="button-reset" 
             style={{color:"#D50000",border:"none",backgroundColor: "inherit"}}>
                 <FontAwesomeIcon style={{"width":"30px",height:"30px"}} icon={faRefresh}/>
         </button>
@@ -78,11 +86,12 @@ function HabitCard({habitProp,currentDate,resetStreak,index}:Props) {
     return (
         <div>
             <Card className={`${style.small} ${style.card}`}>
+                {loading === true && <div className='loader'></div>}
                 <Card.Body style={{display:"flex",justifyContent:"space-evenly",alignItems:"center"}}>
                     {habitDisplay.habitType === "positive" ?
                         <input style={{width:"30px",height:"30px",marginRight:"10px"}} 
                             className={`form-check-input`} type="checkbox"/>:
-                        <button data-itemid="reset-streak" onClick={()=>resetStreak(index)} style={{color:"#D50000",border:"none",
+                        <button data-itemid="reset-streak" onClick={handleReset} style={{color:"#D50000",border:"none",
                             backgroundColor: "inherit"}}><FontAwesomeIcon style={{width:"30px",height:"30px"}}  
                             icon={faRefresh}/>
                         </button>}
@@ -113,6 +122,7 @@ function HabitCard({habitProp,currentDate,resetStreak,index}:Props) {
                 </Card.Body>
             </Card>
             <Card className={`${style.big} ${style.card}`}>
+                {loading === true && <div className='loader'></div>}
                 <Card.Body style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                     <div style={{display:"flex",alignItems:"center"}}>
                         {habitDisplay.habitType === "positive" ? getCheckBox():getButtonReset()}    
