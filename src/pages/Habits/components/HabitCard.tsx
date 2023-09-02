@@ -7,7 +7,9 @@ import style from "./HabitCard.module.css"
 
 interface Props{
     habitProp:HabitProp,
-    currentDate:Date
+    currentDate:Date,
+    resetStreak:Function
+    index:number
 }
 
 export const getCurrentStreakNegativeHabit = (resetHistories:Date[],startDate:Date,currentDate:Date)=>{
@@ -58,13 +60,19 @@ export const convertHabitPropToHabitDisplay = (habit:HabitProp,currentDate:Date)
     return convertedHabit
 }
 
-function HabitCard({habitProp,currentDate}:Props) {
+function HabitCard({habitProp,currentDate,resetStreak,index}:Props) {
     const habitDisplay = convertHabitPropToHabitDisplay(habitProp,currentDate)
     return (
         <div>
             <Card className={`${style.small} ${style.card}`}>
                 <Card.Body style={{display:"flex",justifyContent:"space-evenly",alignItems:"center"}}>
-                    {habitDisplay.habitType === "positive" ? <input style={{width:"30px",height:"30px",marginRight:"10px"}} className={`form-check-input`} type="checkbox"></input>:<button style={{color:"#D50000",border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon style={{width:"30px",height:"30px"}}  icon={faRefresh}/></button>}
+                    {habitDisplay.habitType === "positive" ?
+                        <input style={{width:"30px",height:"30px",marginRight:"10px"}} 
+                            className={`form-check-input`} type="checkbox"/>:
+                        <button onClick={()=>resetStreak(index)} style={{color:"#D50000",border:"none",
+                            backgroundColor: "inherit"}}><FontAwesomeIcon style={{width:"30px",height:"30px"}}  
+                            icon={faRefresh}/>
+                        </button>}
                     <div style={{width:"70%"}}>
                         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",height:"30px"}}>
                             <span style={{marginRight:"15px",width:"300px",whiteSpace: "nowrap",overflow: "hidden",textOverflow: "ellipsis"}}>{habitDisplay.name}</span>
@@ -94,7 +102,13 @@ function HabitCard({habitProp,currentDate}:Props) {
             <Card className={`${style.big} ${style.card}`}>
                 <Card.Body style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                     <div style={{display:"flex",alignItems:"center"}}>
-                        {habitDisplay.habitType === "positive" ? <input style={{width:"30px",height:"30px",marginRight:"10px"}} className={`form-check-input`} type="checkbox"></input>:<button data-testid="button-reset" style={{color:"#D50000",border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon style={{"width":"30px",height:"30px"}} icon={faRefresh}/></button>}
+                        {habitDisplay.habitType === "positive" ? 
+                            <input style={{width:"30px",height:"30px",marginRight:"10px"}} className={`form-check-input`} 
+                                type="checkbox"></input>:
+                            <button onClick={()=>resetStreak(index)} data-testid="button-reset" 
+                                style={{color:"#D50000",border:"none",backgroundColor: "inherit"}}>
+                                    <FontAwesomeIcon style={{"width":"30px",height:"30px"}} icon={faRefresh}/>
+                            </button>}
                         <span style={{marginLeft:"20px",width:"150px",whiteSpace: "nowrap",overflow: "hidden",textOverflow: "ellipsis"}}>{habitDisplay.name}</span>
                         <div className={style.itemInfo}>
                             <label className={style.itemInfoLabel}>Streak</label>

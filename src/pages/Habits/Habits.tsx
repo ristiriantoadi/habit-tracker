@@ -48,6 +48,12 @@ function Habits() {
     }
     return convertedItem
   }
+
+  const resetStreak = (index:number)=>{
+    let habitCopies = [...habits]
+    habitCopies[index].resetHistories.push(new Date(convertDateObjectToYearMonthDate(new Date())))
+    setHabits(habitCopies)
+  }
   
   return (
     <div>
@@ -55,7 +61,7 @@ function Habits() {
         <HeadingBar></HeadingBar>
         <div style={{margin:"30px 0"}}>
           {loading === true && <CircularLoaderBig/>}
-          {habitsPage.map(item=><HabitCard currentDate={new Date()} key={item.id} habitProp={convertHabitDBToProp(item)}></HabitCard>)}
+          {habitsPage.map((item,index)=><HabitCard index={index} resetStreak={resetStreak} currentDate={new Date()} key={item.id} habitProp={convertHabitDBToProp(item)}></HabitCard>)}
         </div>
         <PaginationComponent currentPage={currentPage} length={habits.length}></PaginationComponent>
     </div>
