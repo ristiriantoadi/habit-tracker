@@ -90,7 +90,7 @@ function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
     }
 
     const checkIcon = ()=>{
-        return <FontAwesomeIcon data-testid="check-icon" style={{"width":"30px",height:"30px",color:"green"}} icon={faCheck}></FontAwesomeIcon>
+        return <FontAwesomeIcon data-testid="check-icon" style={{"width":"30px",height:"30px",color:"green",marginRight:"10px"}} icon={faCheck}></FontAwesomeIcon>
     }
 
     const getButtonReset = ()=>{
@@ -119,10 +119,14 @@ function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
         }else return checkIcon()
     }
 
+    const getLoader = ()=>{
+        return loading === true && <div style={{position:"absolute",display: "flex",justifyContent: "center",alignItems: "center",height: "100%",width:"100%",zIndex:"1",backgroundColor: "rgba(255, 255, 255, 0.3)"}}><div style={{width:"30px",height:"30px"}} className='loader'></div></div>
+    }
+
     return (
         <div>
             <Card className={`${style.small} ${style.card}`}>
-                {loading === true && <div className='loader'></div>}
+                {getLoader()}
                 <Card.Body style={{display:"flex",justifyContent:"space-evenly",alignItems:"center"}}>
                     {habitDisplay.habitType === "positive" ?
                         getCheckBox():getButtonReset()
@@ -154,7 +158,7 @@ function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
                 </Card.Body>
             </Card>
             <Card className={`${style.big} ${style.card}`}>
-                {loading === true && <div className='loader'></div>}
+                {getLoader()}
                 <Card.Body style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                     <div style={{display:"flex",alignItems:"center"}}>
                         {habitDisplay.habitType === "positive" ? getCheckBox():getButtonReset()}    
