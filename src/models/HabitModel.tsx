@@ -9,6 +9,7 @@ export interface HabitDisplay{
     streak:Number
     startDate:Date
     estimatedDate:Date
+    isDone?:boolean
 }
 
 //model received in props
@@ -20,6 +21,7 @@ export interface HabitProp{
     habitType:string
     doneHistories:Date[]
     resetHistories:Date[]
+    isDone?:boolean
 }
 
 //model sent to db

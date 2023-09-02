@@ -53,6 +53,12 @@ export const convertHabitPropToHabitDisplay = (habit:HabitProp,currentDate:Date)
         currentStreak = habit.goal
     }
 
+    if (habit.habitType === "positive"){
+        if (habit.isDone){
+            currentStreak=habit.goal
+        }
+    }
+
     const convertedHabit:HabitDisplay = {
         id:habit.id,
         name:habit.name,
@@ -60,7 +66,8 @@ export const convertHabitPropToHabitDisplay = (habit:HabitProp,currentDate:Date)
         habitType:habit.habitType,
         streak:currentStreak,
         startDate:habit.createTime,
-        estimatedDate:addDate(new Date(),(habit.goal-currentStreak))
+        estimatedDate:addDate(new Date(),(habit.goal-currentStreak)),
+        isDone:habit.isDone
 
     }
     return convertedHabit
@@ -94,6 +101,10 @@ function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
         }else return checkIcon();
     }
     const getCheckBox = ()=>{
+        console.log("habit isDone",habitDisplay.isDone)
+        if (habitDisplay.isDone){
+            return checkIcon()
+        }
         if (habitDisplay.streak < habitDisplay.goal){ 
             return <input onClick={handleDone} style={{width:"30px",height:"30px",marginRight:"10px"}} 
             className={`form-check-input`} type="checkbox" data-testid="checkbox"/>

@@ -22,6 +22,7 @@ function Habits() {
     setLoading(true)
     const data = await getDocs(collection(db,"habits"))
     const habits = data.docs.map(doc => ({ ...doc.data(), id: doc.id } as HabitDB))
+    console.log("habits",habits)
     setHabits(habits)
     setLoading(false)
     setHabitsPage(getSubsetData(parseInt(currentPage),habits))
@@ -44,7 +45,8 @@ function Habits() {
         goal:item.goal,
         habitType:item.habitType,
         doneHistories:item.doneHistories.map(h=>new Date(convertDateObjectToYearMonthDate((h as Timestamp).toDate()))),
-        resetHistories:item.resetHistories.map(h=>new Date(convertDateObjectToYearMonthDate((h as Timestamp).toDate())))
+        resetHistories:item.resetHistories.map(h=>new Date(convertDateObjectToYearMonthDate((h as Timestamp).toDate()))),
+        isDone:item.isDone
     }
     return convertedItem
   }
