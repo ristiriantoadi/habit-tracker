@@ -1,4 +1,4 @@
-import { faEdit, faRefresh, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faEdit, faRefresh, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Card } from 'react-bootstrap'
 import { HabitDisplay, HabitProp } from '../../../models/HabitModel'
@@ -62,6 +62,19 @@ export const convertHabitPropToHabitDisplay = (habit:HabitProp,currentDate:Date)
 
 function HabitCard({habitProp,currentDate,resetStreak,index}:Props) {
     const habitDisplay = convertHabitPropToHabitDisplay(habitProp,currentDate)
+    const getButtonReset = ()=>{
+        if (habitDisplay.streak < habitDisplay.goal){
+            return <button onClick={()=>resetStreak(index)} data-testid="button-reset" 
+            style={{color:"#D50000",border:"none",backgroundColor: "inherit"}}>
+                <FontAwesomeIcon style={{"width":"30px",height:"30px"}} icon={faRefresh}/>
+        </button>
+        }else return <FontAwesomeIcon data-testid="check-icon" style={{"width":"30px",height:"30px",color:"green"}} icon={faCheck}></FontAwesomeIcon>;
+    }
+    const getCheckBox = ()=>{
+        return <input style={{width:"30px",height:"30px",marginRight:"10px"}} className={`form-check-input`} 
+                                type="checkbox"></input>
+    }
+
     return (
         <div>
             <Card className={`${style.small} ${style.card}`}>
@@ -69,7 +82,7 @@ function HabitCard({habitProp,currentDate,resetStreak,index}:Props) {
                     {habitDisplay.habitType === "positive" ?
                         <input style={{width:"30px",height:"30px",marginRight:"10px"}} 
                             className={`form-check-input`} type="checkbox"/>:
-                        <button onClick={()=>resetStreak(index)} style={{color:"#D50000",border:"none",
+                        <button data-itemid="reset-streak" onClick={()=>resetStreak(index)} style={{color:"#D50000",border:"none",
                             backgroundColor: "inherit"}}><FontAwesomeIcon style={{width:"30px",height:"30px"}}  
                             icon={faRefresh}/>
                         </button>}
@@ -102,13 +115,7 @@ function HabitCard({habitProp,currentDate,resetStreak,index}:Props) {
             <Card className={`${style.big} ${style.card}`}>
                 <Card.Body style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                     <div style={{display:"flex",alignItems:"center"}}>
-                        {habitDisplay.habitType === "positive" ? 
-                            <input style={{width:"30px",height:"30px",marginRight:"10px"}} className={`form-check-input`} 
-                                type="checkbox"></input>:
-                            <button onClick={()=>resetStreak(index)} data-testid="button-reset" 
-                                style={{color:"#D50000",border:"none",backgroundColor: "inherit"}}>
-                                    <FontAwesomeIcon style={{"width":"30px",height:"30px"}} icon={faRefresh}/>
-                            </button>}
+                        {habitDisplay.habitType === "positive" ? getCheckBox():getButtonReset()}    
                         <span style={{marginLeft:"20px",width:"150px",whiteSpace: "nowrap",overflow: "hidden",textOverflow: "ellipsis"}}>{habitDisplay.name}</span>
                         <div className={style.itemInfo}>
                             <label className={style.itemInfoLabel}>Streak</label>

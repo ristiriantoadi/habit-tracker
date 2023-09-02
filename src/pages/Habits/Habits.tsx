@@ -16,7 +16,6 @@ function Habits() {
   const [habitsPage,setHabitsPage] = useState<HabitDB[]>([])
   const [loading,setLoading] = useState(false)
   const [habits,setHabits] = useState<HabitDB[]>([])
-  const pageSize=1
 
 
   const getHabits = async ()=>{
