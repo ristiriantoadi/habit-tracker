@@ -70,17 +70,24 @@ function HabitCard({habitProp,currentDate,resetStreak,index}:Props) {
         await resetStreak(index)
         setLoading(false)
     }
+
+    const checkIcon = ()=>{
+        return <FontAwesomeIcon data-testid="check-icon" style={{"width":"30px",height:"30px",color:"green"}} icon={faCheck}></FontAwesomeIcon>
+    }
+
     const getButtonReset = ()=>{
         if (habitDisplay.streak < habitDisplay.goal){
             return <button onClick={handleReset} data-testid="button-reset" 
             style={{color:"#D50000",border:"none",backgroundColor: "inherit"}}>
                 <FontAwesomeIcon style={{"width":"30px",height:"30px"}} icon={faRefresh}/>
         </button>
-        }else return <FontAwesomeIcon data-testid="check-icon" style={{"width":"30px",height:"30px",color:"green"}} icon={faCheck}></FontAwesomeIcon>;
+        }else return checkIcon();
     }
     const getCheckBox = ()=>{
-        return <input style={{width:"30px",height:"30px",marginRight:"10px"}} className={`form-check-input`} 
-                                type="checkbox"></input>
+        if (habitDisplay.streak < habitDisplay.goal){ 
+            return <input style={{width:"30px",height:"30px",marginRight:"10px"}} 
+            className={`form-check-input`} type="checkbox" data-testid="checkbox"/>
+        }else return checkIcon()
     }
 
     return (
@@ -89,9 +96,7 @@ function HabitCard({habitProp,currentDate,resetStreak,index}:Props) {
                 {loading === true && <div className='loader'></div>}
                 <Card.Body style={{display:"flex",justifyContent:"space-evenly",alignItems:"center"}}>
                     {habitDisplay.habitType === "positive" ?
-                        <input style={{width:"30px",height:"30px",marginRight:"10px"}} 
-                            className={`form-check-input`} type="checkbox"/>:
-                        getButtonReset()
+                        getCheckBox():getButtonReset()
                     }
                     <div style={{width:"70%"}}>
                         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",height:"30px"}}>

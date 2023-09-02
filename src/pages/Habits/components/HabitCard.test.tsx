@@ -143,6 +143,27 @@ describe("HabitCard",()=>{
             screen.getAllByTestId("check-icon")
             
         })
+    }),
+    describe("Positive Habit",()=>{
+        test("if streak == goal, reset button is gone, replaced with check icon",()=>{
+            const habitProp:HabitProp = {
+                id:"weopoew",
+                createTime:new Date("2023-08-29"),
+                name:"Test Positive",
+                goal:1,
+                habitType:"positive",
+                doneHistories:[new Date("2023-09-01")],
+                resetHistories:[]
+            }
+            render(<HabitCard resetStreak={jest.fn()} index={1} currentDate={new Date("2023-09-02")} habitProp={habitProp}/>)
+            const streak = screen.getByTestId("streak")
+            expect(streak.innerHTML).toEqual("1")
+            const resetButton = screen.queryAllByTestId("checkbox")
+            // expect(resetButton).not.toBeInTheDocument()
+            expect(resetButton.length).toEqual(0)
+            screen.getAllByTestId("check-icon")
+            
+        })
     })
 })
 
