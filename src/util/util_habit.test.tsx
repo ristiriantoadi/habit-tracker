@@ -1,40 +1,6 @@
-// import { act } from "react-dom/test-utils"
-
 import { Timestamp } from "firebase/firestore"
-import { HabitDB } from "../../models/HabitModel"
-import { filterHabitsByName } from "../../util/util_habit"
-
-jest.mock("firebase/firestore",() => {
-    return {
-        ...jest.requireActual('firebase/firestore'),
-        getDocs:jest.fn(),
-        collection:jest.fn(),
-        updateDoc:jest.fn(),
-        doc:jest.fn()
-        // path:{indexOf:jest.fn()}
-      
-    }
-})
-
-test("on click reset button, streak goes back to 0",async ()=>{
-    // (updateDoc as jest.Mock).mockResolvedValue({});
-    // (getDocs as jest.Mock).mockResolvedValue({"docs":[
-    //     {"id":1,data:()=>({"name":"Merokok","createTime":Timestamp.fromDate(new Date("2023-08-28")),"goal":10,"habitType":"negative","doneHistories":[],"resetHistories":[]})}]})
-
-    // act(()=>{
-    //     render(
-    //         <BrowserRouter>
-    //             <Habits></Habits>
-    //         </BrowserRouter>
-    //     )
-    // })
-    
-    // const buttons = await screen.findAllByTestId("button-reset")
-    // userEvent.click(buttons[1])
-    
-    // const streak = await screen.findByTestId("streak")
-    // expect(streak.innerHTML).toEqual("0")
-})
+import { HabitDB } from "../models/HabitModel"
+import { filterHabitsByIsDone, filterHabitsByName } from "./util_habit"
 
 describe("search",()=>{
     test("empty text return everything",async ()=>{
@@ -132,6 +98,56 @@ describe("search",()=>{
         expect(habitsFiltered).toEqual(habits)
 
     })
-})
 
-export { }
+    test("search by isDone=true, return only habit with isDone=true",()=>{
+        const habits:HabitDB[] = [
+            {
+                id:"123",
+                createTime:Timestamp.now(),
+                name:"done",
+                goal:1,
+                habitType:"positive",
+                doneHistories:[Timestamp.fromDate(new Date("2023-09-03"))],
+                resetHistories:[],
+            },
+            {
+                id:"123",
+                createTime:Timestamp.now(),
+                name:"not done",
+                goal:2,
+                habitType:"positive",
+                doneHistories:[Timestamp.fromDate(new Date("2023-09-03"))],
+                resetHistories:[],
+            },
+        ]
+        const filteredHabits = filterHabitsByIsDone(habits,true)
+        expect(filteredHabits).toHaveLength(1)
+        expect(filteredHabits[0].name).toEqual("done")
+    })
+
+    test("search by isDone=false, return only habit with isDone=false",()=>{
+        const habits:HabitDB[] = [
+            {
+                id:"123",
+                createTime:Timestamp.now(),
+                name:"done",
+                goal:1,
+                habitType:"positive",
+                doneHistories:[Timestamp.fromDate(new Date("2023-09-03"))],
+                resetHistories:[],
+            },
+            {
+                id:"123",
+                createTime:Timestamp.now(),
+                name:"not done",
+                goal:2,
+                habitType:"positive",
+                doneHistories:[Timestamp.fromDate(new Date("2023-09-03"))],
+                resetHistories:[],
+            },
+        ]
+        const filteredHabits = filterHabitsByIsDone(habits,false)
+        expect(filteredHabits).toHaveLength(1)
+        expect(filteredHabits[0].name).toEqual("not done")
+    })
+})

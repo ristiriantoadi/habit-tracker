@@ -6,7 +6,7 @@ import PaginationComponent, { getSubsetData } from "../../components/Pagination"
 import { db } from "../../FirebaseConfig";
 import { HabitDB, HabitProp } from "../../models/HabitModel";
 import { convertDateObjectToYearMonthDate, getCurrentDate } from "../../util/util_date";
-import { filterHabits, getCurrentStreak, getEstimatedDate, isHabitDone } from "../../util/util_habit";
+import { filterHabitsByName, getCurrentStreak, getEstimatedDate, isHabitDone } from "../../util/util_habit";
 import HabitCard from "./components/HabitCard";
 import HeadingBar from "./components/HeadingBar";
 
@@ -78,8 +78,8 @@ function Habits() {
     setHabits(habitCopies)
   }
 
-  const filterData = (text:string)=>{
-    const habitsFiltered=filterHabits(habits,text)
+  const filterData = (text:string,isDone?:boolean)=>{
+    const habitsFiltered=filterHabitsByName(habits,text)
     setHabitsFiltered(habitsFiltered)
   }
   

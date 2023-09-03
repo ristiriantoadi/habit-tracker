@@ -54,9 +54,12 @@ export const isHabitDone = (habit:HabitDB,currentStreak:number)=>{
     return false
 }
 
-export const filterHabits = (habits:HabitDB[],text:string)=>{
+export const filterHabitsByName = (habits:HabitDB[],text:string)=>{
     const regex = new RegExp(text, "i")
-    const habitsFiltered = habits.filter((habit) => regex.test(habit.name));
-    return habitsFiltered
+    return habits.filter((habit) => regex.test(habit.name))
   
-  }
+}
+
+export const filterHabitsByIsDone = (habits:HabitDB[],isDone:boolean)=>{
+    return habits.filter((habit)=>isDone == isHabitDone(habit,getCurrentStreak(habit)))
+}
