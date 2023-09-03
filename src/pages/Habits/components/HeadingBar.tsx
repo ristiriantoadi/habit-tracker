@@ -12,16 +12,51 @@ interface Props{
 function HeadingBar({filterData}:Props) {
   const navigate = useNavigate()
   const [search,setSearch] = useState("")
+  const [showDone,setShowDone] = useState(false)
+  const [showUndone,setShowUndone] = useState(false)
+
+  const handleShowDone = (e:any)=>{
+    if (e.target.checked == true){
+      setShowDone(true)
+    }else{
+      setShowDone(false)
+    }
+  }
+
+  const handleShowUndone = (e:any)=>{
+    if (e.target.checked == true){
+      setShowUndone(true)
+    }else{
+      setShowUndone(false)
+    }
+  }
 
   useEffect(()=>{
-    filterData(search)
-  },[search])
+    console.log("show done",showDone)
+    console.log("show undone",showUndone)
+    if (showDone == true && showUndone == true){
+      filterData(search)
+    }else if(showDone==false && showUndone == false){
+      filterData(search)
+    }
+    else if (showDone == true){
+      filterData(search,true)
+    }else{
+      filterData(search,false)
+    }
+  },[search,showDone,showUndone])
   return (
     <div className={style.container}>
         <Button onClick={()=>navigate("create")}><FontAwesomeIcon icon={faPlus}/><span className={style.textButton}>Create Habit</span></Button>
         <div style={{"position":"relative"}}>
             <Form.Control className={style.searchBar} type="text" value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Search"/>
             <FontAwesomeIcon className={style.icon} icon={faSearch} />
+        </div>
+        <div className={style.inputCheckbox}>
+          <input type="checkbox" onChange={handleShowDone}  className={`form-check-input`}/><span style={{"marginLeft":"5px"}}>Show Finished</span>
+        </div>
+        <div className={style.inputCheckbox}>
+          <input type="checkbox" onChange={handleShowUndone} className={`form-check-input`}/><span style={{"marginLeft":"5px"}}>Show Unfinished</span>
         </div>
     </div>
   )

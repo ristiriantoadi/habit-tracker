@@ -21,6 +21,10 @@
     z-Index: 9999
 }
 
+.inputCheckbox{
+    margin-left: 20px;
+}
+
 @media(max-width:517px){
     .container{
         display:block
@@ -35,6 +39,10 @@
 
     .icon{
         top: 20px;
+    }
+
+    .inputCheckbox{
+        margin-top:10px
     }
 
     
