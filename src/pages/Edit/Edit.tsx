@@ -8,6 +8,12 @@ import { db } from "../../FirebaseConfig";
 import { addDate, convertDateObjectToYearMonthDate, getCurrentDate } from "../../util/util_date";
 import { getCurrentStreakNegativeHabit, getCurrentStreakPositiveHabit } from "../Habits/components/HabitCard";
 
+interface UpdateData{
+    name:string
+    goal:number
+    isDone?:boolean
+}
+
 function Edit() {
     const [name,setName] = useState("")
     const [goal,setGoal] = useState(0)
@@ -23,7 +29,15 @@ function Edit() {
     const handleSubmit = async (e:any)=>{ 
         e.preventDefault()
         setSubmitLoading(true)
-        await updateDoc(docRef,{name,goal})
+        let updateData:UpdateData = {name:name,goal:goal}
+        if (habitType == "positive"){
+            updateData.isDone=false
+            console.log("current streak",currentStreak)
+            console.log("goal",goal)
+            if (currentStreak === goal) updateData.isDone = true
+        }
+        console.log(updateData)
+        await updateDoc(docRef,(updateData as any))
         setSubmitLoading(false)
         navigate("/habits")
     }
@@ -34,6 +48,9 @@ function Edit() {
         if (data.habitType == "positive"){
             const doneHistories = data.doneHistories.map((h:Timestamp)=>new Date(convertDateObjectToYearMonthDate(h.toDate())))
             streak = getCurrentStreakPositiveHabit(doneHistories,currentDate) 
+            if (data.isDone === true){
+                streak=data.goal
+            }
         }else{
             const resetHistories = data.resetHistories.map((h:Timestamp)=>new Date(convertDateObjectToYearMonthDate(h.toDate())))
             const startDate = new Date(convertDateObjectToYearMonthDate(data.createTime.toDate()))
@@ -89,7 +106,7 @@ function Edit() {
                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <Form.Label>Goal</Form.Label>
                     <div style={{display:"flex",alignItems:"center"}}>
-                        <Form.Control data-testid="goal-input" style={{width:"30%"}} required type="number" min={currentStreak} value={goal} onChange={(e)=>setGoal(parseInt(e.target.value))} />
+                        <Form.Control data-testid="goal-input" style={{width:"30%"}} required type="number" min={currentStreak > 0 ? currentStreak:1} value={goal} onChange={(e)=>setGoal(parseInt(e.target.value))} />
                         <div style={{marginLeft:"20px"}}>
                         <span style={{display:"block"}}>Estimated end date:</span>
                         <span data-testid="estimation-date">{estimationDate}</span>
