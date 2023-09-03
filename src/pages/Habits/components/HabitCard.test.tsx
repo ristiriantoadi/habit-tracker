@@ -2,7 +2,8 @@ import { render, screen } from "@testing-library/react"
 import { BrowserRouter } from "react-router-dom"
 import { HabitProp } from "../../../models/HabitModel"
 import { addDate } from "../../../util/util_date"
-import HabitCard, { getCurrentStreakNegativeHabit, getCurrentStreakPositiveHabit } from "./HabitCard"
+import { getCurrentStreakNegativeHabit, getCurrentStreakPositiveHabit } from "../../../util/util_habit"
+import HabitCard from "./HabitCard"
 
 const generateConsecutiveDatesReversed = (startDate:Date,n:number)=>{
     let consecutiveDates:Date[]=[]

@@ -6,7 +6,7 @@ import ButtonSubmit from "../../components/ButtonSubmit";
 import CircularLoaderBig from "../../components/CircularLoaderBig";
 import { db } from "../../FirebaseConfig";
 import { addDate, convertDateObjectToYearMonthDate, getCurrentDate } from "../../util/util_date";
-import { getCurrentStreakNegativeHabit, getCurrentStreakPositiveHabit } from "../Habits/components/HabitCard";
+import { getCurrentStreakNegativeHabit, getCurrentStreakPositiveHabit } from "../../util/util_habit";
 
 interface UpdateData{
     name:string
