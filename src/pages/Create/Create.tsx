@@ -12,7 +12,7 @@ interface Props{
 }
 
 
-function CreateEdit({title}:Props) {
+function Create({title}:Props) {
 
     const [loading,setLoading] = useState(false)
     const [name,setName] = useState("")
@@ -39,7 +39,7 @@ function CreateEdit({title}:Props) {
 
   return (
     <div>
-        <h1>{title}</h1>
+        <h1>Create</h1>
         <Form onSubmit={handleSubmit} style={{maxWidth:"600px"}}>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Name</Form.Label>
@@ -85,4 +85,4 @@ function CreateEdit({title}:Props) {
   )
 }
 
-export default CreateEdit;
+export default Create;
