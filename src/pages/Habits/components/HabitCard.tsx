@@ -115,7 +115,7 @@ function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
             className={`form-check-input`} type="checkbox" data-testid="checkbox"/>
     }
     const getLoader = ()=>{
-        return loading === true && <div style={{position:"absolute",display: "flex",justifyContent: "center",alignItems: "center",height: "100%",width:"100%",zIndex:"1",backgroundColor: "rgba(255, 255, 255, 0.3)"}}><div style={{width:"30px",height:"30px"}} className='loader'></div></div>
+        return loading === true && <div style={{position:"absolute",display: "flex",justifyContent: "center",alignItems: "center",height: "100%",width:"100%",zIndex:"1",backgroundColor: "rgba(255, 255, 255, 0.8)"}}><div style={{width:"30px",height:"30px"}} className='loader'></div></div>
     }
     const getMainButton=()=>{
         if (habitDisplay.isDone === true) return checkIcon()
