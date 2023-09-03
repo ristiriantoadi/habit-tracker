@@ -1,0 +1,1 @@
+export const GRAY_DISABLED = "rgb(204, 204, 204)"

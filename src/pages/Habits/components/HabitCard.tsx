@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
 import { Card } from 'react-bootstrap'
 import { HabitDisplay, HabitProp } from '../../../models/HabitModel'
+import { GRAY_DISABLED } from '../../../util/util_color'
 import { addDate, areDatesConsecutive, convertDateObjectToYearMonthDate, getDaysBetweenTwoDates } from '../../../util/util_date'
 import style from "./HabitCard.module.css"
 
@@ -122,6 +123,11 @@ function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
         return habitDisplay.habitType === "positive" ? getCheckBox():getButtonReset()
     }
 
+    const getEditButtonProperties = ()=>{
+        if (habitDisplay.isDone === true)return {disabled:true,color:GRAY_DISABLED}
+        return {disabled:false,color:"#007BFF"}
+    }
+
     return (
         <div>
             <Card className={`${style.small} ${style.card}`}>
@@ -149,7 +155,7 @@ function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
                         </div>
                     </div>
                     <div style={{display:"flex",flexFlow:"column"}}>
-                        <button style={{border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon style={{width:"25px","height":"25px",marginBottom:"5px",color:"#007BFF"}} icon={faEdit}></FontAwesomeIcon></button>
+                        <button disabled={getEditButtonProperties()["disabled"]} data-testid="button-edit" style={{border:"none",backgroundColor: "inherit",color:getEditButtonProperties()["color"]}}><FontAwesomeIcon style={{width:"25px","height":"25px",marginBottom:"5px"}} icon={faEdit}></FontAwesomeIcon></button>
                         <button style={{border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon style={{width:"25px","height":"25px",color:"#FF0000"}} icon={faTrash}></FontAwesomeIcon></button>
                     </div>
                 </Card.Body>
@@ -179,8 +185,8 @@ function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
                         {habitDisplay.habitType === "positive"? <span className={style.positive} style={{marginLeft:"60px",width:"150px"}}>Positive Habit</span>:<span className={style.negative} style={{marginLeft:"60px",width:"150px"}}>Negative Habit</span>}
                     </div>
                     <div style={{display:"flex"}}>
-                        <button style={{border:"none",backgroundColor: "inherit",marginRight:"20px"}}><FontAwesomeIcon style={{width:"25px","height":"25px",color:"#007BFF"}} icon={faEdit}></FontAwesomeIcon></button>
-                        <button style={{border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon style={{width:"25px","height":"25px",color:"#FF0000"}} icon={faTrash}></FontAwesomeIcon></button>
+                        <button disabled={getEditButtonProperties()["disabled"]} data-testid="button-edit" style={{border:"none",backgroundColor: "inherit",marginRight:"20px",color:getEditButtonProperties()["color"]}}><FontAwesomeIcon style={{width:"25px","height":"25px"}} icon={faEdit}></FontAwesomeIcon></button>
+                        <button style={{border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon style={{width:"25px","height":"25px",color:"#007BFF"}} icon={faTrash}></FontAwesomeIcon></button>
                     </div>
                 </Card.Body>
             </Card>
