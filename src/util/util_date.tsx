@@ -27,3 +27,7 @@ export const addDate = (date:Date,days:number)=>{
 export const convertDateObjectToYearMonthDate = (date:Date)=>{
     return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
 }
+
+export const getCurrentDate = ()=>{
+    return new Date(convertDateObjectToYearMonthDate(new Date()))
+}

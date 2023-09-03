@@ -5,7 +5,7 @@ import { Card } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import { HabitDisplay, HabitProp } from '../../../models/HabitModel'
 import { GRAY_DISABLED } from '../../../util/util_color'
-import { addDate, areDatesConsecutive, convertDateObjectToYearMonthDate, getDaysBetweenTwoDates } from '../../../util/util_date'
+import { addDate, areDatesConsecutive, convertDateObjectToYearMonthDate, getCurrentDate, getDaysBetweenTwoDates } from '../../../util/util_date'
 import style from "./HabitCard.module.css"
 
 interface Props{
@@ -74,7 +74,7 @@ export const convertHabitPropToHabitDisplay = (habit:HabitProp,currentDate:Date)
         habitType:habit.habitType,
         streak:currentStreak,
         startDate:habit.createTime,
-        estimatedDate:addDate(new Date(),(habit.goal-currentStreak)),
+        estimatedDate:addDate(getCurrentDate(),(habit.goal-currentStreak)),
         // isDone:habit.isDone
         isDone:isHabitDone(habit,currentStreak)
 
@@ -130,7 +130,7 @@ function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
         return {disabled:false,color:"#007BFF"}
     }
     const gotoEditPage = ()=>{
-        navigate("/edit/"+habitDisplay.id)
+        navigate("edit/"+habitDisplay.id)
     }
 
     return (

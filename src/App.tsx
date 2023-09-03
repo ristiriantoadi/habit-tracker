@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import PrivateLayout from './layouts/PrivateLayout';
 import Create from './pages/Create/Create';
+import Edit from './pages/Edit/Edit';
 import Habits from './pages/Habits/Habits';
 import Login from './pages/Login/Login';
 import NotFound from './pages/NotFound/NotFound';
@@ -21,7 +22,7 @@ function App() {
               <Route path="/habits">
                 <Route index element={<Habits></Habits>}></Route>
                 <Route path='create' element={<Create title="Create Habit"></Create>}/>
-                <Route path='edit/:idHabit' element={<Create title="Edit Habit"></Create>}/>
+                <Route path='edit/:idHabit' element={<Edit/>}/>
               </Route>
               <Route path="*" element={<NotFound></NotFound>}></Route>
             </Route>
