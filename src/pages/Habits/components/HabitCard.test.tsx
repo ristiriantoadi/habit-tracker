@@ -168,13 +168,22 @@ describe("HabitCard",()=>{
             render(<HabitCard key="1" doHabit={jest.fn()} resetStreak={jest.fn()} index={1} currentDate={new Date("2023-09-02")} habitProp={habitProp}/>)
             const streak = screen.getByTestId("streak")
             expect(streak.innerHTML).toEqual("1")
-            const resetButton = screen.queryAllByTestId("checkbox")
+            const checkBox = screen.queryAllByTestId("checkbox")
             // expect(resetButton).not.toBeInTheDocument()
-            expect(resetButton.length).toEqual(0)
+            expect(checkBox.length).toEqual(0)
             screen.getAllByTestId("check-icon")
             
+        }),
+        test("if today already done, checkbox is checked and cannot be unchecked",()=>{
+            render(<HabitCard habitProp={{id:"123",createTime:new Date("2023-09-02"),name:"something",goal:12,
+                habitType:"positive",doneHistories:[new Date("2023-09-02")],resetHistories:[]}} doHabit={jest.fn()} index={1} resetStreak={jest.fn()} currentDate={new Date("2023-09-02")} key={"1"}/>
+            )
+            const checkBoxes = screen.getAllByRole("checkbox")
+            expect(checkBoxes[0]).toBeChecked()
+            expect(checkBoxes[0]).toBeDisabled()
         })
     })
 })
+
 
 export { }

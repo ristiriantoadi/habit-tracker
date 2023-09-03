@@ -59,6 +59,12 @@ export const convertHabitPropToHabitDisplay = (habit:HabitProp,currentDate:Date)
         }
     }
 
+    const isHabitDone = (habit:HabitProp,currentStreak:number)=>{
+        if (habit.goal == currentStreak) return true
+        if (habit.habitType == "positive") return habit.isDone
+        return false
+    }
+
     const convertedHabit:HabitDisplay = {
         id:habit.id,
         name:habit.name,
@@ -67,7 +73,8 @@ export const convertHabitPropToHabitDisplay = (habit:HabitProp,currentDate:Date)
         streak:currentStreak,
         startDate:habit.createTime,
         estimatedDate:addDate(new Date(),(habit.goal-currentStreak)),
-        isDone:habit.isDone
+        // isDone:habit.isDone
+        isDone:isHabitDone(habit,currentStreak)
 
     }
     return convertedHabit
@@ -88,39 +95,31 @@ function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
         await doHabit(habitProp.id,habitDisplay.streak)
         setLoading(false)
     }
-
     const checkIcon = ()=>{
         return <FontAwesomeIcon data-testid="check-icon" style={{"width":"30px",height:"30px",color:"green",marginRight:"10px"}} icon={faCheck}></FontAwesomeIcon>
     }
-
     const getButtonReset = ()=>{
-        if (habitDisplay.streak < habitDisplay.goal){
-            return <button onClick={handleReset} data-testid="button-reset" 
+        return <button onClick={handleReset} data-testid="button-reset" 
             style={{color:"#D50000",border:"none",backgroundColor: "inherit"}}>
                 <FontAwesomeIcon style={{"width":"30px",height:"30px"}} icon={faRefresh}/>
         </button>
-        }else return checkIcon();
     }
     const getCheckBox = ()=>{
-        if (habitDisplay.isDone){
-            return checkIcon()
-        }
-
         let checked=false
         if (habitProp.doneHistories.length > 0){
             if (getDaysBetweenTwoDates(habitProp.doneHistories[habitProp.doneHistories.length-1],currentDate) === 0){
                 checked=true
             }
         }
-        
-        if (habitDisplay.streak < habitDisplay.goal){ 
-            return <input checked={checked} disabled={checked} onChange={handleDone} style={{width:"30px",height:"30px",marginRight:"10px"}} 
+        return <input checked={checked} disabled={checked} onChange={handleDone} style={{width:"30px",height:"30px",marginRight:"10px"}} 
             className={`form-check-input`} type="checkbox" data-testid="checkbox"/>
-        }else return checkIcon()
     }
-
     const getLoader = ()=>{
         return loading === true && <div style={{position:"absolute",display: "flex",justifyContent: "center",alignItems: "center",height: "100%",width:"100%",zIndex:"1",backgroundColor: "rgba(255, 255, 255, 0.3)"}}><div style={{width:"30px",height:"30px"}} className='loader'></div></div>
+    }
+    const getMainButton=()=>{
+        if (habitDisplay.isDone === true) return checkIcon()
+        return habitDisplay.habitType === "positive" ? getCheckBox():getButtonReset()
     }
 
     return (
@@ -128,9 +127,7 @@ function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
             <Card className={`${style.small} ${style.card}`}>
                 {getLoader()}
                 <Card.Body style={{display:"flex",justifyContent:"space-evenly",alignItems:"center"}}>
-                    {habitDisplay.habitType === "positive" ?
-                        getCheckBox():getButtonReset()
-                    }
+                    {getMainButton()}
                     <div style={{width:"70%"}}>
                         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",height:"30px"}}>
                             <span style={{marginRight:"15px",width:"300px",whiteSpace: "nowrap",overflow: "hidden",textOverflow: "ellipsis"}}>{habitDisplay.name}</span>
@@ -161,7 +158,7 @@ function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
                 {getLoader()}
                 <Card.Body style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                     <div style={{display:"flex",alignItems:"center"}}>
-                        {habitDisplay.habitType === "positive" ? getCheckBox():getButtonReset()}    
+                        {getMainButton()}    
                         <span style={{marginLeft:"20px",width:"150px",whiteSpace: "nowrap",overflow: "hidden",textOverflow: "ellipsis"}}>{habitDisplay.name}</span>
                         <div className={style.itemInfo}>
                             <label className={style.itemInfoLabel}>Streak</label>
