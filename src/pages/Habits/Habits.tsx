@@ -5,16 +5,10 @@ import CircularLoaderBig from "../../components/CircularLoaderBig";
 import PaginationComponent, { getSubsetData } from "../../components/Pagination";
 import { db } from "../../FirebaseConfig";
 import { HabitDB, HabitProp } from "../../models/HabitModel";
-import { convertDateObjectToYearMonthDate } from "../../util/util_date";
+import { convertDateObjectToYearMonthDate, getCurrentDate } from "../../util/util_date";
+import { filterHabits, getCurrentStreak, getEstimatedDate, isHabitDone } from "../../util/util_habit";
 import HabitCard from "./components/HabitCard";
 import HeadingBar from "./components/HeadingBar";
-
-export const filterText = (habits:HabitDB[],text:string)=>{
-  const regex = new RegExp(text, "i")
-  const habitsFiltered = habits.filter((habit) => regex.test(habit.name));
-  return habitsFiltered
-
-}
 
 function Habits() {
 
@@ -29,7 +23,6 @@ function Habits() {
     setLoading(true)
     const data = await getDocs(collection(db,"habits"))
     const habits = data.docs.map(doc => ({ ...doc.data(), id: doc.id } as HabitDB))
-    console.log("habits",habits)
     setHabits(habits)
     setHabitsFiltered(habits)
     setLoading(false)
@@ -54,7 +47,9 @@ function Habits() {
         habitType:item.habitType,
         doneHistories:item.doneHistories.map(h=>new Date(convertDateObjectToYearMonthDate((h as Timestamp).toDate()))),
         resetHistories:item.resetHistories.map(h=>new Date(convertDateObjectToYearMonthDate((h as Timestamp).toDate()))),
-        isDone:item.isDone
+        streak:getCurrentStreak(item),
+        estimatedDate:getEstimatedDate(item,getCurrentStreak(item)),
+        isDone:isHabitDone(item,getCurrentStreak(item))
     }
     return convertedItem
   }
@@ -84,7 +79,7 @@ function Habits() {
   }
 
   const filterData = (text:string)=>{
-    const habitsFiltered=filterText(habits,text)
+    const habitsFiltered=filterHabits(habits,text)
     setHabitsFiltered(habitsFiltered)
   }
   
@@ -94,7 +89,7 @@ function Habits() {
         <HeadingBar filterData={filterData}></HeadingBar>
         <div style={{margin:"30px 0"}}>
           {loading === true && <CircularLoaderBig/>}
-          {habitsPage.map((item,index)=><HabitCard doHabit={doHabit} index={index} resetStreak={resetStreak} currentDate={new Date(convertDateObjectToYearMonthDate(new Date()))} key={item.id} habitProp={convertHabitDBToProp(item)}></HabitCard>)}
+          {habitsPage.map((item,index)=><HabitCard doHabit={doHabit} index={index} resetStreak={resetStreak} currentDate={getCurrentDate()} key={item.id} habitProp={convertHabitDBToProp(item)}></HabitCard>)}
         </div>
         <PaginationComponent currentPage={currentPage} length={habitsFiltered.length}></PaginationComponent>
     </div>

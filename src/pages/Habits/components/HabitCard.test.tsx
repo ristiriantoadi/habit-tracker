@@ -141,27 +141,16 @@ test("if streak == goal, reset button is gone, replaced with check icon",()=>{
         goal:4,
         habitType:"negative",
         doneHistories:[],
-        resetHistories:[]
+        resetHistories:[],
+        streak:4,
+        estimatedDate:new Date("2023-09-04"),
+        isDone:true
     }
     render(<BrowserRouter><HabitCard key={"1"} doHabit={jest.fn()} resetStreak={jest.fn()} index={1} currentDate={new Date("2023-09-02")} habitProp={habitProp}/></BrowserRouter>)
     expect(screen.getByTestId("streak").innerHTML).toEqual("4")
     expect(screen.queryAllByTestId("button-reset").length).toEqual(0)
     screen.getAllByTestId("check-icon")
     
-})
-
-test("if currentStreak > goal, streak = goal",()=>{
-    const habitProp:HabitProp = {
-        id:"weopoew",
-        createTime:new Date("2023-08-29"),
-        name:"Test Negative",
-        goal:4,
-        habitType:"negative",
-        doneHistories:[],
-        resetHistories:[]
-    }
-    render(<BrowserRouter><HabitCard key={"1"} doHabit={jest.fn()} resetStreak={jest.fn()} index={1} currentDate={new Date("2023-09-03")} habitProp={habitProp}/></BrowserRouter>)
-    expect(screen.getByTestId("streak").innerHTML).toEqual("4")                    
 })
 
 //test positive habit card
@@ -173,7 +162,10 @@ test("if streak == goal, check button is gone, replaced with check icon",()=>{
         goal:1,
         habitType:"positive",
         doneHistories:[new Date("2023-09-01")],
-        resetHistories:[]
+        resetHistories:[],
+        streak:1,
+        estimatedDate:new Date("2023-09-02"),
+        isDone:true
     }
     render(<BrowserRouter><HabitCard key="1" doHabit={jest.fn()} resetStreak={jest.fn()} index={1} currentDate={new Date("2023-09-02")} habitProp={habitProp}/></BrowserRouter>)
     const streak = screen.getByTestId("streak")
@@ -186,8 +178,19 @@ test("if streak == goal, check button is gone, replaced with check icon",()=>{
 })
 
 test("if today already done, checkbox is checked and cannot be unchecked",()=>{
-    render(<BrowserRouter><HabitCard habitProp={{id:"123",createTime:new Date("2023-09-02"),name:"something",goal:12,
-        habitType:"positive",doneHistories:[new Date("2023-09-02")],resetHistories:[]}} doHabit={jest.fn()} index={1} resetStreak={jest.fn()} currentDate={new Date("2023-09-02")} key={"1"}/></BrowserRouter>
+    const habitProp:HabitProp = {
+        id:"123",
+        createTime:new Date("2023-09-02"),
+        name:"something",
+        goal:12,
+        habitType:"positive",
+        doneHistories:[new Date("2023-09-02")],
+        resetHistories:[],
+        streak:5,
+        estimatedDate:new Date("2023-09-05"),
+        isDone:false}
+    const currentDate = new Date("2023-09-02")
+    render(<BrowserRouter><HabitCard habitProp={habitProp} doHabit={jest.fn()} index={1} resetStreak={jest.fn()} currentDate={currentDate} key={"1"}/></BrowserRouter>
     )
     const checkBoxes = screen.getAllByRole("checkbox")
     expect(checkBoxes[0]).toBeChecked()

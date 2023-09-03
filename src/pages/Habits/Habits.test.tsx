@@ -2,7 +2,7 @@
 
 import { Timestamp } from "firebase/firestore"
 import { HabitDB } from "../../models/HabitModel"
-import { filterText } from "./Habits"
+import { filterHabits } from "../../util/util_habit"
 
 jest.mock("firebase/firestore",() => {
     return {
@@ -76,7 +76,7 @@ describe("search",()=>{
                 resetHistories:[],
             }
         ]
-        const habitsFiltered = filterText(habits,"")
+        const habitsFiltered = filterHabits(habits,"")
         expect(habitsFiltered).toEqual(habits)
     })
     test("search is case insensitive",()=>{
@@ -92,7 +92,7 @@ describe("search",()=>{
             },
         ]
 
-        const habitsFiltered = filterText(habits,"meroKok")
+        const habitsFiltered = filterHabits(habits,"meroKok")
         expect(habitsFiltered).toEqual(habits)
 
     })
@@ -110,7 +110,7 @@ describe("search",()=>{
             },
         ]
 
-        const habitsFiltered = filterText(habits,"rs")
+        const habitsFiltered = filterHabits(habits,"rs")
         expect(habitsFiltered).toEqual([])
 
     })
@@ -128,7 +128,7 @@ describe("search",()=>{
             },
         ]
 
-        const habitsFiltered = filterText(habits,"rok")
+        const habitsFiltered = filterHabits(habits,"rok")
         expect(habitsFiltered).toEqual(habits)
 
     })

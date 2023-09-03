@@ -1,6 +1,6 @@
 import { Timestamp } from "firebase/firestore"
 import { HabitDB } from "../models/HabitModel"
-import { areDatesConsecutive, convertDateObjectToYearMonthDate, getCurrentDate, getDaysBetweenTwoDates } from "./util_date"
+import { addDate, areDatesConsecutive, convertDateObjectToYearMonthDate, getCurrentDate, getDaysBetweenTwoDates } from "./util_date"
 
 export const getCurrentStreakNegativeHabit = (resetHistories:Date[],startDate:Date,currentDate:Date)=>{
     if (resetHistories.length == 0) return Math.abs(getDaysBetweenTwoDates(startDate,currentDate))
@@ -43,3 +43,20 @@ export const getCurrentStreak = (data:HabitDB)=>{
     }
     return streak
 }
+
+export const getEstimatedDate = (habit:HabitDB,currentStreak:number)=>{
+    return addDate(getCurrentDate(),(habit.goal-currentStreak))
+}
+
+export const isHabitDone = (habit:HabitDB,currentStreak:number)=>{
+    if (habit.goal == currentStreak) return true
+    if (habit.habitType == "positive" && habit.isDone) return habit.isDone
+    return false
+}
+
+export const filterHabits = (habits:HabitDB[],text:string)=>{
+    const regex = new RegExp(text, "i")
+    const habitsFiltered = habits.filter((habit) => regex.test(habit.name));
+    return habitsFiltered
+  
+  }

@@ -3,9 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
 import { Card } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
-import { HabitDisplay, HabitProp } from '../../../models/HabitModel'
-import { addDate, convertDateObjectToYearMonthDate, getCurrentDate, getDaysBetweenTwoDates } from '../../../util/util_date'
-import { getCurrentStreakNegativeHabit, getCurrentStreakPositiveHabit } from '../../../util/util_habit'
+import { HabitProp } from '../../../models/HabitModel'
+import { getDaysBetweenTwoDates } from '../../../util/util_date'
 import style from "./HabitCard.module.css"
 
 interface Props{
@@ -16,54 +15,13 @@ interface Props{
     doHabit:Function
 }
 
-const convertHabitPropToHabitDisplay = (habit:HabitProp,currentDate:Date)=>{
-    let currentStreak = habit.habitType == "positive" ? 
-        getCurrentStreakPositiveHabit(
-            habit.doneHistories,
-            new Date(convertDateObjectToYearMonthDate(currentDate))) : 
-        getCurrentStreakNegativeHabit(
-            habit.resetHistories,
-            new Date(convertDateObjectToYearMonthDate(habit.createTime)),
-            new Date(convertDateObjectToYearMonthDate(currentDate)))
-    
-    if (currentStreak > habit.goal){
-        currentStreak = habit.goal
-    }
-
-    if (habit.habitType === "positive"){
-        if (habit.isDone === true){
-            currentStreak=habit.goal
-        }
-    }
-
-    const isHabitDone = (habit:HabitProp,currentStreak:number)=>{
-        if (habit.goal == currentStreak) return true
-        if (habit.habitType == "positive") return habit.isDone
-        return false
-    }
-
-    const convertedHabit:HabitDisplay = {
-        id:habit.id,
-        name:habit.name,
-        goal:habit.goal,
-        habitType:habit.habitType,
-        streak:currentStreak,
-        startDate:habit.createTime,
-        estimatedDate:addDate(getCurrentDate(),(habit.goal-currentStreak)),
-        isDone:isHabitDone(habit,currentStreak)
-
-    }
-    return convertedHabit
-}
-
 function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
 
     const [loading,setLoading] = useState(false)
-    const habitDisplay = convertHabitPropToHabitDisplay(habitProp,currentDate)
     const navigate = useNavigate()
     
     const handleReset = async ()=>{
-        if (habitDisplay.streak == 0) return
+        if (habitProp.streak == 0) return
         setLoading(true)
         await resetStreak(habitProp.id)
         setLoading(false)
@@ -71,7 +29,7 @@ function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
     const handleDone = async ()=>{
         setLoading(true)
         console.log("key",habitProp.id)
-        await doHabit(habitProp.id,habitDisplay.streak)
+        await doHabit(habitProp.id,habitProp.streak)
         setLoading(false)
     }
     const checkIcon = ()=>{
@@ -97,11 +55,11 @@ function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
         return loading === true && <div style={{position:"absolute",display: "flex",justifyContent: "center",alignItems: "center",height: "100%",width:"100%",zIndex:"1",backgroundColor: "rgba(255, 255, 255, 0.8)"}}><div style={{width:"30px",height:"30px"}} className='loader'></div></div>
     }
     const getMainButton=()=>{
-        if (habitDisplay.isDone === true) return checkIcon()
-        return habitDisplay.habitType === "positive" ? getCheckBox():getButtonReset()
+        if (habitProp.isDone === true) return checkIcon()
+        return habitProp.habitType === "positive" ? getCheckBox():getButtonReset()
     }
     const gotoEditPage = ()=>{
-        navigate("edit/"+habitDisplay.id)
+        navigate("edit/"+habitProp.id)
     }
 
     return (
@@ -112,21 +70,21 @@ function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
                     {getMainButton()}
                     <div style={{width:"70%"}}>
                         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",height:"30px"}}>
-                            <span style={{marginRight:"15px",width:"300px",whiteSpace: "nowrap",overflow: "hidden",textOverflow: "ellipsis"}}>{habitDisplay.name}</span>
-                            {habitDisplay.habitType === "positive"? <span className={style.positive}>Positive Habit</span>:<span className={style.negative}>Negative Habit</span>} 
+                            <span style={{marginRight:"15px",width:"300px",whiteSpace: "nowrap",overflow: "hidden",textOverflow: "ellipsis"}}>{habitProp.name}</span>
+                            {habitProp.habitType === "positive"? <span className={style.positive}>Positive Habit</span>:<span className={style.negative}>Negative Habit</span>} 
                         </div>
                         <div style={{display:"flex",justifyContent:"space-between",marginTop:"20px"}}>
                             <div style={{display:"flex",flexFlow:"column"}}>
                                 <label style={{fontWeight:"600"}}>Streak</label>
-                                <span>{habitDisplay.streak.toString()}</span>
+                                <span>{habitProp.streak.toString()}</span>
                             </div>
                             <div style={{display:"flex",flexFlow:"column"}}>
                                 <label style={{fontWeight:"600"}}>Goal</label>
-                                <span>{habitDisplay.goal.toString()}</span>
+                                <span>{habitProp.goal.toString()}</span>
                             </div>
                             <div style={{display:"flex",flexFlow:"column"}}>
                                 <label style={{fontWeight:"600"}}>Estimation Date</label>
-                                <span>{habitDisplay.estimatedDate.toDateString()}</span>
+                                <span>{habitProp.estimatedDate.toDateString()}</span>
                             </div>
                         </div>
                     </div>
@@ -141,24 +99,24 @@ function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
                 <Card.Body style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                     <div style={{display:"flex",alignItems:"center"}}>
                         {getMainButton()}    
-                        <span style={{marginLeft:"20px",width:"150px",whiteSpace: "nowrap",overflow: "hidden",textOverflow: "ellipsis"}}>{habitDisplay.name}</span>
+                        <span style={{marginLeft:"20px",width:"150px",whiteSpace: "nowrap",overflow: "hidden",textOverflow: "ellipsis"}}>{habitProp.name}</span>
                         <div className={style.itemInfo}>
                             <label className={style.itemInfoLabel}>Streak</label>
-                            <span data-testid="streak">{habitDisplay.streak.toString()}</span>
+                            <span data-testid="streak">{habitProp.streak.toString()}</span>
                         </div>
                         <div className={style.itemInfo}>
                             <label className={style.itemInfoLabel}>Goal</label>
-                            <span>{habitDisplay.goal.toString()}</span>
+                            <span>{habitProp.goal.toString()}</span>
                         </div>
                         <div className={style.itemInfo}>
                                 <label className={style.itemInfoLabel}>Start Date</label>
-                                <span>{habitDisplay.startDate.toDateString()}</span>
+                                <span>{habitProp.createTime.toDateString()}</span>
                         </div>
                         <div className={style.itemInfo}>
                             <label className={style.itemInfoLabel}>Estimation Date</label>
-                            <span>{habitDisplay.estimatedDate.toDateString()}</span>
+                            <span>{habitProp.estimatedDate.toDateString()}</span>
                         </div>
-                        {habitDisplay.habitType === "positive"? <span className={style.positive} style={{marginLeft:"60px",width:"150px"}}>Positive Habit</span>:<span className={style.negative} style={{marginLeft:"60px",width:"150px"}}>Negative Habit</span>}
+                        {habitProp.habitType === "positive"? <span className={style.positive} style={{marginLeft:"60px",width:"150px"}}>Positive Habit</span>:<span className={style.negative} style={{marginLeft:"60px",width:"150px"}}>Negative Habit</span>}
                     </div>
                     <div style={{display:"flex"}}>
                         <button onClick={gotoEditPage} data-testid="button-edit" style={{border:"none",backgroundColor: "inherit",marginRight:"20px",color:"#007BFF"}}><FontAwesomeIcon style={{width:"25px","height":"25px"}} icon={faEdit}></FontAwesomeIcon></button>

@@ -1,17 +1,5 @@
 import { FieldValue, Timestamp } from "firebase/firestore"
 
-//model used in UI
-export interface HabitDisplay{
-    id:string
-    name:String
-    habitType:String
-    goal:Number
-    streak:Number
-    startDate:Date
-    estimatedDate:Date
-    isDone?:boolean
-}
-
 //model received in props
 export interface HabitProp{
     id:string
@@ -21,7 +9,9 @@ export interface HabitProp{
     habitType:string
     doneHistories:Date[]
     resetHistories:Date[]
-    isDone?:boolean
+    isDone:boolean
+    streak:number
+    estimatedDate:Date
 }
 
 //model sent to db
