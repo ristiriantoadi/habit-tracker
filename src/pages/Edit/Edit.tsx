@@ -1,7 +1,7 @@
-import { doc, getDoc, Timestamp } from "firebase/firestore";
+import { doc, getDoc, Timestamp, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import ButtonSubmit from "../../components/ButtonSubmit";
 import CircularLoaderBig from "../../components/CircularLoaderBig";
 import { db } from "../../FirebaseConfig";
@@ -12,13 +12,20 @@ function Edit() {
     const [name,setName] = useState("")
     const [goal,setGoal] = useState(0)
     const [loading,setLoading] = useState(false)
+    const [submitLoading,setSubmitLoading] = useState(false)
     const [habitType,setHabitType] = useState("-")
     const [currentStreak,setCurrentStreak] = useState(0)
     const [estimationDate,setEstimationDate] = useState("")
     const {idHabit} = useParams()
+    const docRef = doc(db, "habits/"+idHabit);
+    const navigate = useNavigate()
 
-    const handleSubmit = ()=>{
-
+    const handleSubmit = async (e:any)=>{ 
+        e.preventDefault()
+        setSubmitLoading(true)
+        await updateDoc(docRef,{name,goal})
+        setSubmitLoading(false)
+        navigate("/habits")
     }
 
     const getCurrentStreak = (data:any)=>{
@@ -36,7 +43,6 @@ function Edit() {
     }
 
     const getHabit = async ()=>{
-        const docRef = doc(db, "habits/"+idHabit);
         setLoading(true)
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
@@ -90,7 +96,7 @@ function Edit() {
                         </div>
                     </div>
                 </Form.Group>
-                <ButtonSubmit loading={loading}>Submit</ButtonSubmit>
+                <ButtonSubmit loading={submitLoading}>Submit</ButtonSubmit>
             </Form>
         </div>
     )
