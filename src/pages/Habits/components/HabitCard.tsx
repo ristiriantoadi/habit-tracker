@@ -16,47 +16,47 @@ interface Props{
     doHabit:Function
 }
 
-function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
-
-    const convertHabitPropToHabitDisplay = (habit:HabitProp,currentDate:Date)=>{
-        let currentStreak = habit.habitType == "positive" ? 
-            getCurrentStreakPositiveHabit(
-                habit.doneHistories,
-                new Date(convertDateObjectToYearMonthDate(currentDate))) : 
-            getCurrentStreakNegativeHabit(
-                habit.resetHistories,
-                new Date(convertDateObjectToYearMonthDate(habit.createTime)),
-                new Date(convertDateObjectToYearMonthDate(currentDate)))
-        
-        if (currentStreak > habit.goal){
-            currentStreak = habit.goal
-        }
+const convertHabitPropToHabitDisplay = (habit:HabitProp,currentDate:Date)=>{
+    let currentStreak = habit.habitType == "positive" ? 
+        getCurrentStreakPositiveHabit(
+            habit.doneHistories,
+            new Date(convertDateObjectToYearMonthDate(currentDate))) : 
+        getCurrentStreakNegativeHabit(
+            habit.resetHistories,
+            new Date(convertDateObjectToYearMonthDate(habit.createTime)),
+            new Date(convertDateObjectToYearMonthDate(currentDate)))
     
-        if (habit.habitType === "positive"){
-            if (habit.isDone === true){
-                currentStreak=habit.goal
-            }
-        }
-    
-        const isHabitDone = (habit:HabitProp,currentStreak:number)=>{
-            if (habit.goal == currentStreak) return true
-            if (habit.habitType == "positive") return habit.isDone
-            return false
-        }
-    
-        const convertedHabit:HabitDisplay = {
-            id:habit.id,
-            name:habit.name,
-            goal:habit.goal,
-            habitType:habit.habitType,
-            streak:currentStreak,
-            startDate:habit.createTime,
-            estimatedDate:addDate(getCurrentDate(),(habit.goal-currentStreak)),
-            isDone:isHabitDone(habit,currentStreak)
-    
-        }
-        return convertedHabit
+    if (currentStreak > habit.goal){
+        currentStreak = habit.goal
     }
+
+    if (habit.habitType === "positive"){
+        if (habit.isDone === true){
+            currentStreak=habit.goal
+        }
+    }
+
+    const isHabitDone = (habit:HabitProp,currentStreak:number)=>{
+        if (habit.goal == currentStreak) return true
+        if (habit.habitType == "positive") return habit.isDone
+        return false
+    }
+
+    const convertedHabit:HabitDisplay = {
+        id:habit.id,
+        name:habit.name,
+        goal:habit.goal,
+        habitType:habit.habitType,
+        streak:currentStreak,
+        startDate:habit.createTime,
+        estimatedDate:addDate(getCurrentDate(),(habit.goal-currentStreak)),
+        isDone:isHabitDone(habit,currentStreak)
+
+    }
+    return convertedHabit
+}
+
+function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
 
     const [loading,setLoading] = useState(false)
     const habitDisplay = convertHabitPropToHabitDisplay(habitProp,currentDate)
