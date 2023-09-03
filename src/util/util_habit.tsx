@@ -1,4 +1,6 @@
-import { areDatesConsecutive, getDaysBetweenTwoDates } from "./util_date"
+import { Timestamp } from "firebase/firestore"
+import { HabitDB } from "../models/HabitModel"
+import { areDatesConsecutive, convertDateObjectToYearMonthDate, getCurrentDate, getDaysBetweenTwoDates } from "./util_date"
 
 export const getCurrentStreakNegativeHabit = (resetHistories:Date[],startDate:Date,currentDate:Date)=>{
     if (resetHistories.length == 0) return Math.abs(getDaysBetweenTwoDates(startDate,currentDate))
@@ -23,4 +25,21 @@ export const getCurrentStreakPositiveHabit = (doneHistories:Date[],currentDate:D
       } 
     return currentStreak
 
+}
+
+export const getCurrentStreak = (data:HabitDB)=>{
+    const currentDate = getCurrentDate()
+    let streak=0
+    if (data.habitType == "positive"){
+        const doneHistories = data.doneHistories.map((h:Timestamp)=>new Date(convertDateObjectToYearMonthDate(h.toDate())))
+        streak = getCurrentStreakPositiveHabit(doneHistories,currentDate) 
+        if (data.isDone === true){
+            streak=data.goal
+        }
+    }else{
+        const resetHistories = data.resetHistories.map((h:Timestamp)=>new Date(convertDateObjectToYearMonthDate(h.toDate())))
+        const startDate = new Date(convertDateObjectToYearMonthDate(data.createTime.toDate()))
+        streak = getCurrentStreakNegativeHabit(resetHistories,startDate,currentDate)
+    }
+    return streak
 }

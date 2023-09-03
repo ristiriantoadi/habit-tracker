@@ -1,12 +1,13 @@
-import { doc, getDoc, Timestamp, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router";
 import ButtonSubmit from "../../components/ButtonSubmit";
 import CircularLoaderBig from "../../components/CircularLoaderBig";
 import { db } from "../../FirebaseConfig";
-import { addDate, convertDateObjectToYearMonthDate, getCurrentDate } from "../../util/util_date";
-import { getCurrentStreakNegativeHabit, getCurrentStreakPositiveHabit } from "../../util/util_habit";
+import { HabitDB } from "../../models/HabitModel";
+import { addDate, getCurrentDate } from "../../util/util_date";
+import { getCurrentStreak } from "../../util/util_habit";
 
 interface UpdateData{
     name:string
@@ -42,31 +43,14 @@ function Edit() {
         navigate("/habits")
     }
 
-    const getCurrentStreak = (data:any)=>{
-        const currentDate = getCurrentDate()
-        let streak=0
-        if (data.habitType == "positive"){
-            const doneHistories = data.doneHistories.map((h:Timestamp)=>new Date(convertDateObjectToYearMonthDate(h.toDate())))
-            streak = getCurrentStreakPositiveHabit(doneHistories,currentDate) 
-            if (data.isDone === true){
-                streak=data.goal
-            }
-        }else{
-            const resetHistories = data.resetHistories.map((h:Timestamp)=>new Date(convertDateObjectToYearMonthDate(h.toDate())))
-            const startDate = new Date(convertDateObjectToYearMonthDate(data.createTime.toDate()))
-            streak = getCurrentStreakNegativeHabit(resetHistories,startDate,currentDate)
-        }
-        return streak
-    }
-
     const getHabit = async ()=>{
         setLoading(true)
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             const data = docSnap.data()
             
-            setEstimationDate(addDate(getCurrentDate(),(data.goal-getCurrentStreak(data))).toDateString())
-            setCurrentStreak(getCurrentStreak(data))            
+            setEstimationDate(addDate(getCurrentDate(),(data.goal-getCurrentStreak(data as HabitDB))).toDateString())
+            setCurrentStreak(getCurrentStreak(data as HabitDB))            
             setName(data.name)
             setGoal(data.goal)
             setHabitType(data.habitType)
