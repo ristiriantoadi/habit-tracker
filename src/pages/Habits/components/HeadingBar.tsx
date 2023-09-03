@@ -16,19 +16,11 @@ function HeadingBar({filterData}:Props) {
   const [showUndone,setShowUndone] = useState(false)
 
   const handleShowDone = (e:any)=>{
-    if (e.target.checked == true){
-      setShowDone(true)
-    }else{
-      setShowDone(false)
-    }
+    setShowDone(e.target.checked)
   }
 
   const handleShowUndone = (e:any)=>{
-    if (e.target.checked == true){
-      setShowUndone(true)
-    }else{
-      setShowUndone(false)
-    }
+    setShowUndone(e.target.checked)
   }
 
   useEffect(()=>{
@@ -36,7 +28,8 @@ function HeadingBar({filterData}:Props) {
     console.log("show undone",showUndone)
     if (showDone == true && showUndone == true){
       filterData(search)
-    }else if(showDone==false && showUndone == false){
+    }
+    else if(showDone==false && showUndone == false){
       filterData(search)
     }
     else if (showDone == true){
