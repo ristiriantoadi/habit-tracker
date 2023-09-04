@@ -2,11 +2,13 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router";
+import Swal from "sweetalert2";
 import ButtonSubmit from "../../components/ButtonSubmit";
 import CircularLoaderBig from "../../components/CircularLoaderBig";
 import { db } from "../../FirebaseConfig";
 import { HabitDB } from "../../models/HabitModel";
 import { addDate, getCurrentDate } from "../../util/util_date";
+import { mapError } from "../../util/util_error";
 import { getCurrentStreak } from "../../util/util_habit";
 
 interface UpdateData{
@@ -38,7 +40,16 @@ function Edit() {
             if (currentStreak === goal) updateData.isDone = true
         }
         console.log(updateData)
-        await updateDoc(docRef,(updateData as any))
+        try{
+            await updateDoc(docRef,(updateData as any))
+        }catch(e:any){
+            console.log("error",e)
+            Swal.fire({
+                icon: 'error',
+                text: mapError(e.toString),
+                timer: 3000, // Display for 3 seconds (adjust as needed)
+              })
+        }
         setSubmitLoading(false)
         navigate("/habits")
     }

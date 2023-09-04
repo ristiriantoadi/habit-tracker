@@ -24,8 +24,6 @@ function HeadingBar({filterData}:Props) {
   }
 
   useEffect(()=>{
-    console.log("show done",showDone)
-    console.log("show undone",showUndone)
     if (showDone == true && showUndone == true){
       filterData(search)
     }

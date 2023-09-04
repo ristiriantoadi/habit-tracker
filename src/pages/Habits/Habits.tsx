@@ -1,12 +1,14 @@
 import { collection, doc, getDocs, query, Timestamp, updateDoc, where } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import Swal from "sweetalert2";
 import CircularLoaderBig from "../../components/CircularLoaderBig";
 import PaginationComponent, { getSubsetData } from "../../components/Pagination";
 import { AuthContext } from "../../contexts/AuthContext";
 import { db } from "../../FirebaseConfig";
 import { HabitDB, HabitProp } from "../../models/HabitModel";
 import { convertDateObjectToYearMonthDate, getCurrentDate } from "../../util/util_date";
+import { mapError } from "../../util/util_error";
 import { filterHabitsByIsDone, filterHabitsByName, getCurrentStreak, getEstimatedDate, isHabitDone } from "../../util/util_habit";
 import HabitCard from "./components/HabitCard";
 import HeadingBar from "./components/HeadingBar";
@@ -24,10 +26,20 @@ function Habits() {
   const getHabits = async ()=>{
     setLoading(true)
     const q = query(collection(db, "habits"), where("userId", "==", currentUser?.uid));
-    const data = await getDocs(q)
-    const habits = data.docs.map(doc => ({ ...doc.data(), id: doc.id } as HabitDB))
-    setHabits(habits)
-    setHabitsFiltered(habits)
+    
+    try{
+      const data = await getDocs(q)
+      const habits = data.docs.map(doc => ({ ...doc.data(), id: doc.id } as HabitDB))
+      setHabits(habits)
+      setHabitsFiltered(habits)
+    }catch(e:any){
+      console.log("error",e)
+      Swal.fire({
+          icon: 'error',
+          text: mapError(e.toString),
+          timer: 3000, // Display for 3 seconds (adjust as needed)
+        })
+    }
     setLoading(false)
     setHabitsPage(getSubsetData(parseInt(currentPage),habits))
   }

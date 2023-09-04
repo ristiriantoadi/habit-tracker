@@ -2,11 +2,13 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useContext, useState } from "react";
 import { Form } from "react-bootstrap";
 import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 import ButtonSubmit from "../../components/ButtonSubmit";
 import { AuthContext } from "../../contexts/AuthContext";
 import { db } from "../../FirebaseConfig";
 import { HabitInput } from "../../models/HabitModel";
 import { getFutureDateFromToday } from "../../util/util_date";
+import { mapError } from "../../util/util_error";
 
 interface Props{
     title:string
@@ -28,7 +30,16 @@ function Create() {
             "name":name,"goal":goal,userId:currentUser?.uid,"habitType":habitType,doneHistories:[],resetHistories:[],createTime:serverTimestamp()
         }
         setLoading(true)
-        await addDoc(collection(db,"habits"),data)
+        try{
+            await addDoc(collection(db,"habits"),data)
+        }catch(e:any){
+            console.log("error",e)
+            Swal.fire({
+                icon: 'error',
+                text: mapError(e.toString),
+                timer: 3000, // Display for 3 seconds (adjust as needed)
+              })
+        }
         setLoading(false)
         navigate("/habits")
     }
