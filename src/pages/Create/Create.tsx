@@ -1,8 +1,9 @@
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Form } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import ButtonSubmit from "../../components/ButtonSubmit";
+import { AuthContext } from "../../contexts/AuthContext";
 import { db } from "../../FirebaseConfig";
 import { HabitInput } from "../../models/HabitModel";
 import { getFutureDateFromToday } from "../../util/util_date";
@@ -12,18 +13,19 @@ interface Props{
 }
 
 
-function Create({title}:Props) {
+function Create() {
 
     const [loading,setLoading] = useState(false)
     const [name,setName] = useState("")
     const [goal,setGoal] = useState(1)
     const [habitType,setHabitType] = useState("positive")
     const navigate = useNavigate()
+    const {currentUser} = useContext(AuthContext)
 
     const handleSubmit = async (e:any)=>{
         e.preventDefault()
         const data:HabitInput = {
-            "name":name,"goal":goal,"habitType":habitType,doneHistories:[],resetHistories:[],createTime:serverTimestamp()
+            "name":name,"goal":goal,userId:currentUser?.uid,"habitType":habitType,doneHistories:[],resetHistories:[],createTime:serverTimestamp()
         }
         setLoading(true)
         await addDoc(collection(db,"habits"),data)

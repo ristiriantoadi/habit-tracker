@@ -1,8 +1,9 @@
-import { collection, doc, getDocs, Timestamp, updateDoc } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { collection, doc, getDocs, query, Timestamp, updateDoc, where } from "firebase/firestore";
+import { useContext, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import CircularLoaderBig from "../../components/CircularLoaderBig";
 import PaginationComponent, { getSubsetData } from "../../components/Pagination";
+import { AuthContext } from "../../contexts/AuthContext";
 import { db } from "../../FirebaseConfig";
 import { HabitDB, HabitProp } from "../../models/HabitModel";
 import { convertDateObjectToYearMonthDate, getCurrentDate } from "../../util/util_date";
@@ -18,10 +19,12 @@ function Habits() {
   const [loading,setLoading] = useState(false)
   const [habits,setHabits] = useState<HabitDB[]>([])
   const [habitsFiltered,setHabitsFiltered] = useState<HabitDB[]>([])
+  const {currentUser} = useContext(AuthContext)
 
   const getHabits = async ()=>{
     setLoading(true)
-    const data = await getDocs(collection(db,"habits"))
+    const q = query(collection(db, "habits"), where("userId", "==", currentUser?.uid));
+    const data = await getDocs(q)
     const habits = data.docs.map(doc => ({ ...doc.data(), id: doc.id } as HabitDB))
     setHabits(habits)
     setHabitsFiltered(habits)

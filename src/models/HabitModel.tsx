@@ -23,6 +23,7 @@ export interface HabitInput{
     doneHistories:Date[]
     resetHistories:Date[]
     isDone?:boolean
+    userId?:string
 }
 
 // Model received from db

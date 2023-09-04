@@ -21,7 +21,7 @@ function App() {
             <Route element={<PrivateLayout></PrivateLayout>}>
               <Route path="/habits">
                 <Route index element={<Habits></Habits>}></Route>
-                <Route path='create' element={<Create title="Create Habit"></Create>}/>
+                <Route path='create' element={<Create></Create>}/>
                 <Route path='edit/:idHabit' element={<Edit/>}/>
               </Route>
               <Route path="*" element={<NotFound></NotFound>}></Route>
