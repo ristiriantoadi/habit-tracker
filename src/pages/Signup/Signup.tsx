@@ -3,9 +3,11 @@ import { createUserWithEmailAndPassword } from "firebase/auth"
 import { useState } from "react"
 import { Card, Container, Form } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
+import Swal from "sweetalert2"
 import "../../App.css"
 import ButtonSubmit from "../../components/ButtonSubmit"
 import { auth } from "../../FirebaseConfig"
+import { mapError } from "../../util/util_error"
 
 function Signup() {
 
@@ -40,9 +42,13 @@ function Signup() {
     .then((userCredential) => {
       navigate("/habits")
     }) 
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message; 
+    .catch((e) => {
+      Swal.fire({
+        icon: 'error',
+        text: mapError(e.code),
+        timer: 3000, // Display for 3 seconds (adjust as needed)
+      })
+      setLoading(false)
       });
   }
 

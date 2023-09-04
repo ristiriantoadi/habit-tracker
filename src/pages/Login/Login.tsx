@@ -2,8 +2,10 @@ import { signInWithEmailAndPassword } from "firebase/auth"
 import { useState } from "react"
 import { Card, Container, Form } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
+import Swal from "sweetalert2"
 import ButtonSubmit from "../../components/ButtonSubmit"
 import { auth } from "../../FirebaseConfig"
+import { mapError } from "../../util/util_error"
 
 export const handleSubmit = async():Promise<any>=>{
   try{
@@ -31,8 +33,12 @@ function Login() {
       navigate("/")
     })
     .catch((e)=>{
-
-      console.log(e.code)
+      Swal.fire({
+        icon: 'error',
+        text: mapError(e.code),
+        timer: 3000, // Display for 3 seconds (adjust as needed)
+      })
+      setLoading(false)
     })
   }
 

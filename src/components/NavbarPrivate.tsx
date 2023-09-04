@@ -21,8 +21,8 @@ function NavbarPrivate() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link href="#home" onClick={logout}>Logout</Nav.Link>
             <span style={{pointerEvents:"none"}} className='nav-link'>{currentUser?.email}</span>
+            <Nav.Link href="#home" onClick={logout}>Logout</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

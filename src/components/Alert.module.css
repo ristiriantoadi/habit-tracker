@@ -1,0 +1,48 @@
+.alert{
+    position: fixed;
+    top: 10px;
+    right: 10px; /* Initially, set it outside the viewport */
+    z-index: 1000;
+    /* animation: fadeOut 15s forwards; */
+    animation: slideInRightAndOut 15s forwards; /* Adjust the total duration */
+  }
+
+  @keyframes slideInRightAndOut {
+    0% {
+      right: -100%; /* Start position for sliding in */
+    }
+    20% {
+      right: 10px; /* End position for sliding in (stay for 20%) */
+    }
+    80% {
+      right: 10px; /* Start position for sliding out (stay for 60%) */
+    }
+    100% {
+      right: -100%; /* End position for sliding out (stay for 20%) */
+    }
+  }
+
+
+  @keyframes fadeOut{
+    0%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+    }
+  }
+
+  @keyframes slideInRightAndFadeOut {
+    0% {
+        right: -100%; /* Start position for slideInRight */
+        opacity: 1; /* Start position for fadeOut */
+    }
+    70% {
+        right: 10px; /* End position for slideInRight */
+        opacity: 1; /* Maintain opacity during sliding in */
+    }
+    100% {
+        right: 10px; /* End position for slideInRight */
+        opacity: 0; /* End position for fadeOut */
+    }
+}
