@@ -46,10 +46,10 @@ function HeadingBar({filterData}:Props) {
             <FontAwesomeIcon className={style.icon} icon={faSearch} />
         </div>
         <div className={style.inputCheckbox}>
-          <input type="checkbox" onChange={handleShowDone}  className={`form-check-input`}/><span style={{"marginLeft":"5px"}}>Show Finished</span>
+          <input type="checkbox" disabled={showUndone} onChange={handleShowDone}  className={`form-check-input`}/><span style={{"marginLeft":"5px"}}>Show Finished</span>
         </div>
         <div className={style.inputCheckbox}>
-          <input type="checkbox" onChange={handleShowUndone} className={`form-check-input`}/><span style={{"marginLeft":"5px"}}>Show Unfinished</span>
+          <input type="checkbox" disabled={showDone} onChange={handleShowUndone} className={`form-check-input`}/><span style={{"marginLeft":"5px"}}>Show Unfinished</span>
         </div>
     </div>
   )

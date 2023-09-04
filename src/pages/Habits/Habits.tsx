@@ -80,7 +80,6 @@ function Habits() {
 
   const filterData = (text:string,isDone?:boolean)=>{
     let results=filterHabitsByName(habits,text)
-    console.log("isDone",isDone)
     if (isDone !== undefined){
       results = filterHabitsByIsDone(results,isDone)
     }
