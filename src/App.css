@@ -22,3 +22,7 @@
   height:38px;
 } */
 
+.custom-confirm-button{
+  background-color: #f44336; /* Red background color */
+  color: white;
+}

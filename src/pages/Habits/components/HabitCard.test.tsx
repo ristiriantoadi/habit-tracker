@@ -146,7 +146,7 @@ test("if streak == goal, reset button is gone, replaced with check icon",()=>{
         estimatedDate:new Date("2023-09-04"),
         isDone:true
     }
-    render(<BrowserRouter><HabitCard key={"1"} doHabit={jest.fn()} resetStreak={jest.fn()} index={1} currentDate={new Date("2023-09-02")} habitProp={habitProp}/></BrowserRouter>)
+    render(<BrowserRouter><HabitCard key={"1"} deleteHabit={jest.fn()} doHabit={jest.fn()} resetStreak={jest.fn()} index={1} currentDate={new Date("2023-09-02")} habitProp={habitProp}/></BrowserRouter>)
     expect(screen.getByTestId("streak").innerHTML).toEqual("4")
     expect(screen.queryAllByTestId("button-reset").length).toEqual(0)
     screen.getAllByTestId("check-icon")
@@ -167,7 +167,7 @@ test("if streak == goal, check button is gone, replaced with check icon",()=>{
         estimatedDate:new Date("2023-09-02"),
         isDone:true
     }
-    render(<BrowserRouter><HabitCard key="1" doHabit={jest.fn()} resetStreak={jest.fn()} index={1} currentDate={new Date("2023-09-02")} habitProp={habitProp}/></BrowserRouter>)
+    render(<BrowserRouter><HabitCard deleteHabit={jest.fn()} key="1" doHabit={jest.fn()} resetStreak={jest.fn()} index={1} currentDate={new Date("2023-09-02")} habitProp={habitProp}/></BrowserRouter>)
     const streak = screen.getByTestId("streak")
     expect(streak.innerHTML).toEqual("1")
     const checkBox = screen.queryAllByTestId("checkbox")
@@ -190,7 +190,7 @@ test("if today already done, checkbox is checked and cannot be unchecked",()=>{
         estimatedDate:new Date("2023-09-05"),
         isDone:false}
     const currentDate = new Date("2023-09-02")
-    render(<BrowserRouter><HabitCard habitProp={habitProp} doHabit={jest.fn()} index={1} resetStreak={jest.fn()} currentDate={currentDate} key={"1"}/></BrowserRouter>
+    render(<BrowserRouter><HabitCard deleteHabit={jest.fn()} habitProp={habitProp} doHabit={jest.fn()} index={1} resetStreak={jest.fn()} currentDate={currentDate} key={"1"}/></BrowserRouter>
     )
     const checkBoxes = screen.getAllByRole("checkbox")
     expect(checkBoxes[0]).toBeChecked()

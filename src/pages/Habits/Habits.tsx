@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, query, Timestamp, updateDoc, where } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, query, Timestamp, updateDoc, where } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -100,6 +100,27 @@ function Habits() {
     }
     setHabitsFiltered(results)
   }
+
+  const deleteHabit = async (id:string)=>{
+    try{
+      await deleteDoc(doc(db, "habits", id));
+    }catch(e:any){
+      Swal.fire({
+        icon: 'error',
+        text: mapError(e.toString()),
+        timer: 3000, // Display for 3 seconds (adjust as needed)
+      })
+      return
+    }
+
+    const habitsAfterDelete = habits.filter(habit => habit.id !== id);
+    setHabits(habitsAfterDelete)
+
+
+    const habitsFilteredAfterDelete = habitsFiltered.filter(habit => habit.id !== id)
+    setHabitsFiltered(habitsFilteredAfterDelete)
+
+  }
   
   return (
     <div>
@@ -107,7 +128,7 @@ function Habits() {
         <HeadingBar filterData={filterData}></HeadingBar>
         <div style={{margin:"30px 0"}}>
           {loading === true && <CircularLoaderBig/>}
-          {habitsPage.map((item,index)=><HabitCard doHabit={doHabit} index={index} resetStreak={resetStreak} currentDate={getCurrentDate()} key={item.id} habitProp={convertHabitDBToProp(item)}></HabitCard>)}
+          {habitsPage.map((item,index)=><HabitCard doHabit={doHabit} index={index} resetStreak={resetStreak} currentDate={getCurrentDate()} key={item.id} habitProp={convertHabitDBToProp(item)} deleteHabit={deleteHabit}></HabitCard>)}
         </div>
         <PaginationComponent currentPage={currentPage} length={habitsFiltered.length}></PaginationComponent>
     </div>

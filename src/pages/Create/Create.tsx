@@ -36,7 +36,7 @@ function Create() {
             console.log("error",e)
             Swal.fire({
                 icon: 'error',
-                text: mapError(e.toString),
+                text: mapError(e.toString()),
                 timer: 3000, // Display for 3 seconds (adjust as needed)
               })
         }

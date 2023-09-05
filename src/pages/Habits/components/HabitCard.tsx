@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
 import { Card } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
+import Swal from 'sweetalert2'
 import { HabitProp } from '../../../models/HabitModel'
 import { getDaysBetweenTwoDates } from '../../../util/util_date'
 import style from "./HabitCard.module.css"
@@ -13,9 +14,10 @@ interface Props{
     resetStreak:Function
     index:number
     doHabit:Function
+    deleteHabit:Function
 }
 
-function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
+function HabitCard({habitProp,currentDate,resetStreak,doHabit,deleteHabit}:Props) {
 
     const [loading,setLoading] = useState(false)
     const navigate = useNavigate()
@@ -61,6 +63,22 @@ function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
     const gotoEditPage = ()=>{
         navigate("edit/"+habitProp.id)
     }
+    const handleDelete = ()=>{
+        Swal.fire({
+            title: 'Are you sure you want to delete?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            confirmButtonColor: "#f44336",
+            denyButtonText: `Cancel`,
+          }).then(async(result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                setLoading(true)
+                await deleteHabit(habitProp.id)
+                setLoading(false)
+            } 
+          })
+    }
 
     return (
         <div>
@@ -90,7 +108,7 @@ function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
                     </div>
                     <div style={{display:"flex",flexFlow:"column"}}>
                         <button onClick={gotoEditPage} data-testid="button-edit" style={{border:"none",backgroundColor: "inherit",color:"#007BFF"}}><FontAwesomeIcon style={{width:"25px","height":"25px",marginBottom:"5px"}} icon={faEdit}></FontAwesomeIcon></button>
-                        <button style={{border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon style={{width:"25px","height":"25px",color:"#FF0000"}} icon={faTrash}></FontAwesomeIcon></button>
+                        <button onClick={handleDelete} style={{border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon style={{width:"25px","height":"25px",color:"#FF0000"}} icon={faTrash}></FontAwesomeIcon></button>
                     </div>
                 </Card.Body>
             </Card>
@@ -120,7 +138,7 @@ function HabitCard({habitProp,currentDate,resetStreak,index,doHabit}:Props) {
                     </div>
                     <div style={{display:"flex"}}>
                         <button onClick={gotoEditPage} data-testid="button-edit" style={{border:"none",backgroundColor: "inherit",marginRight:"20px",color:"#007BFF"}}><FontAwesomeIcon style={{width:"25px","height":"25px"}} icon={faEdit}></FontAwesomeIcon></button>
-                        <button style={{border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon style={{width:"25px","height":"25px",color:"#007BFF"}} icon={faTrash}></FontAwesomeIcon></button>
+                        <button onClick={handleDelete} style={{border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon style={{width:"25px","height":"25px",color:"#007BFF"}} icon={faTrash}></FontAwesomeIcon></button>
                     </div>
                 </Card.Body>
             </Card>
