@@ -28,7 +28,6 @@ function Login() {
     setLoading(true)
     signInWithEmailAndPassword(auth,email,password)
     .then((userCredential)=>{
-      console.log("userCredential",userCredential)
       setLoading(false)
       navigate("/")
     })

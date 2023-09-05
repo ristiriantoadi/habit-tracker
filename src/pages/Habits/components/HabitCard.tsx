@@ -30,7 +30,6 @@ function HabitCard({habitProp,currentDate,resetStreak,doHabit,deleteHabit}:Props
     }
     const handleDone = async ()=>{
         setLoading(true)
-        console.log("key",habitProp.id)
         await doHabit(habitProp.id,habitProp.streak)
         setLoading(false)
     }

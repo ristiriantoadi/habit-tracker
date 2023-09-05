@@ -33,7 +33,6 @@ function Create() {
         try{
             await addDoc(collection(db,"habits"),data)
         }catch(e:any){
-            console.log("error",e)
             Swal.fire({
                 icon: 'error',
                 text: mapError(e.toString()),

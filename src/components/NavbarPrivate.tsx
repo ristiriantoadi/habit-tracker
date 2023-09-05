@@ -8,7 +8,6 @@ import { auth } from '../FirebaseConfig';
 function NavbarPrivate() {
 
   const logout = ()=>{
-    console.log("sign out")
     return auth.signOut()
   }
 

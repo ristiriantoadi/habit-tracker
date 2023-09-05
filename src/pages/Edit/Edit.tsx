@@ -34,16 +34,11 @@ function Edit() {
         setSubmitLoading(true)
         let updateData:UpdateData = {name:name,goal:goal}
         if (habitType == "positive"){
-            updateData.isDone=false
-            console.log("current streak",currentStreak)
-            console.log("goal",goal)
             if (currentStreak === goal) updateData.isDone = true
         }
-        console.log(updateData)
         try{
             await updateDoc(docRef,(updateData as any))
         }catch(e:any){
-            console.log("error",e)
             Swal.fire({
                 icon: 'error',
                 text: mapError(e.toString()),
@@ -67,9 +62,7 @@ function Edit() {
             setHabitType(data.habitType)
             setLoading(false)
 
-        } else {
-            console.log("No such document!");
-        }
+        }    
     }
 
     useEffect(()=>{
