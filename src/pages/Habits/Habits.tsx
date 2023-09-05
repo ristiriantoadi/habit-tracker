@@ -120,6 +120,7 @@ function Habits() {
     const habitsFilteredAfterDelete = habitsFiltered.filter(habit => habit.id !== id)
     setHabitsFiltered(habitsFilteredAfterDelete)
 
+
   }
   
   return (
