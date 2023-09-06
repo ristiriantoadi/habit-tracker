@@ -108,7 +108,7 @@ function HabitCard({habitProp,currentDate,resetStreak,doHabit,deleteHabit,openMo
                     </div>
                     <div style={{display:"flex",flexFlow:"column"}}>
                         <button onClick={gotoEditPage} data-testid="button-edit" style={{border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon className={style.icon} style={{marginBottom:"5px",color:"#FFD700"}} icon={faEdit}></FontAwesomeIcon></button>
-                        <button onClick={()=>openModal()} style={{border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon style={{color:"#007BFF"}} className={style.icon} icon={faLineChart}></FontAwesomeIcon></button>
+                        <button onClick={()=>openModal(habitProp.id)} style={{border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon style={{color:"#007BFF"}} className={style.icon} icon={faLineChart}></FontAwesomeIcon></button>
                         <button onClick={handleDelete} style={{border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon className={style.icon} style={{color:"#FF0000"}} icon={faTrash}></FontAwesomeIcon></button>
                     </div>
                 </Card.Body>
@@ -139,7 +139,7 @@ function HabitCard({habitProp,currentDate,resetStreak,doHabit,deleteHabit,openMo
                     </div>
                     <div style={{display:"flex"}}>
                         <button onClick={gotoEditPage} data-testid="button-edit" className={style.buttonRight}><FontAwesomeIcon className={style.icon} style={{color:"#FFD700"}} icon={faEdit}></FontAwesomeIcon></button>
-                        <button onClick={()=>openModal()} className={style.buttonRight}><FontAwesomeIcon className={style.icon} style={{color:"#007BFF"}} icon={faLineChart}></FontAwesomeIcon></button>
+                        <button onClick={()=>openModal(habitProp.id)} className={style.buttonRight}><FontAwesomeIcon className={style.icon} style={{color:"#007BFF"}} icon={faLineChart}></FontAwesomeIcon></button>
                         <button onClick={handleDelete} className={style.buttonRight}><FontAwesomeIcon className={style.icon} style={{color:"#FF0000"}} icon={faTrash}></FontAwesomeIcon></button>
                     </div>
                 </Card.Body>

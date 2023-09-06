@@ -49,8 +49,6 @@ export const getEstimatedDate = (habit:HabitDB,currentStreak:number)=>{
 }
 
 export const isHabitDone = (habit:HabitDB,currentStreak:number)=>{
-    console.log("goal",habit.goal)
-    console.log("current streak",currentStreak)
     if (habit.goal == currentStreak) return true
     if (habit.habitType == "positive" && habit.isDone) return habit.isDone
     return false

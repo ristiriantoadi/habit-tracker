@@ -24,6 +24,7 @@ function Habits() {
   const [habitsFiltered,setHabitsFiltered] = useState<HabitDB[]>([])
   const {currentUser} = useContext(AuthContext)
   const [showModalChart,setShowModalChart] = useState(false)
+  const [habitInModal,setHabitInModal] = useState<HabitDB|null>(null)
 
   const getHabits = async ()=>{
     setLoading(true)
@@ -35,7 +36,6 @@ function Habits() {
       setHabits(habits)
       setHabitsFiltered(habits)
     }catch(e:any){
-      console.log("error",e)
       Swal.fire({
           icon: 'error',
           text: mapError(e.toString),
@@ -127,8 +127,12 @@ function Habits() {
   const closeModal = ()=>{
     setShowModalChart(false)
   }
-  const openModal = ()=>{
+  const openModal = (id:string)=>{
     setShowModalChart(true)
+    let habitCopies = [...habits]
+    let index = habitCopies.findIndex((e)=>e.id === id)
+    setHabitInModal(habitCopies[index])
+
   }
   
   return (
@@ -137,7 +141,7 @@ function Habits() {
         <HeadingBar filterData={filterData}></HeadingBar>
         <div style={{margin:"30px 0"}}>
           {loading === true && <CircularLoaderBig/>}
-          <ModalChart show={showModalChart} handleClose={closeModal}></ModalChart>
+          <ModalChart habit={habitInModal} show={showModalChart} handleClose={closeModal}></ModalChart>
           {habitsPage.map((item,index)=><HabitCard openModal={openModal} doHabit={doHabit} index={index} resetStreak={resetStreak} currentDate={getCurrentDate()} key={item.id} habitProp={convertHabitDBToProp(item)} deleteHabit={deleteHabit}></HabitCard>)}
         </div>
         <PaginationComponent currentPage={currentPage} length={habitsFiltered.length}></PaginationComponent>

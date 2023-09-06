@@ -121,7 +121,6 @@ describe("search",()=>{
             },
         ]
         const filteredHabits = filterHabitsByIsDone(habits,true,new Date("2023-09-03"))
-        console.log("filteredHabits",filteredHabits)
         expect(filteredHabits).toHaveLength(1)
         expect(filteredHabits[0].name).toEqual("done")
     })
