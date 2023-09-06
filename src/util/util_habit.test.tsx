@@ -103,7 +103,7 @@ describe("search",()=>{
         const habits:HabitDB[] = [
             {
                 id:"123",
-                createTime:Timestamp.now(),
+                createTime:Timestamp.fromDate(new Date("2023-09-03")),
                 name:"done",
                 goal:1,
                 habitType:"positive",
@@ -112,7 +112,7 @@ describe("search",()=>{
             },
             {
                 id:"123",
-                createTime:Timestamp.now(),
+                createTime:Timestamp.fromDate(new Date("2023-09-03")),
                 name:"not done",
                 goal:2,
                 habitType:"positive",
@@ -120,7 +120,8 @@ describe("search",()=>{
                 resetHistories:[],
             },
         ]
-        const filteredHabits = filterHabitsByIsDone(habits,true)
+        const filteredHabits = filterHabitsByIsDone(habits,true,new Date("2023-09-03"))
+        console.log("filteredHabits",filteredHabits)
         expect(filteredHabits).toHaveLength(1)
         expect(filteredHabits[0].name).toEqual("done")
     })
@@ -146,7 +147,7 @@ describe("search",()=>{
                 resetHistories:[],
             },
         ]
-        const filteredHabits = filterHabitsByIsDone(habits,false)
+        const filteredHabits = filterHabitsByIsDone(habits,false,new Date("2023-09-03"))
         expect(filteredHabits).toHaveLength(1)
         expect(filteredHabits[0].name).toEqual("not done")
     })

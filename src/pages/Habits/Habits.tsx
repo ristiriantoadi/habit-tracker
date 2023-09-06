@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import CircularLoaderBig from "../../components/CircularLoaderBig";
+import ModalChart from "../../components/ModalChart";
 import PaginationComponent, { getSubsetData } from "../../components/Pagination";
 import { AuthContext } from "../../contexts/AuthContext";
 import { db } from "../../FirebaseConfig";
@@ -22,6 +23,7 @@ function Habits() {
   const [habits,setHabits] = useState<HabitDB[]>([])
   const [habitsFiltered,setHabitsFiltered] = useState<HabitDB[]>([])
   const {currentUser} = useContext(AuthContext)
+  const [showModalChart,setShowModalChart] = useState(false)
 
   const getHabits = async ()=>{
     setLoading(true)
@@ -122,6 +124,12 @@ function Habits() {
 
 
   }
+  const closeModal = ()=>{
+    setShowModalChart(false)
+  }
+  const openModal = ()=>{
+    setShowModalChart(true)
+  }
   
   return (
     <div>
@@ -129,7 +137,8 @@ function Habits() {
         <HeadingBar filterData={filterData}></HeadingBar>
         <div style={{margin:"30px 0"}}>
           {loading === true && <CircularLoaderBig/>}
-          {habitsPage.map((item,index)=><HabitCard doHabit={doHabit} index={index} resetStreak={resetStreak} currentDate={getCurrentDate()} key={item.id} habitProp={convertHabitDBToProp(item)} deleteHabit={deleteHabit}></HabitCard>)}
+          <ModalChart show={showModalChart} handleClose={closeModal}></ModalChart>
+          {habitsPage.map((item,index)=><HabitCard openModal={openModal} doHabit={doHabit} index={index} resetStreak={resetStreak} currentDate={getCurrentDate()} key={item.id} habitProp={convertHabitDBToProp(item)} deleteHabit={deleteHabit}></HabitCard>)}
         </div>
         <PaginationComponent currentPage={currentPage} length={habitsFiltered.length}></PaginationComponent>
     </div>

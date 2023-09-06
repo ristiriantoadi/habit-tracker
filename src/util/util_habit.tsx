@@ -27,8 +27,8 @@ export const getCurrentStreakPositiveHabit = (doneHistories:Date[],currentDate:D
 
 }
 
-export const getCurrentStreak = (data:HabitDB)=>{
-    const currentDate = getCurrentDate()
+export const getCurrentStreak = (data:HabitDB,currentDate?:Date)=>{
+    if (currentDate == undefined) currentDate=getCurrentDate()
     let streak=0
     if (data.habitType == "positive"){
         const doneHistories = data.doneHistories.map((h:Timestamp)=>new Date(convertDateObjectToYearMonthDate(h.toDate())))
@@ -49,6 +49,8 @@ export const getEstimatedDate = (habit:HabitDB,currentStreak:number)=>{
 }
 
 export const isHabitDone = (habit:HabitDB,currentStreak:number)=>{
+    console.log("goal",habit.goal)
+    console.log("current streak",currentStreak)
     if (habit.goal == currentStreak) return true
     if (habit.habitType == "positive" && habit.isDone) return habit.isDone
     return false
@@ -60,6 +62,6 @@ export const filterHabitsByName = (habits:HabitDB[],text:string)=>{
   
 }
 
-export const filterHabitsByIsDone = (habits:HabitDB[],isDone:boolean)=>{
-    return habits.filter((habit)=>isDone == isHabitDone(habit,getCurrentStreak(habit)))
+export const filterHabitsByIsDone = (habits:HabitDB[],isDone:boolean,currentDate?:Date)=>{
+    return habits.filter((habit)=>isDone == isHabitDone(habit,getCurrentStreak(habit,currentDate)))
 }
