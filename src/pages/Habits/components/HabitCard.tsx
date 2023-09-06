@@ -1,4 +1,4 @@
-import { faCheck, faEdit, faRefresh, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faEdit, faLineChart, faRefresh, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
 import { Card } from 'react-bootstrap'
@@ -107,6 +107,7 @@ function HabitCard({habitProp,currentDate,resetStreak,doHabit,deleteHabit}:Props
                     </div>
                     <div style={{display:"flex",flexFlow:"column"}}>
                         <button onClick={gotoEditPage} data-testid="button-edit" style={{border:"none",backgroundColor: "inherit",color:"#007BFF"}}><FontAwesomeIcon style={{width:"25px","height":"25px",marginBottom:"5px"}} icon={faEdit}></FontAwesomeIcon></button>
+                        <button style={{border:"none",backgroundColor: "inherit",color:"#007BFF"}}><FontAwesomeIcon style={{width:"25px","height":"25px"}} icon={faLineChart}></FontAwesomeIcon></button>
                         <button onClick={handleDelete} style={{border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon style={{width:"25px","height":"25px",color:"#FF0000"}} icon={faTrash}></FontAwesomeIcon></button>
                     </div>
                 </Card.Body>
@@ -137,6 +138,7 @@ function HabitCard({habitProp,currentDate,resetStreak,doHabit,deleteHabit}:Props
                     </div>
                     <div style={{display:"flex"}}>
                         <button onClick={gotoEditPage} data-testid="button-edit" style={{border:"none",backgroundColor: "inherit",marginRight:"20px",color:"#007BFF"}}><FontAwesomeIcon style={{width:"25px","height":"25px"}} icon={faEdit}></FontAwesomeIcon></button>
+                        <button style={{border:"none",backgroundColor: "inherit",marginRight:"20px",color:"#007BFF"}}><FontAwesomeIcon style={{width:"25px","height":"25px"}} icon={faLineChart}></FontAwesomeIcon></button>
                         <button onClick={handleDelete} style={{border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon style={{width:"25px","height":"25px",color:"#007BFF"}} icon={faTrash}></FontAwesomeIcon></button>
                     </div>
                 </Card.Body>
