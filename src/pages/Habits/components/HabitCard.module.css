@@ -20,10 +20,25 @@
   flex-flow:column
 }
 
-.itemInfoLabel{
-  font-weight: 600;
+.buttonRight{
+  border:none;
+  background-color:inherit;
+  margin-right:20px;
 }
 
+.icon{
+  width:25px;
+  height:25px;
+}
+
+.infoLabel{
+  font-weight:600
+}
+
+.info{
+  display:flex;
+  flex-flow:column
+}
 @media (min-width: 1312px) {
     .small{
       display: none;

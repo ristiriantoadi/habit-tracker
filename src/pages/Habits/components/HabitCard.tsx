@@ -91,24 +91,24 @@ function HabitCard({habitProp,currentDate,resetStreak,doHabit,deleteHabit}:Props
                             {habitProp.habitType === "positive"? <span className={style.positive}>Positive Habit</span>:<span className={style.negative}>Negative Habit</span>} 
                         </div>
                         <div style={{display:"flex",justifyContent:"space-between",marginTop:"20px"}}>
-                            <div style={{display:"flex",flexFlow:"column"}}>
-                                <label style={{fontWeight:"600"}}>Streak</label>
+                            <div className={style.info}>
+                                <label className={style.infoLabel}>Streak</label>
                                 <span>{habitProp.streak.toString()}</span>
                             </div>
-                            <div style={{display:"flex",flexFlow:"column"}}>
-                                <label style={{fontWeight:"600"}}>Goal</label>
+                            <div className={style.info}>
+                                <label className={style.infoLabel}>Goal</label>
                                 <span>{habitProp.goal.toString()}</span>
                             </div>
-                            <div style={{display:"flex",flexFlow:"column"}}>
-                                <label style={{fontWeight:"600"}}>Estimation Date</label>
+                            <div className={style.info}>
+                                <label className={style.infoLabel}>Estimation Date</label>
                                 <span>{habitProp.estimatedDate.toDateString()}</span>
                             </div>
                         </div>
                     </div>
                     <div style={{display:"flex",flexFlow:"column"}}>
-                        <button onClick={gotoEditPage} data-testid="button-edit" style={{border:"none",backgroundColor: "inherit",color:"#007BFF"}}><FontAwesomeIcon style={{width:"25px","height":"25px",marginBottom:"5px"}} icon={faEdit}></FontAwesomeIcon></button>
-                        <button style={{border:"none",backgroundColor: "inherit",color:"#007BFF"}}><FontAwesomeIcon style={{width:"25px","height":"25px"}} icon={faLineChart}></FontAwesomeIcon></button>
-                        <button onClick={handleDelete} style={{border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon style={{width:"25px","height":"25px",color:"#FF0000"}} icon={faTrash}></FontAwesomeIcon></button>
+                        <button onClick={gotoEditPage} data-testid="button-edit" style={{border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon className={style.icon} style={{marginBottom:"5px",color:"#FFD700"}} icon={faEdit}></FontAwesomeIcon></button>
+                        <button style={{border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon style={{color:"#007BFF"}} className={style.icon} icon={faLineChart}></FontAwesomeIcon></button>
+                        <button onClick={handleDelete} style={{border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon className={style.icon} style={{color:"#FF0000"}} icon={faTrash}></FontAwesomeIcon></button>
                     </div>
                 </Card.Body>
             </Card>
@@ -119,27 +119,27 @@ function HabitCard({habitProp,currentDate,resetStreak,doHabit,deleteHabit}:Props
                         {getMainButton()}    
                         <span style={{marginLeft:"20px",width:"150px",whiteSpace: "nowrap",overflow: "hidden",textOverflow: "ellipsis"}}>{habitProp.name}</span>
                         <div className={style.itemInfo}>
-                            <label className={style.itemInfoLabel}>Streak</label>
+                            <label className={style.infoLabel}>Streak</label>
                             <span data-testid="streak">{habitProp.streak.toString()}</span>
                         </div>
                         <div className={style.itemInfo}>
-                            <label className={style.itemInfoLabel}>Goal</label>
+                            <label className={style.infoLabel}>Goal</label>
                             <span>{habitProp.goal.toString()}</span>
                         </div>
                         <div className={style.itemInfo}>
-                                <label className={style.itemInfoLabel}>Start Date</label>
+                                <label className={style.infoLabel}>Start Date</label>
                                 <span>{habitProp.createTime.toDateString()}</span>
                         </div>
                         <div className={style.itemInfo}>
-                            <label className={style.itemInfoLabel}>Estimation Date</label>
+                            <label className={style.infoLabel}>Estimation Date</label>
                             <span>{habitProp.estimatedDate.toDateString()}</span>
                         </div>
                         {habitProp.habitType === "positive"? <span className={style.positive} style={{marginLeft:"60px",width:"150px"}}>Positive Habit</span>:<span className={style.negative} style={{marginLeft:"60px",width:"150px"}}>Negative Habit</span>}
                     </div>
                     <div style={{display:"flex"}}>
-                        <button onClick={gotoEditPage} data-testid="button-edit" style={{border:"none",backgroundColor: "inherit",marginRight:"20px",color:"#007BFF"}}><FontAwesomeIcon style={{width:"25px","height":"25px"}} icon={faEdit}></FontAwesomeIcon></button>
-                        <button style={{border:"none",backgroundColor: "inherit",marginRight:"20px",color:"#007BFF"}}><FontAwesomeIcon style={{width:"25px","height":"25px"}} icon={faLineChart}></FontAwesomeIcon></button>
-                        <button onClick={handleDelete} style={{border:"none",backgroundColor: "inherit"}}><FontAwesomeIcon style={{width:"25px","height":"25px",color:"#007BFF"}} icon={faTrash}></FontAwesomeIcon></button>
+                        <button onClick={gotoEditPage} data-testid="button-edit" className={style.buttonRight}><FontAwesomeIcon className={style.icon} style={{color:"#FFD700"}} icon={faEdit}></FontAwesomeIcon></button>
+                        <button className={style.buttonRight}><FontAwesomeIcon className={style.icon} style={{color:"#007BFF"}} icon={faLineChart}></FontAwesomeIcon></button>
+                        <button onClick={handleDelete} className={style.buttonRight}><FontAwesomeIcon className={style.icon} style={{color:"#FF0000"}} icon={faTrash}></FontAwesomeIcon></button>
                     </div>
                 </Card.Body>
             </Card>

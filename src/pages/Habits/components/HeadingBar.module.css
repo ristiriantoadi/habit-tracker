@@ -26,6 +26,11 @@
 }
 
 @media(max-width:517px){
+
+    .inputCheckbox{
+        margin-left: 0px;
+    }
+
     .container{
         display:block
     }

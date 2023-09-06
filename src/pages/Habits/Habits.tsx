@@ -33,6 +33,7 @@ function Habits() {
       setHabits(habits)
       setHabitsFiltered(habits)
     }catch(e:any){
+      console.log("error",e)
       Swal.fire({
           icon: 'error',
           text: mapError(e.toString),
