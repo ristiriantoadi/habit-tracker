@@ -26,3 +26,7 @@
   background-color: #f44336; /* Red background color */
   color: white;
 }
+
+.modal-width{
+  width:2000px;
+}

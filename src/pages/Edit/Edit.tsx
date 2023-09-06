@@ -34,6 +34,7 @@ function Edit() {
         setSubmitLoading(true)
         let updateData:UpdateData = {name:name,goal:goal}
         if (habitType == "positive"){
+            updateData.isDone=false
             if (currentStreak === goal) updateData.isDone = true
         }
         try{
