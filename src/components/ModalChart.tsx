@@ -1,7 +1,10 @@
 import { Chart, registerables } from "chart.js";
+import { Timestamp } from "firebase/firestore";
 import { Button, Modal } from 'react-bootstrap';
 import { Line } from 'react-chartjs-2';
-import { HabitDB } from '../models/HabitModel';
+import { HabitChart, HabitDB } from '../models/HabitModel';
+import { convertDateObjectToYearMonthDate, getCurrentDate } from "../util/util_date";
+import { getDataChartNegativeHabit } from "../util/util_habit";
 import style from "./ModalChart.module.css";
 Chart.register(...registerables)
 
@@ -13,26 +16,48 @@ interface Prop{
 
 function ModalChart({show,handleClose,habit}:Prop) {
 
-    let labels = ["2023-01-01","2023-01-02","2023-01-03","2023-01-04","2023-01-05","2023-01-06","2023-01-07","2023-01-08","2023-01-09",]
+    const getChartData = ()=>{
+      let chartData:HabitChart[]=[]
+      if (habit?.habitType == "negative"){
+        chartData = getDataChartNegativeHabit(getCurrentDate(),habit.resetHistories.map(h=>new Date(convertDateObjectToYearMonthDate((h as Timestamp).toDate()))),new Date(convertDateObjectToYearMonthDate((habit.createTime as Timestamp).toDate())))
+      }
+      return chartData
+    }
+
+    const getLabels = ()=>{
+      return getChartData().map(d=>convertDateObjectToYearMonthDate(d.currentDate))  
+    }
 
     const getWidth = ()=>{
         let width = 1200;
-        if (labels.length > 7) {
-            width = width + (labels.length - 7) * 100;
+        if (getLabels().length > 7) {
+            width = width + (getLabels().length - 7) * 100;
         }
         return width
     }
-
+    
+    let labels = getLabels()
     const data = {
         labels,
         datasets: [
           {
-            data: [1,2,3,4,5,6,7,8,9],
-            borderColor: "rgb(255, 99, 132)",
+            data: getChartData().map(d=>d.count),
+            borderColor: "#FFC400",
             backgroundColor: "rgba(255, 99, 132, 0.5)",
           },
         ],
       };
+    const options = {
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: {
+            ticks: {
+                precision: 0
+            }
+        }
+    }
+  }
 
   return (
     <Modal dialogClassName={style.modal} show={show} onHide={()=>handleClose()}>
@@ -45,10 +70,7 @@ function ModalChart({show,handleClose,habit}:Prop) {
                 <div style={{ width: getWidth(),height:"500px",margin:"0 auto"}}>
                     <Line
                     data={data}
-                    options={{
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false } },
-                    }}
+                    options={options}
                     ></Line>
                 </div>
             </div>
