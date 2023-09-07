@@ -1,5 +1,5 @@
 import { Timestamp } from "firebase/firestore"
-import { HabitDB } from "../models/HabitModel"
+import { HabitChart, HabitDB } from "../models/HabitModel"
 import { addDate, areDatesConsecutive, convertDateObjectToYearMonthDate, getCurrentDate, getDaysBetweenTwoDates } from "./util_date"
 
 export const getCurrentStreakNegativeHabit = (resetHistories:Date[],startDate:Date,currentDate:Date)=>{
@@ -62,4 +62,22 @@ export const filterHabitsByName = (habits:HabitDB[],text:string)=>{
 
 export const filterHabitsByIsDone = (habits:HabitDB[],isDone:boolean,currentDate?:Date)=>{
     return habits.filter((habit)=>isDone == isHabitDone(habit,getCurrentStreak(habit,currentDate)))
+}
+
+export const getDataChartNegativeHabit = (currentDate:Date,resetHistories:Date[],startDate:Date)=>{
+    let count=0
+    let data:HabitChart[]=[]
+    while(startDate<currentDate){
+        count+=1
+        if (resetHistories.filter(h=>getDaysBetweenTwoDates(h,startDate)==0).length > 0){
+            count=0
+        }
+        data.push({
+            currentDate:startDate,
+            count:count
+        })
+        startDate=addDate(startDate,1)
+
+    }
+    return data
 }

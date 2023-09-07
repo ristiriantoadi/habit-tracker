@@ -37,3 +37,9 @@ export interface HabitDB{
     resetHistories:Timestamp[]
     isDone?:boolean
 }
+
+//model used in chart
+export interface HabitChart{
+    currentDate:Date
+    count:number
+}
