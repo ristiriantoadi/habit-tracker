@@ -24,7 +24,7 @@ function Habits() {
   const [habitsFiltered,setHabitsFiltered] = useState<HabitDB[]>([])
   const {currentUser} = useContext(AuthContext)
   const [showModalChart,setShowModalChart] = useState(false)
-  const [habitInModal,setHabitInModal] = useState<HabitDB|null>(null)
+  const [habitInModal,setHabitInModal] = useState<HabitDB>({id:"1",createTime:Timestamp.fromDate(new Date()),name:"",goal:0,habitType:"positive",doneHistories:[],resetHistories:[]})
 
   const getHabits = async ()=>{
     setLoading(true)
@@ -64,7 +64,7 @@ function Habits() {
         habitType:item.habitType,
         doneHistories:item.doneHistories.map(h=>new Date(convertDateObjectToYearMonthDate((h as Timestamp).toDate()))),
         resetHistories:item.resetHistories.map(h=>new Date(convertDateObjectToYearMonthDate((h as Timestamp).toDate()))),
-        streak:getCurrentStreak(item),
+        streak:getCurrentStreak(item,getCurrentDate()),
         estimatedDate:getEstimatedDate(item,getCurrentStreak(item)),
         isDone:isHabitDone(item,getCurrentStreak(item))
     }

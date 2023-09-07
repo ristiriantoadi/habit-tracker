@@ -1,7 +1,7 @@
 import { Timestamp } from "firebase/firestore"
 import { HabitDB } from "../models/HabitModel"
 import { getCurrentDate, getDaysBetweenTwoDates } from "./util_date"
-import { filterHabitsByIsDone, filterHabitsByName, getDataChartNegativeHabit } from "./util_habit"
+import { filterHabitsByIsDone, filterHabitsByName, getDataChartNegativeHabit, getDataChartPositiveHabit } from "./util_habit"
 
 describe("search",()=>{
     test("empty text return everything",async ()=>{
@@ -191,4 +191,68 @@ test("resetHistories are not empty",()=>{
         expect(d.currentDate).toEqual(result[index].currentDate)
         expect(d.count).toEqual(result[index].count)
     })
+})
+
+test("if resetHistories are not empty, and last reset value is today, the last entry in chart is today and the count value is 0",()=>{
+    const currentDate=new Date("2023-09-10")
+    const startDate=new Date("2023-09-05")
+    const resetHistories = [new Date("2023-09-10")]
+    const data = getDataChartNegativeHabit(currentDate,resetHistories,startDate)
+    const result = [
+        {currentDate:new Date("2023-09-05"),count:1},
+        {currentDate:new Date("2023-09-06"),count:2},
+        {currentDate:new Date("2023-09-07"),count:3},
+        {currentDate:new Date("2023-09-08"),count:4},
+        {currentDate:new Date("2023-09-09"),count:5},
+        {currentDate:new Date("2023-09-10"),count:0}
+    ]
+    // expect(data).toEqual(result)
+    data.forEach((d,index)=>{
+        expect(d.currentDate).toEqual(result[index].currentDate)
+        expect(d.count).toEqual(result[index].count)
+    })
+})
+
+test("if currentDate, startDate, last reset value is today",()=>{
+    const resetHistories = [getCurrentDate()]
+    const startDate = getCurrentDate()
+    const currentDate=getCurrentDate()
+    const data = getDataChartNegativeHabit(currentDate,resetHistories,startDate)
+    const result = [
+        {currentDate:getCurrentDate(),count:0},
+    ]
+    expect(data).toEqual(result)
+})
+
+
+//getDataChartPositiveHabit
+test("get data chart positive habit",()=>{
+    const currentDate=new Date("2023-09-10")
+    const startDate=new Date("2023-09-04")
+    const doneHistories = [new Date("2023-09-05"),new Date("2023-09-07"),new Date("2023-09-08")]
+    const data = getDataChartPositiveHabit(currentDate,doneHistories,startDate)
+    const result = [
+        {currentDate:new Date("2023-09-04"),count:0},
+        {currentDate:new Date("2023-09-05"),count:1},
+        {currentDate:new Date("2023-09-06"),count:0},
+        {currentDate:new Date("2023-09-07"),count:1},
+        {currentDate:new Date("2023-09-08"),count:2},
+        {currentDate:new Date("2023-09-09"),count:0},
+    ]
+    expect(result.length).toEqual(data.length)
+    data.forEach((d,index)=>{
+        expect(d.currentDate).toEqual(result[index].currentDate)
+        expect(d.count).toEqual(result[index].count)
+    })
+})
+
+test("if last doneHistories is today",()=>{
+    const currentDate=new Date("2023-09-10")
+    const startDate=new Date("2023-09-10")
+    const doneHistories = [new Date("2023-09-10")]
+    const data = getDataChartPositiveHabit(currentDate,doneHistories,startDate)
+    const result = [
+        {currentDate:new Date("2023-09-10"),count:1},
+    ]
+    expect(data).toEqual(result)
 })

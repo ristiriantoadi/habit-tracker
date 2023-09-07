@@ -4,22 +4,24 @@ import { Button, Modal } from 'react-bootstrap';
 import { Line } from 'react-chartjs-2';
 import { HabitChart, HabitDB } from '../models/HabitModel';
 import { convertDateObjectToYearMonthDate, getCurrentDate } from "../util/util_date";
-import { getDataChartNegativeHabit } from "../util/util_habit";
+import { getDataChartNegativeHabit, getDataChartPositiveHabit } from "../util/util_habit";
 import style from "./ModalChart.module.css";
 Chart.register(...registerables)
 
 interface Prop{
     show:boolean
     handleClose:Function
-    habit?:HabitDB|null
+    habit:HabitDB
 }
 
 function ModalChart({show,handleClose,habit}:Prop) {
 
     const getChartData = ()=>{
       let chartData:HabitChart[]=[]
-      if (habit?.habitType == "negative"){
+      if (habit.habitType == "negative"){
         chartData = getDataChartNegativeHabit(getCurrentDate(),habit.resetHistories.map(h=>new Date(convertDateObjectToYearMonthDate((h as Timestamp).toDate()))),new Date(convertDateObjectToYearMonthDate((habit.createTime as Timestamp).toDate())))
+      }else{
+        chartData = getDataChartPositiveHabit(getCurrentDate(),habit.doneHistories.map(h=>new Date(convertDateObjectToYearMonthDate((h as Timestamp).toDate()))),new Date(convertDateObjectToYearMonthDate((habit.createTime as Timestamp).toDate())))
       }
       return chartData
     }
@@ -42,7 +44,7 @@ function ModalChart({show,handleClose,habit}:Prop) {
         datasets: [
           {
             data: getChartData().map(d=>d.count),
-            borderColor: "#FFC400",
+            borderColor: "#FF0000",
             backgroundColor: "rgba(255, 99, 132, 0.5)",
           },
         ],

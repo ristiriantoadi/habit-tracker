@@ -120,16 +120,16 @@ test("if resetHistories are not empty, and last reset value is yesterday",()=>{
     const currentDate = new Date("2023-08-21")
     const startDate = new Date("2023-07-23")
     const res = getCurrentStreakNegativeHabit(resetHistories,startDate,currentDate)
-    expect(res).toEqual(1)
+    expect(res).toEqual(0)
 })
 
-test("if resetHistories are not empty, and last reset value is n days ago, return n",()=>{
+test("if resetHistories are not empty, and last reset value is n days ago, return n-1",()=>{
     const resetHistories = [new Date("2023-08-01"),new Date("2023-08-10"),new Date("2023-08-20")]
     const n = 2
     const currentDate = addDate(resetHistories[resetHistories.length-1],n)
     const startDate = new Date("2023-07-23")
     const res = getCurrentStreakNegativeHabit(resetHistories,startDate,currentDate)
-    expect(res).toEqual(n)
+    expect(res).toEqual(n-1)
 })
 
 //test negative habit card

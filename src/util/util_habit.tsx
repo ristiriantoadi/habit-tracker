@@ -6,7 +6,8 @@ export const getCurrentStreakNegativeHabit = (resetHistories:Date[],startDate:Da
     if (resetHistories.length == 0) return Math.abs(getDaysBetweenTwoDates(startDate,currentDate))
 
     const lastReset = resetHistories[resetHistories.length-1]
-    return Math.abs(getDaysBetweenTwoDates(lastReset,currentDate))
+    if (getDaysBetweenTwoDates(lastReset,currentDate) == 0) return 0
+    return Math.abs(getDaysBetweenTwoDates(lastReset,currentDate)-1)
 }
 
 export const getCurrentStreakPositiveHabit = (doneHistories:Date[],currentDate:Date)=>{
@@ -67,6 +68,10 @@ export const filterHabitsByIsDone = (habits:HabitDB[],isDone:boolean,currentDate
 export const getDataChartNegativeHabit = (currentDate:Date,resetHistories:Date[],startDate:Date)=>{
     let count=0
     let data:HabitChart[]=[]
+    if (resetHistories.length>0)
+        if (getDaysBetweenTwoDates(resetHistories[resetHistories.length-1],currentDate)==0){
+            currentDate = addDate(currentDate,1)
+        }
     while(startDate<currentDate){
         count+=1
         if (resetHistories.filter(h=>getDaysBetweenTwoDates(h,startDate)==0).length > 0){
@@ -78,6 +83,30 @@ export const getDataChartNegativeHabit = (currentDate:Date,resetHistories:Date[]
         })
         startDate=addDate(startDate,1)
 
+    }
+    return data
+}
+
+export const getDataChartPositiveHabit = (currentDate:Date,doneHistories:Date[],startDate:Date)=>{
+    let data:HabitChart[]=[]
+    if (doneHistories.length>0)
+        if (getDaysBetweenTwoDates(doneHistories[doneHistories.length-1],currentDate)==0){
+            currentDate = addDate(currentDate,1)
+        }
+    while(startDate<currentDate){
+        let count=0
+        if (doneHistories.filter(h=>getDaysBetweenTwoDates(h,startDate)==0).length > 0){
+            count=1
+            if (data.length>0){
+                count=data[data.length-1].count+1
+            }
+            
+        }
+        data.push({
+            currentDate:startDate,
+            count:count
+        })
+        startDate = addDate(startDate,1)
     }
     return data
 }
