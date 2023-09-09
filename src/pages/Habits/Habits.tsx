@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, getDocs, query, Timestamp, updateDoc, where } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, orderBy, query, Timestamp, updateDoc, where } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -28,7 +28,7 @@ function Habits() {
 
   const getHabits = async ()=>{
     setLoading(true)
-    const q = query(collection(db, "habits"), where("userId", "==", currentUser?.uid));
+    const q = query(collection(db, "habits"),orderBy("createTime","desc"), where("userId", "==", currentUser?.uid));
     
     try{
       const data = await getDocs(q)
@@ -36,6 +36,7 @@ function Habits() {
       setHabits(habits)
       setHabitsFiltered(habits)
     }catch(e:any){
+      console.log("error",e)
       Swal.fire({
           icon: 'error',
           text: mapError(e.toString),
