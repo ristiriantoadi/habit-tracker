@@ -12,4 +12,18 @@ describe("CreateEdit",()=>{
     })
 })
 
+test("if positive habit is chosen, show reminder input",()=>{
+    render(<BrowserRouter><Create></Create></BrowserRouter>)
+    fireEvent.click(screen.getByTestId("positive-checkbox"))
+    screen.getByTestId("reminder-input")
+})
+
+test("if negative habit is chosen, dont show reminder input",()=>{
+    render(<BrowserRouter><Create></Create></BrowserRouter>)
+    fireEvent.click(screen.getByTestId("negative-checkbox"))
+    const input = screen.queryByTestId("reminder-input")
+    expect(input).toBe(null)
+})
+
+
 export { }

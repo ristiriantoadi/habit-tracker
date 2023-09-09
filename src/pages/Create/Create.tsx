@@ -1,6 +1,7 @@
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useContext, useState } from "react";
 import { Form } from "react-bootstrap";
+import TimePicker from 'react-bootstrap-time-picker';
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import ButtonSubmit from "../../components/ButtonSubmit";
@@ -9,6 +10,7 @@ import { db } from "../../FirebaseConfig";
 import { HabitInput } from "../../models/HabitModel";
 import { getFutureDateFromToday } from "../../util/util_date";
 import { mapError } from "../../util/util_error";
+
 
 interface Props{
     title:string
@@ -21,6 +23,7 @@ function Create() {
     const [name,setName] = useState("")
     const [goal,setGoal] = useState(1)
     const [habitType,setHabitType] = useState("positive")
+    const [reminderTime,setReminderTime] = useState(0)
     const navigate = useNavigate()
     const {currentUser} = useContext(AuthContext)
 
@@ -48,6 +51,11 @@ function Create() {
         return futureDate.toDateString()
     }
     
+    const handleChangeReminderTime=(time:number)=>{
+        setReminderTime(time)
+        console.log(time)
+    }
+    
 
   return (
     <div>
@@ -71,6 +79,7 @@ function Create() {
                 <Form.Label>Habit Type</Form.Label>
                 <div style={{marginLeft:"20px"}}>
                     <Form.Check
+                        data-testid="positive-checkbox"
                         checked={habitType === "positive"}
                         type="radio"
                         label="Positive"
@@ -82,6 +91,7 @@ function Create() {
                         }
                     />
                     <Form.Check
+                        data-testid="negative-checkbox"
                         checked={habitType === "negative"}
                         type="radio"
                         name="habit-type"
@@ -91,6 +101,16 @@ function Create() {
                     />
                 </div>
             </Form.Group>
+            {habitType == "positive" &&
+                <Form.Group data-testid="reminder-input" className="mb-3" controlId="exampleForm.ControlInput1">
+                    <Form.Label>Reminder</Form.Label>
+                    <Form.Check
+                            type="checkbox"  
+                            label="Send reminder"                  
+                    />
+                    <TimePicker value={reminderTime} onChange={handleChangeReminderTime} format={24} step={1} />
+                </Form.Group>
+            }
               <ButtonSubmit loading={loading}>Submit</ButtonSubmit>
           </Form>
     </div>
