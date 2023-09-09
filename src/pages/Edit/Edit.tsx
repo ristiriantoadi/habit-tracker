@@ -1,6 +1,7 @@
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
+import TimePicker from 'react-bootstrap-time-picker';
 import { useNavigate, useParams } from "react-router";
 import Swal from "sweetalert2";
 import ButtonSubmit from "../../components/ButtonSubmit";
@@ -25,6 +26,7 @@ function Edit() {
     const [habitType,setHabitType] = useState("-")
     const [currentStreak,setCurrentStreak] = useState(0)
     const [estimationDate,setEstimationDate] = useState("")
+    const [reminderTime,setReminderTime] = useState(0)
     const {idHabit} = useParams()
     const docRef = doc(db, "habits/"+idHabit);
     const navigate = useNavigate()
@@ -74,6 +76,9 @@ function Edit() {
         getHabit()
     },[])
 
+    const handleChangeReminderTime = ()=>{
+        
+    }
 
     return (
         <div>
@@ -89,10 +94,6 @@ function Edit() {
                     <div>{currentStreak}</div>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Form.Label>Habit Type</Form.Label>
-                    <div>{habitType[0].toUpperCase()+habitType.slice(1)}</div>
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <Form.Label>Goal</Form.Label>
                     <div style={{display:"flex",alignItems:"center"}}>
                         <Form.Control data-testid="goal-input" style={{width:"30%"}} required type="number" min={currentStreak > 0 ? currentStreak:1} value={goal} onChange={(e)=>setGoal(parseInt(e.target.value))} />
@@ -102,6 +103,20 @@ function Edit() {
                         </div>
                     </div>
                 </Form.Group>
+                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                    <Form.Label>Habit Type</Form.Label>
+                    <div>{habitType[0].toUpperCase()+habitType.slice(1)}</div>
+                </Form.Group>
+                {habitType == "positive" && 
+                    <Form.Group data-testid="reminder-input" className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Label>Reminder</Form.Label>
+                        <Form.Check
+                                type="checkbox"  
+                                label="Send reminder"                  
+                        />
+                        <TimePicker value={reminderTime} onChange={handleChangeReminderTime} format={24} step={1} />
+                    </Form.Group>
+                }
                 <ButtonSubmit loading={submitLoading}>Submit</ButtonSubmit>
             </Form>
         </div>
