@@ -24,6 +24,7 @@ function Create() {
     const [goal,setGoal] = useState(1)
     const [habitType,setHabitType] = useState("positive")
     const [reminderTime,setReminderTime] = useState(0)
+    const [sendReminder,setSendReminder] = useState(false)
     const navigate = useNavigate()
     const {currentUser} = useContext(AuthContext)
 
@@ -31,6 +32,13 @@ function Create() {
         e.preventDefault()
         const data:HabitInput = {
             "name":name,"goal":goal,userId:currentUser?.uid,"habitType":habitType,doneHistories:[],resetHistories:[],createTime:serverTimestamp()
+        }
+        if (data.habitType == "positive"){
+            data.reminder = {
+                send:sendReminder,
+                secondSinceMidnight:reminderTime,
+                timezone:Intl.DateTimeFormat().resolvedOptions().timeZone
+            }
         }
         setLoading(true)
         try{
@@ -106,7 +114,8 @@ function Create() {
                     <Form.Label>Reminder</Form.Label>
                     <Form.Check
                             type="checkbox"  
-                            label="Send reminder"                  
+                            label="Send reminder"
+                            onChange={e=>setSendReminder(e.target.checked)}                  
                     />
                     <TimePicker value={reminderTime} onChange={handleChangeReminderTime} format={24} step={1} />
                 </Form.Group>

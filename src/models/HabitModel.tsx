@@ -24,6 +24,7 @@ export interface HabitInput{
     resetHistories:Date[]
     isDone?:boolean
     userId?:string
+    reminder?:Reminder
 }
 
 
@@ -31,6 +32,7 @@ export interface HabitInput{
 export interface Reminder{
     secondSinceMidnight:number
     send:boolean
+    timezone:string
 }
 
 export interface HabitDB{
