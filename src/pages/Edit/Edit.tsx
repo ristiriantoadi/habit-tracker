@@ -16,6 +16,7 @@ interface UpdateData{
     name:string
     goal:number
     isDone?:boolean
+    reminder?:Reminder
 }
 
 function Edit() {
@@ -26,7 +27,8 @@ function Edit() {
     const [habitType,setHabitType] = useState("-")
     const [currentStreak,setCurrentStreak] = useState(0)
     const [estimationDate,setEstimationDate] = useState("")
-    const [reminder,setReminder] = useState<Reminder|null>()
+    const [reminderTime,setReminderTime] = useState(0)
+    const [sendReminder,setSendReminder] = useState(false)
     const {idHabit} = useParams()
     const docRef = doc(db, "habits/"+idHabit);
     const navigate = useNavigate()
@@ -38,6 +40,11 @@ function Edit() {
         if (habitType == "positive"){
             updateData.isDone=false
             if (currentStreak === goal) updateData.isDone = true
+            updateData.reminder = {
+                secondSinceMidnight:reminderTime,
+                send:sendReminder,
+                timezone:Intl.DateTimeFormat().resolvedOptions().timeZone
+            }
         }
         try{
             await updateDoc(docRef,(updateData as any))
@@ -64,7 +71,8 @@ function Edit() {
             setGoal(data.goal)
             setHabitType(data.habitType)
             setLoading(false)
-            setReminder(data.reminder)
+            setReminderTime(data.reminder.secondSinceMidnight)
+            setSendReminder(data.reminder.send)
 
         }    
     }
@@ -81,14 +89,8 @@ function Edit() {
         
     }
 
-    const isReminderChecked = ()=>{
-        if (reminder == undefined) return false
-        return reminder.send 
-    }
-
     const toggleReminder=()=>{
-        if (reminder == undefined) return false
-        reminder.send = reminder.send == true ? false:true
+        setSendReminder(reminder=>!reminder)
     }
 
     return (
@@ -122,13 +124,13 @@ function Edit() {
                     <Form.Group data-testid="reminder-input" className="mb-3" controlId="exampleForm.ControlInput1">
                         <Form.Label>Reminder</Form.Label>
                         <Form.Check
-                                checked={isReminderChecked()}
+                                checked={sendReminder}
                                 data-testid="checkbox-send-reminder"
                                 type="checkbox"  
                                 label="Send reminder"
                                 onChange={toggleReminder}                  
                         />
-                        <TimePicker data-testid="time-picker" value={reminder?.secondSinceMidnight} onChange={handleChangeReminderTime} format={24} step={1} />
+                        <TimePicker data-testid="time-picker" value={reminderTime} onChange={(time:number)=>setReminderTime(time)} format={24} step={1} />
                     </Form.Group>
                 }
                 <ButtonSubmit loading={submitLoading}>Submit</ButtonSubmit>
