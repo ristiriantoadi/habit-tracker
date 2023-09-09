@@ -47,4 +47,70 @@ test("if habit is negative, dont show reminder input",async ()=>{
     expect(input).toBe(null)
 })
 
+test("if reminder.send = true, check the checkbox",async()=>{
+    (getDoc as jest.Mock).mockResolvedValue({data:()=>({
+            id:"123",
+            createTime:{toDate:()=>new Date("2023-09-09")},
+            name:"123",
+            goal:10,
+            habitType:"positive",
+            doneHistories:[],
+            resetHistories:[],
+            reminder:{
+                secondSinceMidnight:100,
+                send:true
+            }
+        }),exists:()=>true,
+    })
+    
+    await act(()=>{
+        render(<BrowserRouter><Edit/></BrowserRouter>)
+    })
+    const element = screen.getByRole("checkbox")
+    expect(element).toBeChecked()    
+
+
+})
+
+test("if reminder.send is false, checkbox is unchecked",async()=>{
+    (getDoc as jest.Mock).mockResolvedValue({data:()=>({
+            id:"123",
+            createTime:{toDate:()=>new Date("2023-09-09")},
+            name:"123",
+            goal:10,
+            habitType:"positive",
+            doneHistories:[],
+            resetHistories:[],
+            reminder:{
+                secondSinceMidnight:100,
+                send:false
+            }
+        }),exists:()=>true,
+    })
+    await act(()=>{
+        render(<BrowserRouter><Edit/></BrowserRouter>)
+    })
+    const element = screen.getByRole("checkbox")
+    expect(element).not.toBeChecked()
+})
+
+test("if reminder is null, checkbox is unchecked",async()=>{
+    (getDoc as jest.Mock).mockResolvedValue({data:()=>({
+            id:"123",
+            createTime:{toDate:()=>new Date("2023-09-09")},
+            name:"123",
+            goal:10,
+            habitType:"positive",
+            doneHistories:[],
+            resetHistories:[],
+        }),exists:()=>true,
+    })
+    await act(()=>{
+        render(<BrowserRouter><Edit/></BrowserRouter>)
+    })
+    const element = screen.getByRole("checkbox")
+    expect(element).not.toBeChecked()
+})
+
 export { }
+

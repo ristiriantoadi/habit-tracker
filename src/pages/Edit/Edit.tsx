@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import ButtonSubmit from "../../components/ButtonSubmit";
 import CircularLoaderBig from "../../components/CircularLoaderBig";
 import { db } from "../../FirebaseConfig";
-import { HabitDB } from "../../models/HabitModel";
+import { HabitDB, Reminder } from "../../models/HabitModel";
 import { addDate, getCurrentDate } from "../../util/util_date";
 import { mapError } from "../../util/util_error";
 import { getCurrentStreak } from "../../util/util_habit";
@@ -26,7 +26,7 @@ function Edit() {
     const [habitType,setHabitType] = useState("-")
     const [currentStreak,setCurrentStreak] = useState(0)
     const [estimationDate,setEstimationDate] = useState("")
-    const [reminderTime,setReminderTime] = useState(0)
+    const [reminder,setReminder] = useState<Reminder|null>()
     const {idHabit} = useParams()
     const docRef = doc(db, "habits/"+idHabit);
     const navigate = useNavigate()
@@ -64,6 +64,7 @@ function Edit() {
             setGoal(data.goal)
             setHabitType(data.habitType)
             setLoading(false)
+            setReminder(data.reminder)
 
         }    
     }
@@ -78,6 +79,16 @@ function Edit() {
 
     const handleChangeReminderTime = ()=>{
         
+    }
+
+    const isReminderChecked = ()=>{
+        if (reminder == undefined) return false
+        return reminder.send 
+    }
+
+    const toggleReminder=()=>{
+        if (reminder == undefined) return false
+        reminder.send = reminder.send == true ? false:true
     }
 
     return (
@@ -111,10 +122,13 @@ function Edit() {
                     <Form.Group data-testid="reminder-input" className="mb-3" controlId="exampleForm.ControlInput1">
                         <Form.Label>Reminder</Form.Label>
                         <Form.Check
+                                checked={isReminderChecked()}
+                                data-testid="checkbox-send-reminder"
                                 type="checkbox"  
-                                label="Send reminder"                  
+                                label="Send reminder"
+                                onChange={toggleReminder}                  
                         />
-                        <TimePicker value={reminderTime} onChange={handleChangeReminderTime} format={24} step={1} />
+                        <TimePicker value={reminder?.secondSinceMidnight} onChange={handleChangeReminderTime} format={24} step={1} />
                     </Form.Group>
                 }
                 <ButtonSubmit loading={submitLoading}>Submit</ButtonSubmit>

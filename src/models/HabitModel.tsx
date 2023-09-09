@@ -26,7 +26,13 @@ export interface HabitInput{
     userId?:string
 }
 
+
 // Model received from db
+export interface Reminder{
+    secondSinceMidnight:number
+    send:boolean
+}
+
 export interface HabitDB{
     id:string
     createTime:Timestamp
@@ -36,6 +42,7 @@ export interface HabitDB{
     doneHistories:Timestamp[]
     resetHistories:Timestamp[]
     isDone?:boolean
+    reminder?:Reminder
 }
 
 //model used in chart
