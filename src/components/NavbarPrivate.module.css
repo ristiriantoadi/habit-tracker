@@ -1,0 +1,9 @@
+.navLink{
+    margin-left: 0;
+}
+
+@media (min-width: 1312px) {
+    .navLink{
+        margin-left: 20px;
+    }
+  }
