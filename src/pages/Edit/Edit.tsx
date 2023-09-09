@@ -128,7 +128,7 @@ function Edit() {
                                 label="Send reminder"
                                 onChange={toggleReminder}                  
                         />
-                        <TimePicker value={reminder?.secondSinceMidnight} onChange={handleChangeReminderTime} format={24} step={1} />
+                        <TimePicker data-testid="time-picker" value={reminder?.secondSinceMidnight} onChange={handleChangeReminderTime} format={24} step={1} />
                     </Form.Group>
                 }
                 <ButtonSubmit loading={submitLoading}>Submit</ButtonSubmit>

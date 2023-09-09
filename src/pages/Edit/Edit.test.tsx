@@ -112,5 +112,24 @@ test("if reminder is null, checkbox is unchecked",async()=>{
     expect(element).not.toBeChecked()
 })
 
+test("if reminder is not null, input timepicker show secondSinceMidnight",async ()=>{
+    (getDoc as jest.Mock).mockResolvedValue({data:()=>({
+        id:"123",
+        createTime:{toDate:()=>new Date("2023-09-09")},
+        name:"123",
+        goal:10,
+        habitType:"positive",
+        doneHistories:[],
+        resetHistories:[],
+        reminder:{send:false,secondSinceMidnight:120}
+    }),exists:()=>true,
+    })
+    await act(()=>{
+        render(<BrowserRouter><Edit/></BrowserRouter>)
+    })
+    const element = screen.getByTestId("time-picker")
+    expect((element as HTMLSelectElement).value).toEqual("120")
+})
+
 export { }
 
