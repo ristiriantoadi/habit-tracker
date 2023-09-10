@@ -25,7 +25,7 @@ function NavbarPrivate() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
             <span style={{pointerEvents:"none"}} className='nav-link'><FontAwesomeIcon icon={faUser} style={{marginRight:"5px"}} />{currentUser?.email}</span>
-            <Nav.Link className={style.navLink}><FontAwesomeIcon icon={faBell} style={{marginRight:"5px"}} />Notifications {notifCount > 0 && <Badge bg="info">{notifCount}</Badge>}</Nav.Link>
+            <Nav.Link href="/notifications" className={style.navLink}><FontAwesomeIcon icon={faBell} style={{marginRight:"5px"}} />Notifications {notifCount > 0 && <Badge bg="info">{notifCount}</Badge>}</Nav.Link>
             <Nav.Link className={style.navLink} onClick={logout}><FontAwesomeIcon icon={faSignOut} style={{marginRight:"5px"}} />Logout</Nav.Link>
           </Nav>
         </Navbar.Collapse>
