@@ -71,8 +71,10 @@ function Edit() {
             setGoal(data.goal)
             setHabitType(data.habitType)
             setLoading(false)
-            setReminderTime(data.reminder.secondSinceMidnight)
-            setSendReminder(data.reminder.send)
+            if (data.reminder){
+                setReminderTime(data.reminder.secondSinceMidnight)
+                setSendReminder(data.reminder.send)
+            }
 
         }    
     }
