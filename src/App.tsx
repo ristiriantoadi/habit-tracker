@@ -7,6 +7,7 @@ import Edit from './pages/Edit/Edit';
 import Habits from './pages/Habits/Habits';
 import Login from './pages/Login/Login';
 import NotFound from './pages/NotFound/NotFound';
+import Notifications from './pages/Notifications/Notifications';
 import Signup from './pages/Signup/Signup';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
                 <Route path='create' element={<Create></Create>}/>
                 <Route path='edit/:idHabit' element={<Edit/>}/>
               </Route>
+              <Route path="/notifications" element={<Notifications/>}/>
               <Route path="*" element={<NotFound></NotFound>}></Route>
             </Route>
           </Routes>
