@@ -49,11 +49,9 @@ function Habits() {
   }
 
   const requestNotifPermission = ()=>{
-    console.log("request permission")
     Notification.requestPermission().then(async (permission) => {
       if (permission === 'granted') {
         getToken(messaging, { vapidKey: 'BID2V_2BFIu0f4wsuRCt22WeKzycVnHt0Ntp5WuReYLS_ls0iglYtBqslQCbr1d0nKuqEidDDKkRqZTHWblEBiE' }).then((currentToken) => {
-          console.log("current token",currentToken)
           if (currentToken) {
           
             setDoc(doc(db, "tokens/"+currentUser?.uid,), {

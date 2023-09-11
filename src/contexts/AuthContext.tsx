@@ -1,8 +1,10 @@
 import { User } from "firebase/auth"
 import { collection, onSnapshot, query, where } from "firebase/firestore"
+import { onMessage } from "firebase/messaging"
 import React, { ReactNode, useEffect, useState } from "react"
+import Swal from "sweetalert2"
 import CircularLoaderBig from "../components/CircularLoaderBig"
-import { auth, db } from "../FirebaseConfig"
+import { auth, db, messaging } from "../FirebaseConfig"
 
 interface AuthContextType{
     currentUser:User|null,
@@ -29,6 +31,7 @@ export const AuthProvider = ({ children }:Props) =>{
             setLoading(false)
         })
         return unsubscriber
+        
     },[])
 
     useEffect(()=>{
@@ -46,6 +49,20 @@ export const AuthProvider = ({ children }:Props) =>{
         currentUser:currentUser,
         notifCount:notifCount,
     }
+
+    useEffect(()=>{
+        const unsubscribe = onMessage(messaging, (payload) => {
+          Swal.fire({
+            icon: 'info', // Set the icon to 'info' for an information icon
+            title: payload.notification?.title,
+            text: payload.notification?.body,
+            position: 'center', // Position the notification at the top-right corner
+            showConfirmButton: true, // Remove the "OK" button
+          });
+          // ...
+        });
+        return unsubscribe
+      },[])
 
     return (
         <div>
