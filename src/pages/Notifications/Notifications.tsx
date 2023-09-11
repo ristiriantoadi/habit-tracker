@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore"
+import { collection, doc, getDocs, onSnapshot, orderBy, query, updateDoc, where } from "firebase/firestore"
 import { useContext, useEffect, useState } from "react"
 import CircularLoaderBig from "../../components/CircularLoaderBig"
 import { AuthContext } from "../../contexts/AuthContext"
@@ -17,10 +17,19 @@ function Notifications() {
         const q = query(collection(db, "notifications"),
                     where("userId","==",currentUser?.uid),
                     orderBy("createTime","desc"));
-        const data = await getDocs(q)
-        const notifs = data.docs.map(doc => ({ ...doc.data(),id: doc.id} as NotificationModel))
-        setNotifs(notifs)
-        setLoading(false)
+        // const data = await getDocs(q)
+        // const notifs = data.docs.map(doc => ({ ...doc.data(),id: doc.id} as NotificationModel))
+        const unsubscribe = onSnapshot(q,(snapshot)=>{
+            // snapshot.size
+            let notifications:NotificationModel[]=[]
+            snapshot.forEach((doc) => {
+                    notifications.push({ ...doc.data(),id: doc.id} as NotificationModel)  
+              });
+            setNotifs(notifications)
+            setLoading(false)
+            sendReadNotifs()
+        })
+        return unsubscribe
     }
     
     useEffect(()=>{
@@ -39,9 +48,6 @@ function Notifications() {
             await updateDoc(ref,{"isRead":true})
         }
     }
-    useEffect(()=>{
-        sendReadNotifs()
-      },[])
 
     return (
         <div>
