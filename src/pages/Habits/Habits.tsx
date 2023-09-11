@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, getDocs, orderBy, query, Timestamp, updateDoc, where } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, orderBy, query, setDoc, Timestamp, updateDoc, where } from "firebase/firestore";
 import { getToken } from "firebase/messaging";
 import { useContext, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -48,25 +48,18 @@ function Habits() {
     setHabitsPage(getSubsetData(parseInt(currentPage),habits))
   }
 
-  useEffect(()=>{
-    getHabits()
-  },[])
-
-  const requestPermission = ()=>{
-    Notification.requestPermission().then((permission) => {
-      console.log("permission",permission)
+  const requestNotifPermission = ()=>{
+    console.log("request permission")
+    Notification.requestPermission().then(async (permission) => {
       if (permission === 'granted') {
-        console.log('Notification permission granted.');
         getToken(messaging, { vapidKey: 'BID2V_2BFIu0f4wsuRCt22WeKzycVnHt0Ntp5WuReYLS_ls0iglYtBqslQCbr1d0nKuqEidDDKkRqZTHWblEBiE' }).then((currentToken) => {
+          console.log("current token",currentToken)
           if (currentToken) {
-            // Send the token to your server and update the UI if necessary
-            // ...
-            console.log("token",currentToken)
-          } else {
-            // Show permission request UI
-            console.log('No registration token available. Request permission to generate one.');
-            // ...
-          }
+          
+            setDoc(doc(db, "tokens/"+currentUser?.uid,), {
+              token:currentToken
+            });
+          } 
         }).catch((err) => {
           console.log('An error occurred while retrieving token. ', err);
           // ...
@@ -76,8 +69,10 @@ function Habits() {
   }
 
   useEffect(()=>{
-    requestPermission()
+    getHabits()
+    requestNotifPermission()
   },[])
+
 
   useEffect(()=>{
     setHabitsPage(getSubsetData(parseInt(currentPage),habitsFiltered))
